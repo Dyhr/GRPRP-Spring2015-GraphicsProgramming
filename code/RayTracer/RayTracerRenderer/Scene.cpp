@@ -1,30 +1,13 @@
+#include "Scene.h"
 #include <iostream>
 
-#define amountOfPixelsHeight 700;
-#define amountOfPixelsWidth 800;
+Scene::Scene() {
 
-class Scene
-{
-public:
-	Scene();
-	int createArray();
 }
-
-Scene::createArray()
-{
-	int returnValue [amountOfPixelsWidth][amountOfPixelsHeight] = {};
-	return returnValue;
+void Scene::init(const int width, const int height) {
+	this->width = width;
+	this->height = height;
+	this->arr = new int[width*height];
 }
-
-Scene::Scene()
-{
-}
-
-Scene::~Scene()
-{
-}
-
-int main()
-{
-	std::cout << "Hello world";
+void Scene::render() {
 }
