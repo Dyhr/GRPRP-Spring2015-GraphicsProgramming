@@ -6,7 +6,7 @@ using namespace System;
 
 namespace RayTracer {
 	public ref struct Color {
-		int r;
+		int red, green, blue, alpha;
 	};
 
 	public ref class Scene
@@ -14,13 +14,13 @@ namespace RayTracer {
 	public:
 		Scene();
 		void init(const int width, const int height);
-		void render();
+		array<Color^>^ render();
 	private:
 		int width;
 		int height;
-		int* arr; // int should be color
+		array<Color^>^ arr; // int should be color
 
-		int getColor(int x, int y);
-		void setColor(int x, int y, int color);
+		Color^ getColor(int x, int y);
+		void setColor(int x, int y, Color^ color);
 	};
 }

@@ -13,16 +13,21 @@ namespace RayTracer {
 	void Scene::init(const int width, const int height) {
 		this->width = width;
 		this->height = height;
-		this->arr = new int[width*height];
+		this->arr = gcnew array<Color^>(width*height);
+
+		for(int i = 0; i < width*height; i++) {
+			this->arr[i] = gcnew Color;
+		}
 	}
-	void Scene::render() {
+	array<Color^>^ Scene::render() {
 		std::cout << "Hello World!\n";
+		return arr;
 	}
 
-	int Scene::getColor(int x, int y) {
-		return this->arr[x + y*width];
+	Color^ Scene::getColor(int x, int y) {
+		return arr[x + y*width];
 	}
-	void Scene::setColor(int x, int y, int color) {
-		this->arr[x + y*width] = color;
+	void Scene::setColor(int x, int y, Color^ color) {
+		arr[x + y*width] = color;
 	}
 }
