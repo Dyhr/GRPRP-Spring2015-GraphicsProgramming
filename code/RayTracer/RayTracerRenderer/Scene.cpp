@@ -11,3 +11,10 @@ void Scene::init(const int width, const int height) {
 }
 void Scene::render() {
 }
+
+int Scene::getColor(int x, int y) {
+	return this->arr[x+y*width];
+}
+void Scene::setColor(int x, int y, int color) {
+	this->arr[x + y*width] = color;
+}

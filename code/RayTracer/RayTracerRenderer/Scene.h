@@ -10,6 +10,9 @@ private:
 	int width;
 	int height;
 	int* arr; // int should be color
+
+	int getColor(int x, int y);
+	void setColor(int x, int y, int color);
 };
 
 #endif /* SCENE_H */
