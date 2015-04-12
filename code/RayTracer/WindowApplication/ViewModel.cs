@@ -39,9 +39,6 @@ namespace WindowApplication
 
         private void PrepareImage()
         {
-            var bitmap = new Bitmap(_bitmapWidth, _bitmapHeight, PixelFormat.Canonical);
-
-
             unsafe
             {
                 // Get array from C++ module
@@ -60,11 +57,9 @@ namespace WindowApplication
                     int y = i % _bitmapWidth;
 
                     var colorToInsert = System.Drawing.Color.FromArgb(alpha, red, green, blue);
-
-                    bitmap.SetPixel(x,y,colorToInsert);
                 }
 
-                Image = bitmap;
+                // Set BitMapImage
             }
         }
 
