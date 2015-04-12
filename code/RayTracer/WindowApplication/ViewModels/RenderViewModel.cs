@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 namespace WindowApplication.ViewModels
 {
-    class RenderViewModel : ViewModelBase
+    public class RenderViewModel : ViewModelBase
     {
 
         public BitmapImage Image { get; private set; }
@@ -70,10 +70,6 @@ namespace WindowApplication.ViewModels
             }
         }
 
-
-
-        //
-
         private BitmapSource _renderBitMapSource;
         public BitmapSource RenderBitmap
         {
@@ -87,10 +83,8 @@ namespace WindowApplication.ViewModels
 
         async public void UpdateImage()
         {
-            Task<Color[,]> temp = Scene.GetInstance().Render();  // get the color array from the ray tracing project
+            Task<Color[,]> temp = Controller.GetInstance().Render();  // get the color array from the ray tracing project
             Color[,] colorArray = await temp;
-
-
             var width = colorArray.GetUpperBound(0) + 1;
             var height = colorArray.GetUpperBound(1) + 1;
             var stride = width * 4; // bytes per row
