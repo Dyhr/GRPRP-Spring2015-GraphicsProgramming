@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Interop;
+﻿using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using RayTracer;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace WindowApplication
+namespace WindowApplication.ViewModels
 {
-    class ViewModel
+    class RenderViewModel : ViewModelBase
     {
 
         public BitmapImage Image { get; private set; }
@@ -24,7 +15,7 @@ namespace WindowApplication
         private int _viewPortWidth;
         private Scene _scene;
 
-        public ViewModel(int bitmapWidth, int bitmapHeight, int viewPortWidth, int viewPortHeight)
+        public RenderViewModel(int bitmapWidth, int bitmapHeight, int viewPortWidth, int viewPortHeight)
         {
             _bitmapWidth = bitmapWidth;
             _bitmapHeight = bitmapHeight;
@@ -77,6 +68,50 @@ namespace WindowApplication
                 image.EndInit();
                 return image;
             }
+        }
+
+
+
+        //
+
+        private BitmapSource _renderBitMapSource;
+        public BitmapSource RenderBitmap
+        {
+            get { return _renderBitMapSource; }
+            set
+            {
+                _renderBitMapSource = value;
+                NotifyPropertyChanged("RenderBitmap");
+            }
+        }
+
+        async public void UpdateImage()
+        {
+            Task<Color[,]> temp = Scene.GetInstance().Render();  // get the color array from the ray tracing project
+            Color[,] colorArray = await temp;
+
+
+            var width = colorArray.GetUpperBound(0) + 1;
+            var height = colorArray.GetUpperBound(1) + 1;
+            var stride = width * 4; // bytes per row
+
+            byte[] pixelData = new byte[height * stride];
+
+            for (int x = 0; x < width; ++x)
+            {
+                for (int z = 0; z < height; ++z)
+                {
+                    var color = colorArray[x, height - z - 1];
+                    var index = (z * stride) + (x * 4);
+
+                    pixelData[index] = color.B;
+                    pixelData[index + 1] = color.G;
+                    pixelData[index + 2] = color.R;
+                    pixelData[index + 3] = color.A;
+                }
+            }
+
+            RenderBitmap = BitmapSource.Create(width, height, 96, 96, PixelFormats.Bgra32, null, pixelData, stride);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Media.Imaging;
+using WindowApplication.ViewModels;
 using Color = RayTracer.Color;
 
 namespace WindowApplication
@@ -17,7 +18,7 @@ namespace WindowApplication
         {
             InitializeComponent();
 
-            var viewModel = new ViewModel(20,20,400,400);
+            var viewModel = new RenderViewModel(20,20,400,400);
 
             var image = new BitmapImage();
             Canvas.Source = image;
