@@ -5,7 +5,11 @@
 using namespace System;
 
 namespace RayTracer {
-	public ref struct Color {
+
+	// This struct is declared ref, because it is used from C#-side
+	public ref class Color 
+	{
+		public:
 		int red, green, blue, alpha;
 	};
 
@@ -36,6 +40,7 @@ namespace RayTracer {
 	public:
 		Scene(int,int,int); // Constructor
 		void init(const int width, const int height);
+		void seedElementsIntoScene();
 		array<Color^>^ render();
 	private:
 		int width;
@@ -46,6 +51,7 @@ namespace RayTracer {
 		Color^ getColor(int x, int y);
 		void setColor(int x, int y, Color^ color);
 		RayRepresentation DetermineRayRepresentation(int x, int y);
-		Point DetermineIntersection(RayRepresentation ray);
+		Point* DetermineIntersection(RayRepresentation ray);
+		void DetermineColorAtPixel(int);
 	};
 }

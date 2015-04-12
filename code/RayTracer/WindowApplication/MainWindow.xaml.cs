@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using System.Drawing;
-using RayTracer;
+using System.Windows.Media.Imaging;
 using Color = RayTracer.Color;
 
 namespace WindowApplication
@@ -17,12 +17,10 @@ namespace WindowApplication
         {
             InitializeComponent();
 
-            var scene = new Scene();
-            scene.init(4,4);
-            var data = scene.render();
-            var bytearr = ConvertData(data);
-            var img = LoadImage(bytearr);
-            Canvas.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(img);
+            var viewModel = new ViewModel(20,20,400,400);
+
+            var image = new BitmapImage();
+            Canvas.Source = image;
         }
 
         private static byte[] ConvertData(Color[] data)
