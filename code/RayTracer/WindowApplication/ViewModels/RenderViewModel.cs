@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -6,70 +7,7 @@ namespace WindowApplication.ViewModels
 {
     public class RenderViewModel : ViewModelBase
     {
-
-        public BitmapImage Image { get; private set; }
-
-        private int _bitmapHeight;
-        private int _bitmapWidth;
-        private int _viewPortHeight;
-        private int _viewPortWidth;
-        private Scene _scene;
-
-        public RenderViewModel(int bitmapWidth, int bitmapHeight, int viewPortWidth, int viewPortHeight)
-        {
-            _bitmapWidth = bitmapWidth;
-            _bitmapHeight = bitmapHeight;
-
-            _viewPortWidth = viewPortWidth;
-            _viewPortHeight = viewPortHeight;
-
-            int zDepth = 10;
-            _scene = new Scene(viewPortWidth, viewPortHeight, zDepth);
-            _scene.init(bitmapWidth, bitmapHeight);
-        }
-
-        private void PrepareImage()
-        {
-            unsafe
-            {
-                // Get array from C++ module
-                var array = _scene.render();
-
-                for (int i = 0; i < array.Length; i++)
-                {
-                    var color = array[i];
-
-                    int red = color.red;
-                    int green = color.green;
-                    int blue = color.blue;
-                    int alpha = color.alpha;
-
-                    int x = i / _bitmapWidth;
-                    int y = i % _bitmapWidth;
-
-                    var colorToInsert = System.Drawing.Color.FromArgb(alpha, red, green, blue);
-                }
-
-                // Set BitMapImage
-            }
-        }
-
-        private BitmapImage ConvertImage(byte[] array)
-        {
-
-
-
-            using (var ms = new System.IO.MemoryStream(array))
-            {
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.StreamSource = ms;
-                image.EndInit();
-                return image;
-            }
-        }
-
+        //private Scene _scene;
         private BitmapSource _renderBitMapSource;
         public BitmapSource RenderBitmap
         {
@@ -81,10 +19,57 @@ namespace WindowApplication.ViewModels
             }
         }
 
+        public RenderViewModel()
+        {
+            //_scene = new Scene(viewPortWidth, viewPortHeight, zDepth);
+            //_scene.init(bitmapWidth, bitmapHeight);
+        }
+
+        private void PrepareImage()
+        {
+            //unsafe
+            //{
+            //    // Get array from C++ module
+            //    var array = _scene.render();
+            //
+            //    for (int i = 0; i < array.Length; i++)
+            //    {
+            //        var color = array[i];
+            //
+            //        int red = color.red;
+            //        int green = color.green;
+            //        int blue = color.blue;
+            //        int alpha = color.alpha;
+            //
+            //        int x = i / _bitmapWidth;
+            //        int y = i % _bitmapWidth;
+            //
+            //        var colorToInsert = System.Drawing.Color.FromArgb(alpha, red, green, blue);
+            //    }
+            //
+            //    // Set BitMapImage
+            //}
+        }
+
+        private BitmapImage ConvertImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
+        }
+
+        
+
         async public void UpdateImage()
         {
-            Task<Color[,]> temp = Controller.GetInstance().Render();  // get the color array from the ray tracing project
-            Color[,] colorArray = await temp;
+            Task<Color[,]> temp = new Task<Color[,]>(() => new Color[0,0]);// = Controller.GetInstance().Render();  // get the color array from the ray tracing project
+            Color[,] colorArray = temp.Result;
             var width = colorArray.GetUpperBound(0) + 1;
             var height = colorArray.GetUpperBound(1) + 1;
             var stride = width * 4; // bytes per row

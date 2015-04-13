@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using WindowApplication.ViewModels;
-using Color = RayTracer.Color;
 
-namespace WindowApplication
+namespace WindowApplication.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -17,11 +15,6 @@ namespace WindowApplication
         public MainWindow()
         {
             InitializeComponent();
-
-            var viewModel = new RenderViewModel(20,20,400,400);
-
-            var image = new BitmapImage();
-            Canvas.Source = image;
         }
 
         private static byte[] ConvertData(Color[] data)
@@ -35,11 +28,6 @@ namespace WindowApplication
                 output.Add((byte)rnd.Next(255));
             }
             return output.ToArray();
-        }
-
-        private static Image LoadImage(byte[] imageData)
-        {
-            throw new NotImplementedException(); // TODO implement
         }
     }
 }
