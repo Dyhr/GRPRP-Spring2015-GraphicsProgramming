@@ -45,8 +45,6 @@ namespace WindowApplication
                 output.SetPixel(x,y,color);
             }
 
-            Console.WriteLine("DONE "+result.Length);
-
             return ConvertBitmap(output);
         }
 
