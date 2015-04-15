@@ -5,4 +5,9 @@ namespace RayTracer{
 	Camera::Camera()
 	{
 	}
+
+	Line3d* Camera::GenerateRays()
+	{
+		// 
+	}
 }

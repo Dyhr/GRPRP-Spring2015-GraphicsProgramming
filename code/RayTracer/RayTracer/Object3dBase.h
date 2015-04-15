@@ -2,7 +2,7 @@
 #include "Line3d.h"
 #include "Vector3d.h"
 namespace RayTracer{
-	ref class Object3dBase
+	class Object3dBase
 	{
 	public:
 		Object3dBase();

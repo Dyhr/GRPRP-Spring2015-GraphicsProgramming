@@ -1,6 +1,7 @@
 // RayTracer.h
 
 #pragma once
+#include "Line3d.h"
 
 using namespace System;
 
@@ -13,45 +14,25 @@ namespace RayTracer {
 		int red, green, blue, alpha;
 	};
 
-	struct RayRepresentation
-	{
-		int x;
-		int y;
-		int z;
-	};
-
-	struct Point
-	{	// Should be declared as floats instead
-		int x;
-		int y;
-		int z;
-	};
-
-	struct Circle
-	{
-		int x;
-		int y;
-		int z;
-		int radius;
-	};
-
 	public ref class Scene
 	{
+	private:
+		int determineCorrespondingXIndex(int indexIn1DArray);
+		int determineCorrespondingYIndex(int indexIn1DArray);
+
 	public:
 		Scene(int,int,int); // Constructor
 		void init(const int width, const int height);
-		void seedElementsIntoScene();
 		array<Color^>^ render();
 	private:
 		int width;
 		int height;
 		int viewPortWidth, viewPortHeight, zLocation;
-		array<Color^>^ arr; // int should be color
+		array<Color^>^ arr;
 
 		Color^ getColor(int x, int y);
 		void setColor(int x, int y, Color^ color);
-		RayRepresentation DetermineRayRepresentation(int x, int y);
-		Point* DetermineIntersection(RayRepresentation ray);
+		Line3d DetermineLine3dRepresentation(int x, int y);
 		void DetermineColorAtPixel(int);
 	};
 }
