@@ -1,3 +1,6 @@
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #pragma once
 #include "Line3d.h"
 namespace RayTracer{
@@ -10,3 +13,4 @@ namespace RayTracer{
 	};
 }
 
+#endif

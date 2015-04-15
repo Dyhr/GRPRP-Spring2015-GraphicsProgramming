@@ -77,7 +77,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Line3d.h" />
-    <ClInclude Include="Object3dBase.h" />
+    <ClInclude Include="Object3d.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sphere3d.h" />
@@ -88,7 +88,6 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Line3d.cpp" />
-    <ClCompile Include="Object3dBase.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sphere3d.cpp" />
     <ClCompile Include="Stdafx.cpp">

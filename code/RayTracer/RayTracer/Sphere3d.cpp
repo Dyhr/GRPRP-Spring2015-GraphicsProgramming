@@ -22,7 +22,7 @@ namespace RayTracer{
 		float z = pointAtSphere.z - centerPosition.z;
 
 		Vector3d initial = Vector3d(x, y, z);
-		Vector3d normalized = initial.normalizeVector();
+		Vector3d normalized = Vector3d::normalize(initial);
 
 		return normalized;
 	}

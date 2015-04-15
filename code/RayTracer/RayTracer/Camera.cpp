@@ -9,5 +9,6 @@ namespace RayTracer{
 	Line3d* Camera::GenerateRays()
 	{
 		// 
+		return 0;
 	}
 }

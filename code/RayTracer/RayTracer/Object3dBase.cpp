@@ -1,8 +1,5 @@
 #include "stdafx.h"
-#include "Object3dBase.h"
+#include "Object3d.h"
 
 namespace RayTracer{
-	Object3dBase::Object3dBase()
-	{
-	}
 }

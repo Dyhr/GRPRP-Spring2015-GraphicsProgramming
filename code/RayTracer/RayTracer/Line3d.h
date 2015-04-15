@@ -1,3 +1,6 @@
+#ifndef LINE3D_H
+#define LINE3D_H
+
 #pragma once
 #include "Vector3d.h"
 namespace RayTracer{
@@ -15,4 +18,4 @@ namespace RayTracer{
 	};
 }
 
-
+#endif

@@ -2,98 +2,79 @@
 #include "Vector3d.h"
 #include <cmath>
 
-#define PI float(3.14) 
+#define PI float(3.1415) 
 
 namespace RayTracer
 {
 
 	// The empty constructor: Set default values for components
-	Vector3d::Vector3d() : x(float(0.0)), y(float(0.0)), z(float(0.0)), length(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)))
-	{
-
-	}
-
-	Vector3d::Vector3d(float x1, float y1, float z1) : x(x1), y(y1), z(z1), length(sqrt(pow(x1, 2) + pow(y1, 2) + pow(z1, 2)))
-	{
-
-	}
-
+	Vector3d::Vector3d() : x(float(0.0)), y(float(0.0)), z(float(0.0)), length(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))) { }
+	Vector3d::Vector3d(float x1, float y1, float z1) : x(x1), y(y1), z(z1), length(sqrt(pow(x1, 2) + pow(y1, 2) + pow(z1, 2))) { }
 	Vector3d::Vector3d(Vector3d endPoint, Vector3d startPoint) : 
 		x(float(endPoint.x - startPoint.x)), y(float(endPoint.y - startPoint.y)), 
 		z(float(endPoint.z-startPoint.z)),
-		length(float(sqrt(pow((endPoint.x - startPoint.x), 2) + pow((endPoint.y - startPoint.y), 2) + pow((endPoint.z - startPoint.z), 2))))
-	{
+		length(float(sqrt(pow((endPoint.x - startPoint.x), 2) + pow((endPoint.y - startPoint.y), 2) + pow((endPoint.z - startPoint.z), 2)))) { }
 
+
+	// Math
+
+	Vector3d Vector3d::add(Vector3d a, Vector3d b) {
+		return Vector3d(a.x + b.x, a.y + b.y, a.z + b.z);
 	}
 
-	Vector3d Vector3d::normalizeVector()
-	{
-		if (length == 0.0f)
-		{
-			// We cannot divide by zero
-			// Return a zero-length vector
-			Vector3d returnValue = Vector3d();		// Default, zero-length vector
-			return returnValue;
-		}
-
-		float normalisedX = x / length;
-		float normalisedY = y / length;
-		float normalisedZ = z / length;
-
-		Vector3d normalisedVector = Vector3d(normalisedX, normalisedY, normalisedZ);
-		return normalisedVector;
+	Vector3d Vector3d::subtract(Vector3d a, Vector3d b) {
+		return Vector3d(a.x - b.x, a.y - b.y, a.z - b.z);
 	}
 
-	Vector3d Vector3d::negateVector()
-	{
-		float xNegated = x * (-1.0);
-		float yNegated = y * (-1.0);
-		float zNegated = z * (-1.0);
-
-		Vector3d negatedVector = Vector3d(xNegated, yNegated, zNegated);
-		return negatedVector;
+	Vector3d Vector3d::multiply(Vector3d a, float b) {
+		return Vector3d(a.x * b, a.y * b, a.z * b);
 	}
 
-	Vector3d Vector3d::vectorTimesScalar(float scalar)
-	{
-		float scaledX = x * scalar;
-		float scaledY = y * scalar;
-		float scaledZ = z * scalar;
-
-		Vector3d scaledVector = Vector3d(scaledX, scaledY, scaledZ);
-		return scaledVector;
+	Vector3d Vector3d::divide(Vector3d a, float b) {
+		return Vector3d(a.x / b, a.y / b, a.z / b);
 	}
 
+	// Vector math
 
-	Vector3d Vector3d::addition(Vector3d v1, Vector3d v2)
-	{
-		float newX = v1.x + v2.x;
-		float newY = v1.y + v2.y;
-		float newZ = v1.z + v2.z;
-
-		return Vector3d(newX, newY, newZ);
+	Vector3d Vector3d::normalize(Vector3d v) {
+		// We cannot divide by zero
+		// Return itself
+		if(v.length == 0.0f) return v;
+		return divide(v, v.length);
 	}
 
-	// Since, header-file declares this method as static, there's no need to repeat that info; http://stackoverflow.com/questions/15725922/static-function-a-storage-class-may-not-be-specified-here
-	Vector3d Vector3d::subtraction(Vector3d v1, Vector3d v2)
-	{
-		// This method could alse be implemented by combined use of negation() and addition(), if one prefers.
-		float newX = v1.x - v2.x;
-		float newY = v1.y - v2.y;
-		float newZ = v1.z - v2.z;
-
-		return Vector3d(newX, newY, newZ);
+	Vector3d Vector3d::negate(Vector3d v) {
+		return multiply(v, -1);
 	}
+
+	float Vector3d::dotProduct(Vector3d v1, Vector3d v2) {
+		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	}
+
+	float Vector3d::distance(Vector3d v1, Vector3d v2) {
+		return subtract(v1, v2).length;
+	}
+
+	float cosV(Vector3d v1, Vector3d v2) {
+		// The two are normalized
+		Vector3d normV1 = Vector3d::normalize(v1);
+		Vector3d normV2 = Vector3d::normalize(v2);
+
+		float dotP = Vector3d::dotProduct(normV1, normV2);
+		return cos(dotP);
+	}
+
+	// Other math
 
 	Vector3d Vector3d::reflectionVector(Vector3d normal, Vector3d incoming)
 	{
 		// Define exiting vector originating from the origin of normal
 		// http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
-		Vector3d step1 = incoming.vectorTimesScalar(2.0);			// 2*a
+		Vector3d step1 = multiply(incoming, 2.0f);			// 2*a
 		float step2 = dotProduct(step1, normal);					// 2*a*n
 		float step3 = step2 / pow(normal.length, 2.0);				// (2*a*n)/(|n|^2)
-		Vector3d step4 = vectorTimesScalar(normal, step3);			// ((2*a*n)/(|n|^2)) x n
-		Vector3d final = subtraction(incoming, step4);				// a - ( ((2*a*n)/(|n|^2)) x n )
+		Vector3d step4 = multiply(normal, step3);			// ((2*a*n)/(|n|^2)) x n
+		Vector3d final = subtract(incoming, step4);				// a - ( ((2*a*n)/(|n|^2)) x n )
 
 		return final;
 	}
@@ -104,39 +85,9 @@ namespace RayTracer
 		return Vector3d();
 	}
 
-	float dotProduct(Vector3d v1, Vector3d v2)
-	{
-		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-	}
-
-	float cosV(Vector3d v1, Vector3d v2)
-	{
-		// The two are normalized
-		Vector3d normV1 = v1.normalizeVector();
-		Vector3d normV2 = v2.normalizeVector();
-
-		float dotP = dotProduct(normV1, normV2);
-		return cos(dotP);
-	}
-
-	float distanceBetweenPoints(Vector3d v1, Vector3d v2)
-	{
-		float x1 = v1.x;
-		float y1 = v1.y;
-		float z1 = v1.z;
-		
-		float x2 = v2.x;
-		float y2 = v2.y;
-		float z2 = v2.z;
-
-		return sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2) + pow((z2 - z1), 2));
-	}
-
 	// Notice, that isSameDirection returns false if v1 and v2 are parallel but pointing in opposite directions
-	bool isSameDirection(Vector3d v1, Vector3d v2)
-	{
-		// TODO: Define global threshold value
-		float threshold = 0.001;
-		return abs(dotProduct(v1,v2) - 1.0 ) < threshold;
+	bool Vector3d::isSameDirection(Vector3d v1, Vector3d v2) {
+		float threshold = 0.0001;
+		return abs(dotProduct(normalize(v1), normalize(v2))) > 1.0f - threshold;
 	}
 }
