@@ -79,7 +79,6 @@
     <ClInclude Include="Line3d.h" />
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Sphere3d.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Vector3d.h" />

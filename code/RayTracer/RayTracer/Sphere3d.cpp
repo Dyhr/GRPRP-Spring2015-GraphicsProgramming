@@ -36,17 +36,17 @@ namespace RayTracer{
 		
 
 		// Move from spot to origin
-		float translatedX = centerPosition.x - line.positionVector.x;
-		float translatedY = centerPosition.y - line.positionVector.y;
-		float translatedZ = centerPosition.z - line.positionVector.z;
+		float translatedX = centerPosition.x - line.position.x;
+		float translatedY = centerPosition.y - line.position.y;
+		float translatedZ = centerPosition.z - line.position.z;
 		Vector3d translatedCenter = Vector3d(translatedX, translatedY, translatedZ);
 		Sphere3d translatedSphere = Sphere3d(translatedCenter,radius);
 
 		// Do calculations
-		float aComponent = pow(line.directionVector.x, 2) + pow(line.directionVector.y, 2) + pow(line.directionVector.z, 2);
-		float bComponent = -2.0*(line.directionVector.x*translatedCenter.x
-			+ line.directionVector.y*translatedCenter.y
-			+ line.directionVector.z*translatedCenter.z);
+		float aComponent = pow(line.direction.x, 2) + pow(line.direction.y, 2) + pow(line.direction.z, 2);
+		float bComponent = -2.0*(line.direction.x*translatedCenter.x
+			+ line.direction.y*translatedCenter.y
+			+ line.direction.z*translatedCenter.z);
 		float cComponent = pow(translatedCenter.x, 2) + pow(translatedCenter.y, 2) + pow(translatedCenter.z, 2);
 
 
@@ -69,14 +69,14 @@ namespace RayTracer{
 			float lowestTValue = tValue1 < tValue2 ? tValue1 : tValue2;
 
 			// First solution: (-(b)+sqrt(D))/(2*a)
-			float intersectX1 = lowestTValue * line.directionVector.x;
-			float intersectY1 = lowestTValue * line.directionVector.y;
-			float intersectZ1 = lowestTValue * line.directionVector.z;
+			float intersectX1 = lowestTValue * line.direction.x;
+			float intersectY1 = lowestTValue * line.direction.y;
+			float intersectZ1 = lowestTValue * line.direction.z;
 
 			// Make up for initial translation
-			intersectX1 = intersectX1 + line.positionVector.x;
-			intersectY1 = intersectY1 + line.positionVector.y;
-			intersectZ1 = intersectZ1 + line.positionVector.z;
+			intersectX1 = intersectX1 + line.position.x;
+			intersectY1 = intersectY1 + line.position.y;
+			intersectZ1 = intersectZ1 + line.position.z;
 
 			Vector3d point = Vector3d(intersectX1, intersectY1, intersectZ1);
 
@@ -88,14 +88,14 @@ namespace RayTracer{
 			float tValue = (-1.0*bComponent) / (2.0*aComponent);
 
 			// Corresponding point on line with given t
-			float intersectX = tValue * line.directionVector.x;
-			float intersectY = tValue * line.directionVector.y;
-			float intersectZ = tValue * line.directionVector.z;
+			float intersectX = tValue * line.direction.x;
+			float intersectY = tValue * line.direction.y;
+			float intersectZ = tValue * line.direction.z;
 
 			// Make up for initial translation
-			intersectX = intersectX + line.positionVector.x;
-			intersectY = intersectY + line.positionVector.y;
-			intersectZ = intersectZ + line.positionVector.z;
+			intersectX = intersectX + line.position.x;
+			intersectY = intersectY + line.position.y;
+			intersectZ = intersectZ + line.position.z;
 
 			Vector3d point = Vector3d(intersectX, intersectY, intersectZ);
 			return point;
