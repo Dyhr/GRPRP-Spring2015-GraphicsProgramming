@@ -14,12 +14,7 @@ namespace RayTracer {
 		int red, green, blue, alpha;
 	};
 
-	public ref class Scene
-	{
-	private:
-		int determineCorrespondingXIndex(int indexIn1DArray);
-		int determineCorrespondingYIndex(int indexIn1DArray);
-
+	public ref class Scene {
 	public:
 		Scene(int,int,int); // Constructor
 		void init(const int width, const int height);
@@ -32,7 +27,7 @@ namespace RayTracer {
 
 		Color^ getColor(int x, int y);
 		void setColor(int x, int y, Color^ color);
-		Line3d DetermineLine3dRepresentation(int x, int y);
-		void DetermineColorAtPixel(int);
+		Line3d getRayFromScreen(int x, int y);
+		Color^ rayTrace(Line3d ray);
 	};
 }

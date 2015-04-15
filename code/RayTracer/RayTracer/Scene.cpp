@@ -26,34 +26,18 @@ namespace RayTracer {
 			this->arr[i] = gcnew Color;
 		}
 	}
-	// Helper method that determines corresponding x-index in a 2D-array, given index in 1D array
-	int Scene::determineCorrespondingXIndex(int indexIn1DArray)
-	{
-		int index = (int)indexIn1DArray / width;
-		return index;
-	}
-
-	// Helper method that determines corresponding y-index in a 2D-array, given index in 1D array
-	int Scene::determineCorrespondingYIndex(int indexIn1DArray)
-	{
-		int index = (int)indexIn1DArray % width;
-		return index;
-	}
 
 	array<Color^>^ Scene::render()
 	{
 		// This is where the magic happens: main-loop!
 		std::cout << "Yolo world!";
-		for (int i = 0; i < width * height; i++)
+		for (int x = 0; x < width; x++)
 		{
-			// Get ray
-			int x = determineCorrespondingXIndex(i);
-			int y = determineCorrespondingYIndex(i);
-			Line3d ray = DetermineLine3dRepresentation(x, y);
-
-			// Now, do something usefull with the ray...
-
-			DetermineColorAtPixel(i);
+			for(int y = 0; y < height; y++) {
+				Line3d ray = getRayFromScreen(x, y);
+				Color^ color = rayTrace(ray);
+				setColor(x, y, color);
+			}
 		}
 		return arr;
 	}
@@ -66,7 +50,7 @@ namespace RayTracer {
 	}
 
 	// Assumes viewport is located at z = zLocation
-	Line3d Scene::DetermineLine3dRepresentation(int x, int y) // x and y represents indices in pixelgrid
+	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
 		int stepSizeX = viewPortWidth / width;
 		int stepSizeY = viewPortHeight / height;
@@ -85,13 +69,9 @@ namespace RayTracer {
 
 	}
 
-	void Scene::DetermineColorAtPixel(int pixelElement)
+	Color^ Scene::rayTrace(Line3d ray)
 	{
-		// Dummy-implmentation
-		/*
-		// First, determine x- and y-component corresponding to pixelElement
-		int x = (int)pixelElement / width; // Floors decimal. 
-		int y = pixelElement % width;
+		// Dummy-implentation
 
 		Color^ dummyColor;	// Cyan-color
 		dummyColor->alpha = 1;
@@ -99,16 +79,6 @@ namespace RayTracer {
 		dummyColor->green = 255;
 		dummyColor->blue = 75;
 
-		setColor(x, y, dummyColor);*/
-
-
-		// Non-dummy implementation
-		
-		// First, determine x- and y-component corresponding to pixelElement
-		int x = (int)pixelElement / width; // Floors decimal. 
-		int y = pixelElement % width;
-
-		// Get ray-representation
-		Line3d ray = DetermineLine3dRepresentation(x, y);
+		return dummyColor;
 	}
 }
