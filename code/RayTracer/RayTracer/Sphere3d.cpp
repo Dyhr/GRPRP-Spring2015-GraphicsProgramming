@@ -44,13 +44,13 @@ namespace RayTracer{
 
 		// Do calculations
 		float aComponent = pow(line.direction.x, 2) + pow(line.direction.y, 2) + pow(line.direction.z, 2);
-		float bComponent = -2.0*(line.direction.x*translatedCenter.x
+		float bComponent = -2.0f*(line.direction.x*translatedCenter.x
 			+ line.direction.y*translatedCenter.y
 			+ line.direction.z*translatedCenter.z);
 		float cComponent = pow(translatedCenter.x, 2) + pow(translatedCenter.y, 2) + pow(translatedCenter.z, 2);
 
 
-		float discriminant = pow(bComponent, 2.0) - 4.0*aComponent*cComponent;
+		float discriminant = pow(bComponent, 2.0f) - 4.0f*aComponent*cComponent;
 
 		float a = aComponent;
 		float b = bComponent;
@@ -58,12 +58,12 @@ namespace RayTracer{
 
 
 		// For now, arbitrarily chosen threshold for "0"
-		float threshold = 0.01;
+		float threshold = 0.01f;
 		if (discriminant > threshold)
 		{
 			// Two solutions:
-			float tValue1 = (-1.0*b + sqrt(pow(b, 2) - 4.0*a*c)) / (2.0*a);
-			float tValue2 = (-1.0*b - sqrt(pow(b, 2) - 4.0*a*c)) / (2.0*a);
+			float tValue1 = (-1.0f*b + sqrt(pow(b, 2) - 4.0f*a*c)) / (2.0f*a);
+			float tValue2 = (-1.0f*b - sqrt(pow(b, 2) - 4.0f*a*c)) / (2.0f*a);
 
 			// The lowest tValue corresponds to the first intersection
 			float lowestTValue = tValue1 < tValue2 ? tValue1 : tValue2;
@@ -85,7 +85,7 @@ namespace RayTracer{
 		else if (discriminant > 0.0 && discriminant < threshold)
 		{
 			// One solution: (-b)/(2*a)
-			float tValue = (-1.0*bComponent) / (2.0*aComponent);
+			float tValue = (-1.0f*bComponent) / (2.0f*aComponent);
 
 			// Corresponding point on line with given t
 			float intersectX = tValue * line.direction.x;

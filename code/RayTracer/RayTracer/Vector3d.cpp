@@ -72,7 +72,7 @@ namespace RayTracer
 		// http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
 		Vector3d step1 = multiply(incoming, 2.0f);			// 2*a
 		float step2 = dotProduct(step1, normal);					// 2*a*n
-		float step3 = step2 / pow(normal.length, 2.0);				// (2*a*n)/(|n|^2)
+		float step3 = step2 / pow(normal.length, 2);				// (2*a*n)/(|n|^2)
 		Vector3d step4 = multiply(normal, step3);			// ((2*a*n)/(|n|^2)) x n
 		Vector3d final = subtract(incoming, step4);				// a - ( ((2*a*n)/(|n|^2)) x n )
 
@@ -87,7 +87,7 @@ namespace RayTracer
 
 	// Notice, that isSameDirection returns false if v1 and v2 are parallel but pointing in opposite directions
 	bool Vector3d::isSameDirection(Vector3d v1, Vector3d v2) {
-		float threshold = 0.0001;
+		float threshold = 0.0001f;
 		return abs(dotProduct(normalize(v1), normalize(v2))) > 1.0f - threshold;
 	}
 }

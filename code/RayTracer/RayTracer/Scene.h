@@ -14,13 +14,12 @@ namespace RayTracer {
 
 	public ref class Scene {
 	public:
-		Scene(int,int,int); // Constructor
+		Scene(float, float, float); // Constructor
 		void init(const int width, const int height);
 		array<Color^>^ render();
 	private:
-		int width;
-		int height;
-		int viewPortWidth, viewPortHeight, zLocation;
+		int width, height;
+		float viewPortWidth, viewPortHeight, zLocation;
 		array<Color^>^ arr;
 
 		Color^ getColor(int x, int y);
