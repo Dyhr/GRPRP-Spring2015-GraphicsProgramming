@@ -11,7 +11,7 @@
 
 namespace RayTracer {
 
-	Scene::Scene(int viewportWidth, int viewPortHeight, int zLocation) 
+	Scene::Scene(float viewPortWidth, float viewPortHeight, float zLocation)
 	{
 		this->viewPortWidth = viewPortWidth;
 		this->viewPortHeight = viewPortHeight;
@@ -48,23 +48,22 @@ namespace RayTracer {
 	void Scene::setColor(int x, int y, Color^ color) {
 		arr[x + y*width] = color;
 	}
-
+		
 	// Assumes viewport is located at z = zLocation
 	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
-		int stepSizeX = viewPortWidth / width;
-		int stepSizeY = viewPortHeight / height;
+		float stepSizeX = viewPortWidth / (float)width;
+		float stepSizeY = viewPortHeight / (float)height;
 		
 		// Center of viewport is located in (0,0,0)
-		int startingX = -(viewPortWidth / 2.0) + (stepSizeX / 2.0);
-		int startingY = (viewPortHeight / 2.0) - (stepSizeX / 2.0);
-		int newX = startingX + x * stepSizeX;
-		int newY = startingY + y *stepSizeY;
+		float startingX = -(viewPortWidth / 2.0f) + (stepSizeX / 2.0f);
+		float startingY = (viewPortHeight / 2.0f) - (stepSizeX / 2.0f);
+		float newX = startingX + x * stepSizeX;
+		float newY = startingY + y * stepSizeY;
 
 		// Wrap into Line3d-instance
 		Vector3d direction = Vector3d(newX, newY, zLocation);
-		Vector3d startPoint = Vector3d(0.0, 0.0, 0.0);
-		Line3d ray = Line3d(startPoint, direction);
+		Line3d ray = Line3d(Vector3d(), direction);
 		return ray;
 
 	}

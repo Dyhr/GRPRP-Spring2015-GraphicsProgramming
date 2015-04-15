@@ -4,21 +4,21 @@
 namespace RayTracer{
 
 	// Default constructor
-	Line3d::Line3d() : positionVector(Vector3d(0.0, 0.0, 0.0)), directionVector(Vector3d(0.0,0.0,0.0))
+	Line3d::Line3d() : position(Vector3d(0.0, 0.0, 0.0)), direction(Vector3d(0.0, 0.0, 0.0))
 	{
 
 	}
 
-	Line3d::Line3d(Vector3d start, Vector3d direction) : positionVector(start), directionVector(direction)
+	Line3d::Line3d(Vector3d position, Vector3d direction):position(position), direction(direction)
 	{
 
 	}
 
 	Vector3d Line3d::getPositionAlongLine(float t)
 	{
-		float x = positionVector.x + t * directionVector.x;
-		float y = positionVector.y + t * directionVector.y;
-		float z = positionVector.z + t * directionVector.z;
+		float x = position.x + t * direction.x;
+		float y = position.y + t * direction.y;
+		float z = position.z + t * direction.z;
 
 		Vector3d pointOnLine = Vector3d(x, y, z);
 		return pointOnLine;
@@ -28,7 +28,7 @@ namespace RayTracer{
 	Line3d Line3d::pushStartAlongLine(float pushAmount)
 	{
 		Vector3d newStartPoint = getPositionAlongLine(pushAmount);
-		Line3d newLine = Line3d(newStartPoint, directionVector);
+		Line3d newLine = Line3d(newStartPoint, direction);
 		return newLine;
 	}
 }
