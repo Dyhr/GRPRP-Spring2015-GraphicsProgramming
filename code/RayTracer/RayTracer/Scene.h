@@ -1,6 +1,3 @@
-#ifndef SCENE_H
-#define SCENE_H
-
 #pragma once
 #include "Line3d.h"
 
@@ -32,5 +29,3 @@ namespace RayTracer {
 		Color^ rayTrace(Line3d ray);
 	};
 }
-
-#endif

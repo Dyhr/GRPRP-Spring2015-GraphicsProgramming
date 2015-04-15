@@ -1,6 +1,3 @@
-#ifndef OBJECT3D_H
-#define OBJECT3D_H
-
 #pragma once
 #include "Line3d.h"
 #include "Vector3d.h"
@@ -13,5 +10,3 @@ namespace RayTracer{
 		virtual Vector3d CalculateCollisionPosition(Line3d) = 0;
 	};
 }
-
-#endif

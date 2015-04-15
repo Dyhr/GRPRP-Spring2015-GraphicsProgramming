@@ -1,6 +1,3 @@
-#ifndef VECTOR3D_H
-#define VECTOR3D_H
-
 #pragma once
 namespace RayTracer{
 	// The Vector3d class sh
@@ -31,5 +28,3 @@ namespace RayTracer{
 		static bool isSameDirection(Vector3d, Vector3d);
 	};
 }
-
-#endif

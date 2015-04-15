@@ -1,8 +1,6 @@
-#ifndef CAMERA_H
-#define CAMERA_H
-
 #pragma once
 #include "Line3d.h"
+
 namespace RayTracer{
 	ref class Camera
 	{
@@ -12,5 +10,3 @@ namespace RayTracer{
 		Line3d* GenerateRays(); // generate an twoDimensional array corresponding to the render Array
 	};
 }
-
-#endif

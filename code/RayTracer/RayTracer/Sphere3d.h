@@ -1,9 +1,7 @@
-#ifndef SPHERE3D_H
-#define SPHERE3D_H
-
 #pragma once
 #include "Object3d.h"
 #include "Vector3d.h"
+
 namespace RayTracer{
 
 	class Sphere3d : public Object3d
@@ -20,5 +18,3 @@ namespace RayTracer{
 		Vector3d CalculateCollisionPosition(Line3d);
 	};
 }
-
-#endif
