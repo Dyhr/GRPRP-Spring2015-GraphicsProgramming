@@ -11,13 +11,13 @@
 		<Grid.DataContext>
 			<ViewModels:RenderViewModel/>
 		</Grid.DataContext>
-		<Image Source="{Binding RenderBitmap}"/>
-		<Button Content="Render" VerticalAlignment="Bottom" Width="54" Grid.Column="1" Margin="10,0,10,10" Height="22">
-			<i:Interaction.Triggers>
+		<Image Source="{Binding RenderBitmap}" Name="RenderBitmap"/>
+		<Button Content="Render" VerticalAlignment="Bottom" Width="54" Grid.Column="1" Margin="10,0,10,10" Height="22" Click="ButtonBase_OnClick">
+			<!--<i:Interaction.Triggers>
 				<i:EventTrigger EventName="Click">
 					<ei:CallMethodAction TargetObject="{Binding Mode=OneWay}" MethodName="UpdateImage"/>
 				</i:EventTrigger>
-			</i:Interaction.Triggers>
+			</i:Interaction.Triggers>-->
 		</Button>
 	</Grid>
 </Window>

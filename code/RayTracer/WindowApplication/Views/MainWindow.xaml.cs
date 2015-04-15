@@ -29,5 +29,11 @@ namespace WindowApplication.Views
             }
             return output.ToArray();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var renderer = new SceneRenderer((int)RenderBitmap.Width,(int)RenderBitmap.Height);
+            RenderBitmap.Source = renderer.Render();
+        }
     }
 }

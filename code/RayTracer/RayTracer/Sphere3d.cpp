@@ -103,7 +103,7 @@ namespace RayTracer{
 		else
 		{
 			// No solutions: Return empty array
-			return Vector3d();
+			return Vector3d(); // TODO return null
 		}
 	}
 }

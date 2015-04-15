@@ -1,5 +1,6 @@
 #pragma once
 #include "Line3d.h"
+#include "Object3d.h"
 
 namespace RayTracer {
 

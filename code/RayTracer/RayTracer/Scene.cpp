@@ -4,10 +4,12 @@
 #include <iostream>
 #include <ctgmath>
 #include <cmath>
+#include <vector>
 
-#define zDepth (10);
-
+#include "Sphere3d.h"
 #include "Scene.h"
+
+using namespace std;
 
 namespace RayTracer {
 
@@ -27,8 +29,14 @@ namespace RayTracer {
 		}
 	}
 
+	vector<Object3d*> sceneObjects;
+
 	array<Color^>^ Scene::render()
 	{
+		// Things in the scene goes here for now
+		sceneObjects = vector<Object3d*>(1);
+		sceneObjects[0] = new Sphere3d(Vector3d(0,0,50),50);
+
 		// This is where the magic happens: main-loop!
 		std::cout << "Yolo world!";
 		for (int x = 0; x < width; x++)
@@ -39,6 +47,12 @@ namespace RayTracer {
 				setColor(x, y, color);
 			}
 		}
+
+		// Garbage collection
+		for(vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+			delete *it;
+		}
+
 		return arr;
 	}
 
@@ -70,14 +84,30 @@ namespace RayTracer {
 
 	Color^ Scene::rayTrace(Line3d ray)
 	{
-		// Dummy-implentation
+		Color^ outColor = gcnew Color();
+		float prev = 1000000; // TODO infinity
 
-		Color^ dummyColor;	// Cyan-color
-		dummyColor->alpha = 1;
-		dummyColor->red = 75;
-		dummyColor->green = 255;
-		dummyColor->blue = 75;
+		outColor->alpha = 255;
+		outColor->red = 255;
+		outColor->green = 255;
+		outColor->blue = 0;
 
-		return dummyColor;
+		for(vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+			Object3d* object = *it;
+
+			Vector3d hit = object->CalculateCollisionPosition(ray);
+			if(hit.length > 0 && hit.length < prev) { // Hit if not zero
+				prev = hit.length;
+				Vector3d normal = object->CalculateNormal(hit);
+				
+				// White color stub
+				outColor->alpha = 255;
+				outColor->red = 255;
+				outColor->green = 255;
+				outColor->blue = 255;
+			}
+		}
+
+		return outColor;
 	}
 }
