@@ -1,8 +1,6 @@
 #pragma once
 #include "Line3d.h"
 
-using namespace System;
-
 namespace RayTracer {
 
 	// This struct is declared ref, because it is used from C#-side

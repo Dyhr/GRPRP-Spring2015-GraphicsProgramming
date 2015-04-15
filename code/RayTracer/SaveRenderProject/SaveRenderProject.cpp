@@ -70,6 +70,8 @@ using namespace RayTracer;
 
 int _tmain(int argc, _TCHAR* argv[])
 { 
+	Scene^ scene = gcnew Scene();
+	scene->render();
 	savebmp("render.bmp", 100, 100, 50, {});
 	return 0;
 }
