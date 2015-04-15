@@ -3,7 +3,7 @@
 #include <cmath>
 
 namespace RayTracer{
-	Sphere3d::Sphere3d() : centerPosition(Vector3d(0.0, 0.0, 0.0)), radius(float(0.0)))
+	Sphere3d::Sphere3d() : centerPosition(Vector3d(0.0, 0.0, 0.0)), radius(float(0.0))
 	{
 
 	}
@@ -52,6 +52,11 @@ namespace RayTracer{
 
 		float discriminant = pow(bComponent, 2.0) - 4.0*aComponent*cComponent;
 
+		float a = aComponent;
+		float b = bComponent;
+		float c = cComponent;
+
+
 		// For now, arbitrarily chosen threshold for "0"
 		float threshold = 0.01;
 		if (discriminant > threshold)
@@ -98,7 +103,7 @@ namespace RayTracer{
 		else
 		{
 			// No solutions: Return empty array
-			return;
+			return Vector3d();
 		}
 	}
 }

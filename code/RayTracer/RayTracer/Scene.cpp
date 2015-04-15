@@ -74,11 +74,11 @@ namespace RayTracer {
 		// Center of viewport is located in (0,0,0)
 		int startingX = -(viewPortWidth / 2.0) + (stepSizeX / 2.0);
 		int startingY = (viewPortHeight / 2.0) - (stepSizeX / 2.0);
-		int x = startingX + x * stepSizeX;
-		int y = startingY + y *stepSizeY;
+		int newX = startingX + x * stepSizeX;
+		int newY = startingY + y *stepSizeY;
 
 		// Wrap into Line3d-instance
-		Vector3d direction = Vector3d(x, y, zLocation);
+		Vector3d direction = Vector3d(newX, newY, zLocation);
 		Vector3d startPoint = Vector3d(0.0, 0.0, 0.0);
 		Line3d ray = Line3d(startPoint, direction);
 		return ray;
