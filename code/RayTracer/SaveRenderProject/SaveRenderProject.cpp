@@ -70,10 +70,23 @@ using namespace RayTracer;
 
 int _tmain(int argc, _TCHAR* argv[])
 { 
-	Scene^ scene = gcnew Scene();
-	Vector3d test;
-	scene->render();
-	savebmp("render.bmp", 100, 100, 50, {});
+	int dpi = 72;
+	int width = 1000;
+	int height = 1000;
+	int n = width*height;
+
+	RGBType *pixels = new RGBType[n];
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			int thisone = y*width + x;
+			pixels[thisone].r = 23;
+			pixels[thisone].g = 222;
+			pixels[thisone].b = 10;
+		}
+	}
+	savebmp("render.bmp", 100, 100, 50, pixels);
 	return 0;
 }
 
