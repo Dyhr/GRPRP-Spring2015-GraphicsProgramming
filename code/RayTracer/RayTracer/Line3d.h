@@ -6,7 +6,7 @@ namespace RayTracer{
 	class Line3d
 	{
 	public:
-		const Vector3d positionVector, directionVector;
+		const Vector3d position, direction;
 		
 		Line3d(); // empty constructor
 		Line3d(Vector3d, Vector3d);
