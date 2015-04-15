@@ -7,7 +7,7 @@
 
 #define zDepth (10);
 
-#include "RayTracer.h"
+#include "Scene.h"
 
 namespace RayTracer {
 

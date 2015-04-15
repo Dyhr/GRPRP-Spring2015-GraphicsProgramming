@@ -79,8 +79,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Line3d.h" />
     <ClInclude Include="Object3dBase.h" />
-    <ClInclude Include="RayTracer.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SceneWrapper.h" />
     <ClInclude Include="Sphere3d.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Vector3d.h" />
@@ -90,7 +91,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Line3d.cpp" />
     <ClCompile Include="Object3dBase.cpp" />
-    <ClCompile Include="RayTracer.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneWrapper.cpp" />
     <ClCompile Include="Sphere3d.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
