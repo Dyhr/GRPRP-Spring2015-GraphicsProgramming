@@ -1,7 +1,8 @@
 #pragma once
 #include "Vector3d.h"
 namespace RayTracer{
-	ref class Line3d
+	// Line3d should be thought of as a parametrization: (x(t),y(t),z(t)) = (x0,y0,z0) + t*(x1,y2,z2)
+	class Line3d
 	{
 	public:
 		const Vector3d positionVector, directionVector;

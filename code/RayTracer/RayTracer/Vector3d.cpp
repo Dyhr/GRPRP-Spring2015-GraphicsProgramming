@@ -32,7 +32,7 @@ namespace RayTracer
 		{
 			// We cannot divide by zero
 			// Return a zero-length vector
-			Vector3d returnValue = Vector3d();
+			Vector3d returnValue = Vector3d();		// Default, zero-length vector
 			return returnValue;
 		}
 
@@ -77,6 +77,7 @@ namespace RayTracer
 	// Since, header-file declares this method as static, there's no need to repeat that info; http://stackoverflow.com/questions/15725922/static-function-a-storage-class-may-not-be-specified-here
 	Vector3d Vector3d::subtraction(Vector3d v1, Vector3d v2)
 	{
+		// This method could alse be implemented by combined use of negation() and addition(), if one prefers.
 		float newX = v1.x - v2.x;
 		float newY = v1.y - v2.y;
 		float newZ = v1.z - v2.z;
