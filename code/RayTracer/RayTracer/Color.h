@@ -1,7 +1,6 @@
 #pragma once
 namespace RayTracer
 {
-	
 	class ColorIntern
 	{
 	public:
@@ -12,6 +11,7 @@ namespace RayTracer
 		static ColorIntern blendAddition(ColorIntern colorA, ColorIntern colorB);
 		static ColorIntern intensifyColor(ColorIntern colorA, float multiplier);
 	};
+
 	public ref class Color
 	{
 	public:
@@ -20,6 +20,5 @@ namespace RayTracer
 		Color(int red, int green, int blue, int alpha);
 		Color(ColorIntern color);
 	};
-
 }
 

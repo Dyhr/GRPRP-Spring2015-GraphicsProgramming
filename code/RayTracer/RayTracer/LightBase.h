@@ -6,7 +6,7 @@ namespace RayTracer
 {
 	enum LightType
 	{
-		AMBIENT, 
+		AMBIENT,
 		DIRECTIONAL,
 		POSITIONAL
 	};

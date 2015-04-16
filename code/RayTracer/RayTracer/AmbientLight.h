@@ -9,7 +9,6 @@ namespace RayTracer
 	public:
 		AmbientLight();
 		AmbientLight(float intensity);
-
 		Vector3d GetLightOnPoint(Vector3d position);
 		float GetIntensityOnPoint(Vector3d position);
 		LightType getLightType();

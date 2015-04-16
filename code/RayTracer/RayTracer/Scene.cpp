@@ -45,7 +45,7 @@ namespace RayTracer {
 	{
 		// Things in the scene goes here for now
 		sceneObjects = vector<Object3d*>(1);
-		sceneObjects[0] = new Sphere3d( Vector3d(0,100,100) ,20, &(AmbientShader(ColorIntern(255,0,255,255))));
+		sceneObjects[0] = new Sphere3d(Vector3d(0,100,100) ,20, &(AmbientShader(ColorIntern(255,0,255,255))));
 
 		lightObjects = vector<LightBase*>(1);
 		lightObjects[0] = &AmbientLight(0.5f);
