@@ -100,7 +100,7 @@ namespace RayTracer {
 		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 			Object3d* object = *it;
 			Vector3d hit = object->CalculateCollisionPosition(ray);
-			if (hit.length > 0 && hit.length < previousDistance) // can only do this since the camera is placed at (0,0,0) NEED TO FIX THIS.
+			if (hit.length > 0 && hit.length < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
 			{
 				collision = &CollisionObject(object, hit);
 			}
@@ -110,9 +110,7 @@ namespace RayTracer {
 
 	Color^ Scene::rayTrace(Line3d ray)
 	{
-		Color^ outColor = gcnew Color();
-
-		outColor = backgroundColor();
+		Color^ outColor = backgroundColor();
 
 		CollisionObject closestObject = findClosestObject(ray);
 		if (closestObject.isReal)
