@@ -79,6 +79,7 @@
     <ClInclude Include="AmbientShader.h" />
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="DiffuseShader.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="LightBase.h" />
     <ClInclude Include="Line3d.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="DiffuseShader.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Line3d.cpp" />
     <ClCompile Include="PositionalLight.cpp" />

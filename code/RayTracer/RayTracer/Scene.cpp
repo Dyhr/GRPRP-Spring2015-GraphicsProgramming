@@ -11,7 +11,9 @@
 #include "Scene.h"
 #include "Color.h"
 #include "AmbientShader.h"
+#include "DiffuseShader.h"
 #include "AmbientLight.h"
+#include "DirectionalLight.h"
 
 using namespace std;
 
@@ -45,10 +47,11 @@ namespace RayTracer {
 	{
 		// Things in the scene goes here for now
 		sceneObjects = vector<Object3d*>(1);
-		sceneObjects[0] = new Sphere3d(Vector3d(0,100,100) ,20, &(AmbientShader(ColorIntern(255,0,255,255))));
+		sceneObjects[0] = new Sphere3d(Vector3d(0,100,100) ,20, &(DiffuseShader(ColorIntern(255,0,255,255))));
 
-		lightObjects = vector<LightBase*>(1);
-		lightObjects[0] = &AmbientLight(0.5f);
+		lightObjects = vector<LightBase*>(2);
+		lightObjects[0] = &AmbientLight(0.1f);
+		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(1,0,-1));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)

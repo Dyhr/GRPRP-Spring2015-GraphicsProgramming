@@ -57,6 +57,9 @@
     <ClInclude Include="AmbientShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiffuseShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -93,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AmbientShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffuseShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
