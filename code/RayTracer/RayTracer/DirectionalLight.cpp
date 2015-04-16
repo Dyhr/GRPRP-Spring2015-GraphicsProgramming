@@ -13,6 +13,11 @@ namespace RayTracer
 
 	}
 
+	LightType DirectionalLight::getLightType()
+	{
+		return DIRECTIONAL;
+	}
+
 	Vector3d DirectionalLight::GetLightOnPoint(Vector3d position)
 	{
 		return direction;

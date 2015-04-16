@@ -12,6 +12,11 @@ namespace RayTracer
 	{
 
 	}
+
+	LightType AmbientLight::getLightType()
+	{
+		return AMBIENT;
+	}
 	Vector3d AmbientLight::GetLightOnPoint(Vector3d position)
 	{
 		return Vector3d();

@@ -12,6 +12,11 @@ namespace RayTracer
 
 	}
 
+	LightType PositionalLight::getLightType()
+	{
+		return POSITIONAL;
+	}
+
 	Vector3d PositionalLight::GetLightOnPoint(Vector3d position)
 	{
 		// Return vector going from lightsource to position

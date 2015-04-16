@@ -13,6 +13,7 @@ namespace RayTracer
 
 		Vector3d GetLightOnPoint(Vector3d position);
 		float GetIntensityOnPoint(Vector3d position);
+		LightType getLightType();
 	};
 }
 

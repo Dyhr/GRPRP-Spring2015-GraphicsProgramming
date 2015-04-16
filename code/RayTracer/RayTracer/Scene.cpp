@@ -11,13 +11,14 @@
 #include "Scene.h"
 #include "Color.h"
 #include "AmbientShader.h"
+#include "AmbientLight.h"
 
 using namespace std;
 
 namespace RayTracer {
 
 	ColorIntern Scene::backgroundColor(){
-		ColorIntern background = ColorIntern(255, 255, 0, 255);
+		ColorIntern background = ColorIntern(10, 10, 10, 255);
 		return background;
 	}
 
@@ -38,12 +39,16 @@ namespace RayTracer {
 	}
 
 	vector<Object3d*> sceneObjects;
+	vector<LightBase*> lightObjects;
 
 	array<Color^>^ Scene::render()
 	{
 		// Things in the scene goes here for now
 		sceneObjects = vector<Object3d*>(1);
 		sceneObjects[0] = new Sphere3d( Vector3d(0,100,100) ,20, &(AmbientShader(ColorIntern(255,0,255,255))));
+
+		lightObjects = vector<LightBase*>(1);
+		lightObjects[0] = &AmbientLight(0.5f);
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
@@ -115,13 +120,13 @@ namespace RayTracer {
 		if (closestObject.isReal)
 		{
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
-			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, {});
+			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightObjects);
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 			// TODO shade the object
-			outColor.alpha = 255;
-			outColor.red = 200;
-			outColor.green = 255;
-			outColor.blue = 255;
+			//outColor.alpha = 255;
+			//outColor.red = 200;
+			//outColor.green = 255;
+			//outColor.blue = 255;
 		}
 		// White color stub
 
