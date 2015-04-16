@@ -1,5 +1,6 @@
 #pragma once
 #include "ShaderBase.h"
+#include "Color.h"
 namespace RayTracer
 {
 	class AmbientShader :
@@ -10,7 +11,7 @@ namespace RayTracer
 		AmbientShader();
 		AmbientShader(ColorIntern objectColor);
 
-		ColorIntern shade(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights) override;
+		ColorIntern shade(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights);
 	};
 }
 
