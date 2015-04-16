@@ -19,6 +19,6 @@ namespace RayTracer{
 		
 		Vector3d CalculateNormal(Vector3d); // normal based on position
 		Vector3d CalculateCollisionPosition(Line3d);
-		ShaderBase* getShader();
+		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights);
 	};
 }

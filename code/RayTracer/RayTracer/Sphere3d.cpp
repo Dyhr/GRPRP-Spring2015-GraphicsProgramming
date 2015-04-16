@@ -15,8 +15,8 @@ namespace RayTracer{
 
 	}
 
-	ShaderBase* Sphere3d::getShader(){
-		return shader;
+	ColorIntern Sphere3d::shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights){
+		return shader->shade(eyeVector,normalToSurface,pointOnObject,lights);
 	}
 
 	// Returns (for now) vector that is normal to the sphere through point.
