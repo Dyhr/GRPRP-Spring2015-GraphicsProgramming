@@ -9,10 +9,5 @@ namespace RayTracer{
 	{
 		
 	}
-
-	Object3d* object;
-	Vector3d collisionCoord;
-	bool isReal;
-
 }
 

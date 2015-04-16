@@ -14,7 +14,7 @@ using namespace std;
 
 namespace RayTracer {
 
-	Color^ backgroundColor(){
+	Color^ Scene::backgroundColor(){
 		Color^ background = gcnew Color;
 		background->alpha = 255;
 		background->red = 255;
@@ -94,7 +94,7 @@ namespace RayTracer {
 
 	CollisionObject Scene::findClosestObject(Line3d ray)
 	{
-		CollisionObject collision = CollisionObject();
+		CollisionObject* collision = &CollisionObject();
 		float previousDistance = 1000000; // TODO infinity
 
 		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
@@ -102,16 +102,15 @@ namespace RayTracer {
 			Vector3d hit = object->CalculateCollisionPosition(ray);
 			if (hit.length > 0 && hit.length < previousDistance) // can only do this since the camera is placed at (0,0,0) NEED TO FIX THIS.
 			{
-				collision = CollisionObject(object, hit);
+				collision = &CollisionObject(object, hit);
 			}
 		}
-		return collision;
+		return *collision;
 	}
 
 	Color^ Scene::rayTrace(Line3d ray)
 	{
 		Color^ outColor = gcnew Color();
-		float prev = 1000000; // TODO infinity
 
 		outColor = backgroundColor();
 

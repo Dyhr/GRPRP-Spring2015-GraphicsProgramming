@@ -1,6 +1,7 @@
 #pragma once
-#include "Object3d.h";
-#include "Vector3d.h";
+#include "Object3d.h"
+#include "Vector3d.h"
+
 namespace RayTracer{
 	class CollisionObject
 	{
