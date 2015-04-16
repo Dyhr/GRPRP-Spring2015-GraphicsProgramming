@@ -7,11 +7,21 @@
 #include <vector>
 
 #include "Sphere3d.h"
+#include "CollisionObject.h"
 #include "Scene.h"
 
 using namespace std;
 
 namespace RayTracer {
+
+	Color^ backgroundColor(){
+		Color^ background = gcnew Color;
+		background->alpha = 255;
+		background->red = 255;
+		background->green = 255;
+		background->blue = 0;
+		return background;
+	}
 
 	Scene::Scene(float viewPortWidth, float viewPortHeight, float zLocation)
 	{
@@ -30,7 +40,6 @@ namespace RayTracer {
 	}
 
 	vector<Object3d*> sceneObjects;
-	int sx, sy;
 
 	array<Color^>^ Scene::render()
 	{
@@ -39,11 +48,10 @@ namespace RayTracer {
 		sceneObjects[0] = new Sphere3d(Vector3d(0,0,50),50);
 
 		// This is where the magic happens: main-loop!
+		std::cout << "Yolo world!";
 		for (int x = 0; x < width; x++)
 		{
 			for(int y = 0; y < height; y++) {
-				sx = x;
-				sy = y;
 				Line3d ray = getRayFromScreen(x, y);
 				Color^ color = rayTrace(ray);
 				setColor(x, y, color);
@@ -84,32 +92,39 @@ namespace RayTracer {
 
 	}
 
+	CollisionObject Scene::findClosestObject(Line3d ray)
+	{
+		CollisionObject collision = CollisionObject();
+		float previousDistance = 1000000; // TODO infinity
+
+		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+			Object3d* object = *it;
+			Vector3d hit = object->CalculateCollisionPosition(ray);
+			if (hit.length > 0 && hit.length < previousDistance) // can only do this since the camera is placed at (0,0,0) NEED TO FIX THIS.
+			{
+				collision = CollisionObject(object, hit);
+			}
+		}
+		return collision;
+	}
+
 	Color^ Scene::rayTrace(Line3d ray)
 	{
 		Color^ outColor = gcnew Color();
 		float prev = 1000000; // TODO infinity
 
-		outColor->alpha = 255;
-		outColor->red = 255;
-		outColor->green = sy%255;
-		outColor->blue = sx%255;
+		outColor = backgroundColor();
 
-		for(vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
-			Object3d* object = *it;
-
-			Vector3d hit = object->CalculateCollisionPosition(ray);
-			if(hit.length > 0 && hit.length < prev) { // Hit if not zero
-				prev = hit.length;
-				Vector3d normal = object->CalculateNormal(hit);
-				
-				// White color stub
-				outColor->alpha = 255;
-				outColor->red = 255;
-				outColor->green = 255;
-				outColor->blue = 255;
-			}
-
+		CollisionObject closestObject = findClosestObject(ray);
+		if (closestObject.isReal)
+		{
+			// shade the object
+			outColor->alpha = 255;
+			outColor->red = 255;
+			outColor->green = 255;
+			outColor->blue = 255;
 		}
+		// White color stub
 
 		return outColor;
 	}
