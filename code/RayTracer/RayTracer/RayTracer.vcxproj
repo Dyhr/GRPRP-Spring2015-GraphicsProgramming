@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AmbientLight.h" />
+    <ClInclude Include="AmbientShader.h" />
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="DirectionalLight.h" />
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AmbientLight.cpp" />
+    <ClCompile Include="AmbientShader.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="Color.cpp" />
