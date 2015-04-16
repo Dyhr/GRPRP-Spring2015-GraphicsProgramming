@@ -45,10 +45,9 @@ namespace RayTracer {
 	{
 		// Things in the scene goes here for now
 		sceneObjects = vector<Object3d*>(1);
-		sceneObjects[0] = new Sphere3d(Vector3d(0,0,50),50);
+		sceneObjects[0] = new Sphere3d(Vector3d(0,100,100),20);
 
 		// This is where the magic happens: main-loop!
-		std::cout << "Yolo world!";
 		for (int x = 0; x < width; x++)
 		{
 			for(int y = 0; y < height; y++) {
@@ -117,9 +116,9 @@ namespace RayTracer {
 		CollisionObject closestObject = findClosestObject(ray);
 		if (closestObject.isReal)
 		{
-			// shade the object
+			// TODO shade the object
 			outColor->alpha = 255;
-			outColor->red = 255;
+			outColor->red = 200;
 			outColor->green = 255;
 			outColor->blue = 255;
 		}

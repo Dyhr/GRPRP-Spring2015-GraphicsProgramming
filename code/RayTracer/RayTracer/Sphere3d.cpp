@@ -2,6 +2,8 @@
 #include "Sphere3d.h"
 #include <cmath>
 
+#include <iostream>
+
 namespace RayTracer{
 	Sphere3d::Sphere3d() : centerPosition(Vector3d(0.0, 0.0, 0.0)), radius(float(0.0))
 	{
@@ -36,30 +38,18 @@ namespace RayTracer{
 		
 
 		// Move from spot to origin
-		float translatedX = centerPosition.x - line.position.x;
-		float translatedY = centerPosition.y - line.position.y;
-		float translatedZ = centerPosition.z - line.position.z;
-		Vector3d translatedCenter = Vector3d(translatedX, translatedY, translatedZ);
-		Sphere3d translatedSphere = Sphere3d(translatedCenter,radius);
+		Vector3d translatedCenter = Vector3d::subtract(centerPosition,line.position);
 
 		// Do calculations
-		float aComponent = pow(line.direction.x, 2) + pow(line.direction.y, 2) + pow(line.direction.z, 2);
-		float bComponent = -2.0f*(line.direction.x*translatedCenter.x
-			+ line.direction.y*translatedCenter.y
-			+ line.direction.z*translatedCenter.z);
-		float cComponent = pow(translatedCenter.x, 2) + pow(translatedCenter.y, 2) + pow(translatedCenter.z, 2);
+		float a = Vector3d::dotProduct(line.direction,line.direction);
+		float b = 2.0f*(Vector3d::dotProduct(line.direction, Vector3d::negate(translatedCenter)));
+		float c = Vector3d::dotProduct(translatedCenter, translatedCenter) - (radius*radius);
 
-
-		float discriminant = pow(bComponent, 2.0f) - 4.0f*aComponent*cComponent;
-
-		float a = aComponent;
-		float b = bComponent;
-		float c = cComponent;
-
+		float d = pow(b, 2.0f) - 4.0f*a*c;
 
 		// For now, arbitrarily chosen threshold for "0"
 		float threshold = 0.01f;
-		if (discriminant > threshold)
+		if (d > threshold)
 		{
 			// Two solutions:
 			float tValue1 = (-1.0f*b + sqrt(pow(b, 2) - 4.0f*a*c)) / (2.0f*a);
@@ -82,10 +72,10 @@ namespace RayTracer{
 
 			return point;
 		}
-		else if (discriminant > 0.0 && discriminant < threshold)
+		else if (d > 0.0 && d < threshold)
 		{
 			// One solution: (-b)/(2*a)
-			float tValue = (-1.0f*bComponent) / (2.0f*aComponent);
+			float tValue = (-1.0f*b) / (2.0f*a);
 
 			// Corresponding point on line with given t
 			float intersectX = tValue * line.direction.x;
