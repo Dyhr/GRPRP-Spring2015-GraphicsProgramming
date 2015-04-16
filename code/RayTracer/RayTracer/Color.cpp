@@ -8,6 +8,11 @@ namespace RayTracer
 
 	}
 
+	Color::Color(ColorIntern color) : red(color.red), blue(color.blue), green(color.green), alpha(color.alpha)
+	{
+
+	}
+
 	Color::Color(int red, int green, int blue, int alpha) : red(red), green(green), blue(blue), alpha(alpha)
 	{
 		if (red > 255 || green > 255 || blue > 255)

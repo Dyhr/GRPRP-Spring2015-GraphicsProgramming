@@ -16,12 +16,8 @@ using namespace std;
 
 namespace RayTracer {
 
-	Color^ Scene::backgroundColor(){
-		Color^ background = gcnew Color;
-		background->alpha = 255;
-		background->red = 255;
-		background->green = 255;
-		background->blue = 0;
+	ColorIntern Scene::backgroundColor(){
+		ColorIntern background = ColorIntern(255, 255, 0, 255);
 		return background;
 	}
 
@@ -54,8 +50,10 @@ namespace RayTracer {
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				Color^ color = rayTrace(ray);
-				setColor(x, y, color);
+				ColorIntern color = rayTrace(ray);
+
+				Color^ outColor = gcnew Color(color); // convert to outgoing color
+				setColor(x, y, outColor);
 			}
 		}
 
@@ -109,18 +107,21 @@ namespace RayTracer {
 		return *collision;
 	}
 
-	Color^ Scene::rayTrace(Line3d ray)
+	ColorIntern Scene::rayTrace(Line3d ray)
 	{
-		Color^ outColor = backgroundColor();
+		ColorIntern outColor = backgroundColor();
 
 		CollisionObject closestObject = findClosestObject(ray);
 		if (closestObject.isReal)
 		{
+			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
+			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, {});
+			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 			// TODO shade the object
-			outColor->alpha = 255;
-			outColor->red = 200;
-			outColor->green = 255;
-			outColor->blue = 255;
+			outColor.alpha = 255;
+			outColor.red = 200;
+			outColor.green = 255;
+			outColor.blue = 255;
 		}
 		// White color stub
 
