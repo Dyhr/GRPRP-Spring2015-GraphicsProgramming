@@ -2,15 +2,9 @@
 #include "Line3d.h"
 #include "Object3d.h"
 #include "CollisionObject.h"
+#include "Color.h"
 
 namespace RayTracer {
-
-	// This struct is declared ref, because it is used from C#-side
-	public ref class Color 
-	{
-		public:
-		int red, green, blue, alpha;
-	};
 
 	public ref class Scene {
 	public:

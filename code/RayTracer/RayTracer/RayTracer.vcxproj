@@ -75,18 +75,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AmbientLight.h" />
     <ClInclude Include="CollisionObject.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="LightBase.h" />
     <ClInclude Include="Line3d.h" />
     <ClInclude Include="Object3d.h" />
+    <ClInclude Include="PositionalLight.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ShaderBase.h" />
     <ClInclude Include="Sphere3d.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Vector3d.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AmbientLight.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Line3d.cpp" />
+    <ClCompile Include="PositionalLight.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sphere3d.cpp" />
     <ClCompile Include="Stdafx.cpp">

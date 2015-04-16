@@ -8,7 +8,7 @@ namespace RayTracer
 {
 
 	// The empty constructor: Set default values for components
-	Vector3d::Vector3d() : x(float(0.0)), y(float(0.0)), z(float(0.0)), length(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))) { }
+	Vector3d::Vector3d() : x(float(0.0)), y(float(0.0)), z(float(0.0)), length(float(0.0)) { }
 	Vector3d::Vector3d(float x1, float y1, float z1) : x(x1), y(y1), z(z1), length(sqrt(pow(x1, 2) + pow(y1, 2) + pow(z1, 2))) { }
 	Vector3d::Vector3d(Vector3d endPoint, Vector3d startPoint) : 
 		x(float(endPoint.x - startPoint.x)), y(float(endPoint.y - startPoint.y)), 

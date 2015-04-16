@@ -9,6 +9,7 @@
 #include "Sphere3d.h"
 #include "CollisionObject.h"
 #include "Scene.h"
+#include "Color.h"
 
 using namespace std;
 
