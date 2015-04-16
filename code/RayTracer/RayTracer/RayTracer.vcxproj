@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="Line3d.h" />
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="Scene.h" />
@@ -84,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="Line3d.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sphere3d.cpp" />

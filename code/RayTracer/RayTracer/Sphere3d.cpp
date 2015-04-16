@@ -21,7 +21,7 @@ namespace RayTracer{
 		float y = pointAtSphere.y - centerPosition.y;
 		float z = pointAtSphere.z - centerPosition.z;
 
-		Vector3d initial = Vector3d(x, y, z);
+		Vector3d initial = Vector3d(x, y, z); // TODO: use vector3ds constructor instead.
 		Vector3d normalized = Vector3d::normalize(initial);
 
 		return normalized;

@@ -7,11 +7,21 @@
 #include <vector>
 
 #include "Sphere3d.h"
+#include "CollisionObject.h"
 #include "Scene.h"
 
 using namespace std;
 
 namespace RayTracer {
+
+	Color^ backgroundColor(){
+		Color^ background = gcnew Color;
+		background->alpha = 255;
+		background->red = 255;
+		background->green = 255;
+		background->blue = 0;
+		return background;
+	}
 
 	Scene::Scene(float viewPortWidth, float viewPortHeight, float zLocation)
 	{
@@ -82,31 +92,39 @@ namespace RayTracer {
 
 	}
 
+	CollisionObject Scene::findClosestObject(Line3d ray)
+	{
+		CollisionObject collision = CollisionObject();
+		float previousDistance = 1000000; // TODO infinity
+
+		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+			Object3d* object = *it;
+			Vector3d hit = object->CalculateCollisionPosition(ray);
+			if (hit.length > 0 && hit.length < previousDistance) // can only do this since the camera is placed at (0,0,0) NEED TO FIX THIS.
+			{
+				collision = CollisionObject(object, hit);
+			}
+		}
+		return collision;
+	}
+
 	Color^ Scene::rayTrace(Line3d ray)
 	{
 		Color^ outColor = gcnew Color();
 		float prev = 1000000; // TODO infinity
 
-		outColor->alpha = 255;
-		outColor->red = 255;
-		outColor->green = 255;
-		outColor->blue = 0;
+		outColor = backgroundColor();
 
-		for(vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
-			Object3d* object = *it;
-
-			Vector3d hit = object->CalculateCollisionPosition(ray);
-			if(hit.length > 0 && hit.length < prev) { // Hit if not zero
-				prev = hit.length;
-				Vector3d normal = object->CalculateNormal(hit);
-				
-				// White color stub
-				outColor->alpha = 255;
-				outColor->red = 255;
-				outColor->green = 255;
-				outColor->blue = 255;
-			}
+		CollisionObject closestObject = findClosestObject(ray);
+		if (closestObject.isReal)
+		{
+			// shade the object
+			outColor->alpha = 255;
+			outColor->red = 255;
+			outColor->green = 255;
+			outColor->blue = 255;
 		}
+		// White color stub
 
 		return outColor;
 	}
