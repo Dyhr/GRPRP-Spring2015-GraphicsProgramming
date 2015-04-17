@@ -72,11 +72,11 @@ namespace RayTracer {
 		//initializeSceneObjects();
 
 		sceneObjects = vector<Object3d*>(1);
-		shadersOnObject1 = vector<ShaderBase*>(3);
+		shadersOnObject1 = vector<ShaderBase*>(2);
 
 		shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
 		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
-		shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
+		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
 		sceneObjects[0] = new Sphere3d(Vector3d(0, 100, 100), 20, shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
