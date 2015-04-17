@@ -1,6 +1,6 @@
 #pragma once
 namespace RayTracer{
-	ref class Point3d
+	class Point3d
 	{
 		const float x, y, z;
 	public:
