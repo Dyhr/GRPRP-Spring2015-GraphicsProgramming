@@ -6,20 +6,9 @@
 
 namespace RayTracer{
 
-	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders) : centerPosition(center), radius(_radius), shaders(shaders)
+	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders) : centerPosition(center), radius(_radius), Object3d(shaders)
 	{
 
-	}
-
-	ColorIntern Sphere3d::shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights){
-		ColorIntern colorToReturn = ColorIntern();
-		
-		for each (ShaderBase* shader in shaders)
-		{
-			colorToReturn = ColorIntern::blendAddition(colorToReturn, shader->shade(eyeVector, normalToSurface, pointOnObject, lights));
-		}
-
-		return colorToReturn;
 	}
 
 	// Returns (for now) vector that is normal to the sphere through point.

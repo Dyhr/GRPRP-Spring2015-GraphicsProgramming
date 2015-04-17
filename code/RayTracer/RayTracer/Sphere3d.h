@@ -11,9 +11,9 @@ namespace RayTracer{
 		const float radius;
 		
 	public:
-		Sphere3d(Vector3d center, float _radius, vector<ShaderBase*> shaders);
+		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders);
 		
 		Vector3d CalculateNormal(Point3d); // normal based on position
-		Vector3d CalculateCollisionPosition(Line3d);
+		Point3d CalculateCollisionPosition(Line3d);
 	};
 }

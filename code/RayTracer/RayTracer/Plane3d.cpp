@@ -8,10 +8,10 @@ namespace RayTracer
 	{
 	}
 
-	Vector3d Plane3d::CalculateNormal(Vector3d) {
+	Vector3d Plane3d::CalculateNormal(Point3d point) {
 		return normal;
 	}
-	Vector3d Plane3d::CalculateCollisionPosition(Line3d) {
-		return Vector3d();
+	Point3d Plane3d::CalculateCollisionPosition(Line3d line) {
+		return Point3d();
 	}
 }

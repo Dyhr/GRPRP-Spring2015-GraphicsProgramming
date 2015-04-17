@@ -17,10 +17,10 @@ namespace RayTracer{
 
 		Object3d(vector<ShaderBase*> shaders) : shaders(shaders) { }
 
-		virtual Vector3d CalculateNormal(Vector3d) = 0; // normal based on position.. what?
-		virtual Vector3d CalculateCollisionPosition(Line3d) = 0;
+		virtual Vector3d CalculateNormal(Point3d) = 0; // normal based on position.. what?
+		virtual Point3d CalculateCollisionPosition(Line3d) = 0;
 
-		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights) {
+		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights) {
 			ColorIntern colorToReturn = ColorIntern();
 
 			for each (ShaderBase* shader in shaders) {
