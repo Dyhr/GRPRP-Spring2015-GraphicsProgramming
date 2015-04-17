@@ -6,18 +6,16 @@
 
 namespace RayTracer
 {
-	class Plane3d
+	class Plane3d : public Object3d
 	{
+	private:
 		const Vector3d normal;
 		const Point3d position;
-		ShaderBase* shader;
 	public:
-		Plane3d();
-		Plane3d(Point3d point, Vector3d normal, ShaderBase* shader);
+		Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders);
 
-		Vector3d CalculateNormal(Vector3d); // normal based on position always the same for a plane.
-		Vector3d CalculateCollisionPosition(Line3d);
-		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights);
+		Vector3d CalculateNormal(Point3d); // normal based on position always the same for a plane.
+		Point3d CalculateCollisionPosition(Line3d);
 	};
 
 }

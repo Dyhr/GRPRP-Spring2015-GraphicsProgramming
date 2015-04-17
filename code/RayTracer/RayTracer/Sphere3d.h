@@ -9,17 +9,11 @@ namespace RayTracer{
 	{
 		const Point3d centerPosition;
 		const float radius;
-		vector<ShaderBase*> shaders;
 		
 	public:
-		// Default constructor
-		Sphere3d();
-		// Fancy constructor
 		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders);
-
 		
 		Vector3d CalculateNormal(Point3d); // normal based on position
 		Point3d CalculateCollisionPosition(Line3d);
-		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights);
 	};
 }
