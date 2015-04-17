@@ -9,8 +9,8 @@ namespace RayTracer
 	public:
 		DirectionalLight();
 		DirectionalLight(float intensity, Vector3d direction);
-		Vector3d GetLightOnPoint(Vector3d position);
-		float GetIntensityOnPoint(Vector3d position);
+		Vector3d GetLightOnPoint(Point3d position);
+		float GetIntensityOnPoint(Point3d position);
 		LightType getLightType();
 	};
 }

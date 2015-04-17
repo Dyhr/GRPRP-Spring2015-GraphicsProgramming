@@ -5,17 +5,17 @@
 #include <iostream>
 
 namespace RayTracer{
-	Sphere3d::Sphere3d() : centerPosition(Vector3d(0.0, 0.0, 0.0)), radius(float(0.0))
+	Sphere3d::Sphere3d() : centerPosition(Point3d(0.0, 0.0, 0.0)), radius(float(0.0))
 	{
 
 	}
 
-	Sphere3d::Sphere3d(Vector3d center, float _radius, vector<ShaderBase*> shaders) : centerPosition(center), radius(_radius), shaders(shaders)
+	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders) : centerPosition(center), radius(_radius), shaders(shaders)
 	{
 
 	}
 
-	ColorIntern Sphere3d::shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights){
+	ColorIntern Sphere3d::shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights){
 		ColorIntern colorToReturn = ColorIntern();
 		
 		for each (ShaderBase* shader in shaders)
@@ -28,7 +28,7 @@ namespace RayTracer{
 
 	// Returns (for now) vector that is normal to the sphere through point.
 	// The returned vector is normalized
-	Vector3d Sphere3d::CalculateNormal(Vector3d pointAtSphere)
+	Vector3d Sphere3d::CalculateNormal(Point3d pointAtSphere)
 	{
 		float x = pointAtSphere.x - centerPosition.x;
 		float y = pointAtSphere.y - centerPosition.y;
@@ -40,7 +40,7 @@ namespace RayTracer{
 		return normalized;
 	}
 
-	Vector3d Sphere3d::CalculateCollisionPosition(Line3d line)
+	Point3d Sphere3d::CalculateCollisionPosition(Line3d line)
 	{
 		// Notice, that there may be two intersections here, but only the "first" is returned
 
@@ -49,7 +49,7 @@ namespace RayTracer{
 		
 
 		// Move from spot to origin
-		Vector3d translatedCenter = Vector3d::subtract(centerPosition,line.position);
+		Vector3d translatedCenter = Vector3d(centerPosition,line.position);
 
 		// Do calculations
 		float a = Vector3d::dotProduct(line.direction,line.direction);
@@ -79,7 +79,7 @@ namespace RayTracer{
 			intersectY1 = intersectY1 + line.position.y;
 			intersectZ1 = intersectZ1 + line.position.z;
 
-			Vector3d point = Vector3d(intersectX1, intersectY1, intersectZ1);
+			Point3d point = Point3d(intersectX1, intersectY1, intersectZ1);
 
 			return point;
 		}
@@ -98,13 +98,13 @@ namespace RayTracer{
 			intersectY = intersectY + line.position.y;
 			intersectZ = intersectZ + line.position.z;
 
-			Vector3d point = Vector3d(intersectX, intersectY, intersectZ);
+			Point3d point = Point3d(intersectX, intersectY, intersectZ);
 			return point;
 		}
 		else
 		{
 			// No solutions: Return empty array
-			return Vector3d(); // TODO return null
+			return Point3d(); // TODO return null
 		}
 	}
 }

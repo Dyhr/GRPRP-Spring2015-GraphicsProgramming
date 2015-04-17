@@ -2,11 +2,12 @@
 #include "Object3d.h"
 #include "Vector3d.h"
 #include "ShaderBase.h"
+#include "Point3d.h"
 
 namespace RayTracer{
 	class Sphere3d : public Object3d
 	{
-		const Vector3d centerPosition;
+		const Point3d centerPosition;
 		const float radius;
 		vector<ShaderBase*> shaders;
 		
@@ -14,11 +15,11 @@ namespace RayTracer{
 		// Default constructor
 		Sphere3d();
 		// Fancy constructor
-		Sphere3d(Vector3d center, float _radius, vector<ShaderBase*> shaders);
+		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders);
 
 		
-		Vector3d CalculateNormal(Vector3d); // normal based on position
-		Vector3d CalculateCollisionPosition(Line3d);
-		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights);
+		Vector3d CalculateNormal(Point3d); // normal based on position
+		Point3d CalculateCollisionPosition(Line3d);
+		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights);
 	};
 }

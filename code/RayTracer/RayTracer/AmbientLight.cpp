@@ -17,12 +17,12 @@ namespace RayTracer
 	{
 		return AMBIENT;
 	}
-	Vector3d AmbientLight::GetLightOnPoint(Vector3d position)
+	Vector3d AmbientLight::GetLightOnPoint(Point3d position)
 	{
 		return Vector3d();
 	}
 
-	float AmbientLight::GetIntensityOnPoint(Vector3d position)
+	float AmbientLight::GetIntensityOnPoint(Point3d position)
 	{
 		return intensity;
 	}

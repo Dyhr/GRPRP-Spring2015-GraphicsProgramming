@@ -1,4 +1,7 @@
 #pragma once
+
+#include "Point3d.h"
+
 namespace RayTracer{
 	// The Vector3d class sh
 	class Vector3d
@@ -8,7 +11,7 @@ namespace RayTracer{
 		const float x, y, z, length;
 		Vector3d(); // the empty constructor.
 		Vector3d(float, float, float);	// This represents a) a point or b) a vector
-		Vector3d(Vector3d endPoint, Vector3d startPoint);	// This represents a parametrization: (x,y,z) = (x0,y0,z0) + t*(x1,y1,z1) <- Nope, Wrong! 
+		Vector3d(Point3d endPoint, Point3d startPoint);	// This represents a parametrization: (x,y,z) = (x0,y0,z0) + t*(x1,y1,z1) <- Nope, Wrong! 
 
 		// Math
 		static Vector3d add(Vector3d, Vector3d);

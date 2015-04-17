@@ -60,7 +60,7 @@ namespace RayTracer {
 		//shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
 		shadersOnObject1[0] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
 		shadersOnObject1[1] = &SpecularShader(ColorIntern(230, 230, 230, 255), 2.0f);
-		sceneObjects[0] = new Sphere3d(Vector3d(0, 100, 100), 20, shadersOnObject1);
+		sceneObjects[0] = &Sphere3d(Point3d(0, 100, 100), 20, shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
@@ -77,7 +77,7 @@ namespace RayTracer {
 		shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
 		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
 		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
-		sceneObjects[0] = new Sphere3d(Vector3d(0, 100, 100), 20, shadersOnObject1);
+		sceneObjects[0] = new Sphere3d(Point3d(0, 100, 100), 20, shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
@@ -124,7 +124,7 @@ namespace RayTracer {
 
 		// Wrap into Line3d-instance
 		Vector3d direction = Vector3d(newX, newY, zLocation);
-		Line3d ray = Line3d(Vector3d(), direction);
+		Line3d ray = Line3d(Point3d(), direction);
 		return ray;
 
 	}
@@ -136,11 +136,14 @@ namespace RayTracer {
 
 		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 			Object3d* object = *it;
-			Vector3d hit = object->CalculateCollisionPosition(ray);
-			if (hit.length > 0 && hit.length < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
+			Point3d hit = object->CalculateCollisionPosition(ray);
+			float distanceFromRayStart = Vector3d(hit, ray.position).length;
+
+			if (distanceFromRayStart > 0 && distanceFromRayStart < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
 			{
 				collision = &CollisionObject(object, hit);
 			}
+
 		}
 		return *collision;
 	}

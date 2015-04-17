@@ -15,8 +15,8 @@ namespace RayTracer
 	public:
 		virtual LightType getLightType()=0;
 		// Position denotes the point, where the light should shine on
-		virtual Vector3d GetLightOnPoint(Vector3d position) = 0;
-		virtual float GetIntensityOnPoint(Vector3d position) = 0;
+		virtual Vector3d GetLightOnPoint(Point3d position) = 0;
+		virtual float GetIntensityOnPoint(Point3d position) = 0;
 	};
 }
 

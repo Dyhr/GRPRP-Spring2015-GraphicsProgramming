@@ -12,7 +12,7 @@ namespace RayTracer{
 
 	}
 
-	ColorIntern AmbientShader::shade(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights)
+	ColorIntern AmbientShader::shade(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights)
 	{
 		ColorIntern colorToReturn = ColorIntern();
 

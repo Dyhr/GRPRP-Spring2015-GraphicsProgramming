@@ -6,12 +6,13 @@ namespace RayTracer{
 	class Line3d
 	{
 	public:
-		const Vector3d position, direction;
+		const Point3d position;
+		const Vector3d direction;
 		
 		Line3d(); // empty constructor
-		Line3d(Vector3d, Vector3d);
+		Line3d(Point3d, Vector3d);
 
-		Vector3d getPositionAlongLine(float);
+		Point3d getPositionAlongLine(float);
 		Line3d pushStartAlongLine(float);
 	};
 }

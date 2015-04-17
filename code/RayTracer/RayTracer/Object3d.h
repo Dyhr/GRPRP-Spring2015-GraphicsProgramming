@@ -10,8 +10,8 @@ namespace RayTracer{
 	class Object3d
 	{
 	public:
-		virtual Vector3d CalculateNormal(Vector3d) = 0; // normal based on position.. what?
-		virtual Vector3d CalculateCollisionPosition(Line3d) = 0;
-		virtual ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Vector3d pointOnObject, vector<LightBase*> lights) = 0;
+		virtual Vector3d CalculateNormal(Point3d) = 0; // normal based on position.. what?
+		virtual Point3d CalculateCollisionPosition(Line3d) = 0;
+		virtual ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights) = 0;
 	};
 }

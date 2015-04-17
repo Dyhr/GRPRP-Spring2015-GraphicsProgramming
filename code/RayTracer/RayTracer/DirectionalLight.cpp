@@ -18,12 +18,12 @@ namespace RayTracer
 		return DIRECTIONAL;
 	}
 
-	Vector3d DirectionalLight::GetLightOnPoint(Vector3d position)
+	Vector3d DirectionalLight::GetLightOnPoint(Point3d position)
 	{
 		return direction;
 	}
 
-	float DirectionalLight::GetIntensityOnPoint(Vector3d position)
+	float DirectionalLight::GetIntensityOnPoint(Point3d position)
 	{
 		return intensity;
 	}

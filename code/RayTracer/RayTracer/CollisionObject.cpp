@@ -5,7 +5,7 @@ namespace RayTracer{
 	CollisionObject::CollisionObject() : isReal(false)
 	{
 	}
-	CollisionObject::CollisionObject(Object3d* objectHit, Vector3d collisonHit) : object(objectHit), collisionCoord(collisonHit), isReal(true)
+	CollisionObject::CollisionObject(Object3d* objectHit, Point3d collisonHit) : object(objectHit), collisionCoord(collisonHit), isReal(true)
 	{
 		
 	}
