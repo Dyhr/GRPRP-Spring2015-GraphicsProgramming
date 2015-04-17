@@ -31,7 +31,7 @@ namespace WindowApplication.Views
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            var renderer = new SceneRenderer((int)RenderBitmap.Width,(int)RenderBitmap.Height);
+            var renderer = new SceneRenderer((int)TheGrid.ActualWidth,(int)TheGrid.ActualHeight);
             RenderBitmap.Source = renderer.Render();
         }
     }

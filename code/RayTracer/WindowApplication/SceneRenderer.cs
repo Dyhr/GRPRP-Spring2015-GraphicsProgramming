@@ -28,7 +28,7 @@ namespace WindowApplication
 
         public ImageSource Render()
         {
-            var output = new Bitmap(800, 600);
+            var output = new Bitmap(_width, _height);
 
             var scene = new Scene(output.Width, output.Height, 0.05f, 30);
             var result = scene.render();
