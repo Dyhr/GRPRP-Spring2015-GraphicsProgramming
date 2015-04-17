@@ -20,7 +20,7 @@ namespace RayTracer{
 			if ((light->getLightType()) != AMBIENT)
 			{
 				Vector3d normalNormalized = Vector3d::normalize(normalToSurface);
-				Vector3d lightIncommingNormalized = Vector3d::normalize(light->GetLightOnPoint(pointOnObject));
+				Vector3d lightIncommingNormalized = Vector3d::negate(Vector3d::normalize(light->GetLightOnPoint(pointOnObject)));
 
 				float intensity = (Vector3d::dotProduct(normalNormalized, lightIncommingNormalized))*light->GetIntensityOnPoint(pointOnObject);
 

@@ -56,7 +56,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(2);
+		sceneObjects = vector<Object3d*>(3);
 		shadersOnObject1 = vector<ShaderBase*>(2);
 		shadersOnObject2 = vector<ShaderBase*>(2);
 
@@ -67,13 +67,13 @@ namespace RayTracer {
 		shadersOnObject2[1] = new DiffuseShader(ColorIntern(0, 255, 255, 255));
 		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
 		sceneObjects[0] = new Sphere3d(Point3d(0, 0, 10), 1, shadersOnObject1);
-		sceneObjects[1] = new Sphere3d(Point3d(1, 1.5f, 10), 1, shadersOnObject2);
+		sceneObjects[1] = new Sphere3d(Point3d(0, 2.1f, 10), 1, shadersOnObject2);
 		//sceneObjects[2] = new Sphere3d(Point3d(80, 120, 10), 20, shadersOnObject1);
-		//sceneObjects[3] = new Plane3d(Point3d(0,120,0), Vector3d(0,1,0), shadersOnObject1);
+		sceneObjects[2] = new Plane3d(Point3d(0,-1,0), Vector3d(0,1,0), shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
-		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(0.5f, 1, -1));
+		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(0.5f, -1, 0.3f));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
