@@ -13,7 +13,7 @@ namespace RayTracer{
 	public:
 		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders);
 		
-		Vector3d CalculateNormal(Point3d); // normal based on position
+		Vector3d CalculateNormal(Point3d pointAtSphere); // normal based on position
 		Point3d CalculateCollisionPosition(Line3d);
 	};
 }
