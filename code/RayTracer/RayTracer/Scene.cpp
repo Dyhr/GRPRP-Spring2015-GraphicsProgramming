@@ -144,7 +144,7 @@ namespace RayTracer {
 		{
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
 			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord); // todo Use
-			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightObjects);
+			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightsThatHit);
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 		}
 
@@ -166,7 +166,7 @@ namespace RayTracer {
 			bool isIntercepted = false;
 			for each (Object3d* object in sceneObjects)
 			{
-				Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.2f));
+				Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.001f));
 				if (hit.x != 0 && hit.y != 0 && hit.z != 0)
 				{
 					isIntercepted = true;
