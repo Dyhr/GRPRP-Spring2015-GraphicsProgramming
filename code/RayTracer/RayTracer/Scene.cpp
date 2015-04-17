@@ -51,6 +51,7 @@ namespace RayTracer {
 	vector<Object3d*> sceneObjects;
 	vector<LightBase*> lightObjects;
 	vector<ShaderBase*> shadersOnObject1;
+	vector<ShaderBase*> shadersOnObject2;
 
 	void Scene::initializeSceneObjects()
 	{
@@ -76,10 +77,16 @@ namespace RayTracer {
 		shadersOnObject1 = vector<ShaderBase*>(2);
 
 		shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
-		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
+		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255))); 
+
+		shadersOnObject2 = vector<ShaderBase*>(2);
+
+		shadersOnObject2[0] = &AmbientShader(ambientColorOnObjects());
+		shadersOnObject2[1] = &(DiffuseShader(ColorIntern(0, 255, 255, 255)));
+
 		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
 		sceneObjects[0] = new Sphere3d(Point3d(0, 100, 100), 20, shadersOnObject1);
-		sceneObjects[1] = new Sphere3d(Point3d(0, 100, 120), 20, shadersOnObject1);
+		sceneObjects[1] = new Sphere3d(Point3d(0, 100, 120), 20, shadersOnObject2);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
@@ -145,6 +152,7 @@ namespace RayTracer {
 
 				if (distanceFromRayStart > 0 && distanceFromRayStart < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
 				{
+					previousDistance = distanceFromRayStart;
 					collision = &CollisionObject(object, hit);
 				}
 
