@@ -3,6 +3,9 @@
 #include "Object3d.h"
 #include "CollisionObject.h"
 #include "Color.h"
+#include "LightBase.h"
+#include <vector>
+using namespace std;
 
 namespace RayTracer {
 
@@ -24,5 +27,7 @@ namespace RayTracer {
 		CollisionObject findClosestObject(Line3d ray);
 		ColorIntern rayTrace(Line3d ray);
 		void initializeSceneObjects();
+
+		vector<LightBase*> getLightsThatHitPoint(Point3d point);
 	};
 }

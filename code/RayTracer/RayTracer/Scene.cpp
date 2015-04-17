@@ -5,6 +5,7 @@
 #include <ctgmath>
 #include <cmath>
 #include <vector>
+#include <list>
 
 #include "Sphere3d.h"
 #include "CollisionObject.h"
@@ -162,5 +163,16 @@ namespace RayTracer {
 		// White color stub
 
 		return outColor;
+	}
+
+	vector<LightBase*> Scene::getLightsThatHitPoint(Point3d point)
+	{
+		list<LightBase*> lightsThatHit = list<LightBase*>();
+		for each (LightBase* light in lightObjects)
+		{
+			
+		}
+		
+		return vector<LightBase*>(0);
 	}
 }
