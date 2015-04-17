@@ -72,13 +72,14 @@ namespace RayTracer {
 	{
 		//initializeSceneObjects();
 
-		sceneObjects = vector<Object3d*>(1);
+		sceneObjects = vector<Object3d*>(2);
 		shadersOnObject1 = vector<ShaderBase*>(2);
 
 		shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
 		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
 		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
 		sceneObjects[0] = new Sphere3d(Point3d(0, 100, 100), 20, shadersOnObject1);
+		sceneObjects[1] = new Sphere3d(Point3d(0, 100, 120), 20, shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
@@ -138,13 +139,16 @@ namespace RayTracer {
 		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 			Object3d* object = *it;
 			Point3d hit = object->CalculateCollisionPosition(ray);
-			float distanceFromRayStart = Vector3d(hit, ray.position).length;
-
-			if (distanceFromRayStart > 0 && distanceFromRayStart < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
+			if (hit.x != 0 && hit.y != 0 && hit.z != 0)
 			{
-				collision = &CollisionObject(object, hit);
-			}
+				float distanceFromRayStart = Vector3d(hit, ray.position).length;
 
+				if (distanceFromRayStart > 0 && distanceFromRayStart < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
+				{
+					collision = &CollisionObject(object, hit);
+				}
+
+			}
 		}
 		return *collision;
 	}
@@ -157,8 +161,8 @@ namespace RayTracer {
 		if (closestObject.isReal)
 		{
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
-			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord);
-			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightsThatHit);
+			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord); // todo Use
+			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightObjects);
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 		}
 		// White color stub
