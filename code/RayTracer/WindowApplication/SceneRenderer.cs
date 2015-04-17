@@ -30,8 +30,7 @@ namespace WindowApplication
         {
             var output = new Bitmap(800, 600);
 
-            var scene = new Scene(30, 30, 30);
-            scene.init(output.Width, output.Height);
+            var scene = new Scene(output.Width, output.Height, 0.05f, 30);
             var result = scene.render();
 
             for (int i = 0; i < result.Length; i++)

@@ -16,6 +16,7 @@
 #include "AmbientLight.h"
 #include "DirectionalLight.h"
 #include "SpecularShader.h"
+#include "Plane3d.h"
 
 using namespace std;
 
@@ -32,15 +33,15 @@ namespace RayTracer {
 		return ambientColor;
 	}
 
-	Scene::Scene(float viewPortWidth, float viewPortHeight, float zLocation)
+	Scene::Scene(int width, int height, float viewSize, float viewDistance)
 	{
-		this->viewPortWidth = viewPortWidth;
-		this->viewPortHeight = viewPortHeight;
-		this->zLocation = zLocation; // Denotes the (z)-depth at which the viewport is located. We assume that camera is located at (0,0,0)
-	}
-	void Scene::init(const int width, const int height) {
 		this->width = width;
 		this->height = height;
+		this->viewPortWidth = width * viewSize;
+		this->viewPortHeight = height * viewSize;
+		this->viewPortSize = viewSize;
+		this->zLocation = viewDistance;
+
 		this->arr = gcnew array<Color^>(width*height);
 
 		for(int i = 0; i < width*height; i++) {
@@ -53,40 +54,18 @@ namespace RayTracer {
 	vector<ShaderBase*> shadersOnObject1;
 	vector<ShaderBase*> shadersOnObject2;
 
-	void Scene::initializeSceneObjects()
-	{
-		// Things in the scene goes here for now
-		sceneObjects = vector<Object3d*>(1);
-		shadersOnObject1 = vector<ShaderBase*>(2);
-
-		//shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
-		shadersOnObject1[0] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
-		shadersOnObject1[1] = &SpecularShader(ColorIntern(230, 230, 230, 255), 2.0f);
-		sceneObjects[0] = &Sphere3d(Point3d(0, 100, 100), 20, shadersOnObject1);
-
-		lightObjects = vector<LightBase*>(2);
-		lightObjects[0] = &AmbientLight(0.1f);
-		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(0, -2, -1));
-	}
-
 	array<Color^>^ Scene::render()
 	{
-		//initializeSceneObjects();
-
 		sceneObjects = vector<Object3d*>(2);
 		shadersOnObject1 = vector<ShaderBase*>(2);
 
-		shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
-		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255))); 
-
-		shadersOnObject2 = vector<ShaderBase*>(2);
-
-		shadersOnObject2[0] = &AmbientShader(ambientColorOnObjects());
-		shadersOnObject2[1] = &(DiffuseShader(ColorIntern(0, 255, 255, 255)));
-
+		shadersOnObject1[0] = new AmbientShader(ambientColorOnObjects());
+		shadersOnObject1[1] = new DiffuseShader(ColorIntern(255, 0, 255, 255));
 		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
-		sceneObjects[0] = new Sphere3d(Point3d(0, 100, 100), 20, shadersOnObject1);
-		sceneObjects[1] = new Sphere3d(Point3d(0, 100, 120), 20, shadersOnObject2);
+		sceneObjects[0] = new Sphere3d(Point3d(0, 0, 10), 1, shadersOnObject1);
+		sceneObjects[1] = new Sphere3d(Point3d(1, 0, 10), 1, shadersOnObject1);
+		//sceneObjects[2] = new Sphere3d(Point3d(80, 120, 10), 20, shadersOnObject1);
+		//sceneObjects[3] = new Plane3d(Point3d(0,120,0), Vector3d(0,1,0), shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
@@ -122,20 +101,11 @@ namespace RayTracer {
 	// Assumes viewport is located at z = zLocation
 	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
-		float stepSizeX = viewPortWidth / (float)width;
-		float stepSizeY = viewPortHeight / (float)height;
-		
 		// Center of viewport is located in (0,0,0)
-		float startingX = -(viewPortWidth / 2.0f) + (stepSizeX / 2.0f);
-		float startingY = (viewPortHeight / 2.0f) - (stepSizeX / 2.0f);
-		float newX = startingX + x * stepSizeX;
-		float newY = startingY + y * stepSizeY;
+		float px = -(width*viewPortSize) / 2.0f + viewPortSize * x;
+		float py =  (width*viewPortSize) / 2.0f - viewPortSize * y;
 
-		// Wrap into Line3d-instance
-		Vector3d direction = Vector3d(newX, newY, zLocation);
-		Line3d ray = Line3d(Point3d(), direction);
-		return ray;
-
+		return Line3d(Point3d(), Vector3d::normalize(Vector3d(px, py, zLocation)));
 	}
 
 	CollisionObject Scene::findClosestObject(Line3d ray)
@@ -173,7 +143,6 @@ namespace RayTracer {
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightObjects);
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 		}
-		// White color stub
 
 		return outColor;
 	}
