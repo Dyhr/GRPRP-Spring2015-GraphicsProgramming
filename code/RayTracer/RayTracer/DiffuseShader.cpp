@@ -17,12 +17,7 @@ namespace RayTracer{
 
 		for (vector<LightBase*>::iterator it = lights.begin(); it != lights.end(); ++it) {
 			LightBase* light = *it;
-			if ((light->getLightType()) == AMBIENT)
-			{
-				ColorIntern ambientColor = ColorIntern::intensifyColor(objectColor, light->GetIntensityOnPoint(pointOnObject));
-				colorToReturn = ColorIntern::blendAddition(colorToReturn, ambientColor);
-			}
-			else
+			if ((light->getLightType()) != AMBIENT)
 			{
 				Vector3d normalNormalized = Vector3d::normalize(normalToSurface);
 				Vector3d lightIncommingNormalized = Vector3d::normalize(light->GetLightOnPoint(pointOnObject));

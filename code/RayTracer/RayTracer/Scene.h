@@ -12,6 +12,7 @@ namespace RayTracer {
 		void init(const int width, const int height);
 		array<Color^>^ render();
 		ColorIntern backgroundColor();
+		ColorIntern ambientColorOnObjects();
 	private:
 		int width, height;
 		float viewPortWidth, viewPortHeight, zLocation;
@@ -22,5 +23,6 @@ namespace RayTracer {
 		Line3d getRayFromScreen(int x, int y);
 		CollisionObject findClosestObject(Line3d ray);
 		ColorIntern rayTrace(Line3d ray);
+		void initializeSceneObjects();
 	};
 }

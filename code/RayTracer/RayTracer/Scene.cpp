@@ -14,6 +14,7 @@
 #include "DiffuseShader.h"
 #include "AmbientLight.h"
 #include "DirectionalLight.h"
+#include "SpecularShader.h"
 
 using namespace std;
 
@@ -22,6 +23,12 @@ namespace RayTracer {
 	ColorIntern Scene::backgroundColor(){
 		ColorIntern background = ColorIntern(10, 10, 10, 255);
 		return background;
+	}
+
+	ColorIntern Scene::ambientColorOnObjects()
+	{
+		ColorIntern ambientColor = ColorIntern(40, 40, 40, 255);
+		return ambientColor;
 	}
 
 	Scene::Scene(float viewPortWidth, float viewPortHeight, float zLocation)
@@ -42,16 +49,39 @@ namespace RayTracer {
 
 	vector<Object3d*> sceneObjects;
 	vector<LightBase*> lightObjects;
+	vector<ShaderBase*> shadersOnObject1;
 
-	array<Color^>^ Scene::render()
+	void Scene::initializeSceneObjects()
 	{
 		// Things in the scene goes here for now
 		sceneObjects = vector<Object3d*>(1);
-		sceneObjects[0] = new Sphere3d(Vector3d(0,100,100) ,20, &(DiffuseShader(ColorIntern(255,0,255,255))));
+		shadersOnObject1 = vector<ShaderBase*>(2);
+
+		//shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
+		shadersOnObject1[0] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
+		shadersOnObject1[1] = &SpecularShader(ColorIntern(230, 230, 230, 255), 2.0f);
+		sceneObjects[0] = new Sphere3d(Vector3d(0, 100, 100), 20, shadersOnObject1);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
-		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(1,0,-1));
+		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(0, -2, -1));
+	}
+
+	array<Color^>^ Scene::render()
+	{
+		//initializeSceneObjects();
+
+		sceneObjects = vector<Object3d*>(1);
+		shadersOnObject1 = vector<ShaderBase*>(3);
+
+		shadersOnObject1[0] = &AmbientShader(ambientColorOnObjects());
+		shadersOnObject1[1] = &(DiffuseShader(ColorIntern(255, 0, 255, 255)));
+		shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
+		sceneObjects[0] = new Sphere3d(Vector3d(0, 100, 100), 20, shadersOnObject1);
+
+		lightObjects = vector<LightBase*>(2);
+		lightObjects[0] = &AmbientLight(0.1f);
+		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(0, -2, -1));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)

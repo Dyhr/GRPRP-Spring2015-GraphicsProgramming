@@ -8,13 +8,13 @@ namespace RayTracer{
 	{
 		const Vector3d centerPosition;
 		const float radius;
-		ShaderBase* shader;
+		vector<ShaderBase*> shaders;
 		
 	public:
 		// Default constructor
 		Sphere3d();
 		// Fancy constructor
-		Sphere3d(Vector3d center, float _radius, ShaderBase* shader);
+		Sphere3d(Vector3d center, float _radius, vector<ShaderBase*> shaders);
 
 		
 		Vector3d CalculateNormal(Vector3d); // normal based on position
