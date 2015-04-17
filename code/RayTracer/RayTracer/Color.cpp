@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Color.h"
-#include <sstream>
+#include <iostream>
 
 namespace RayTracer
 {
@@ -11,7 +11,13 @@ namespace RayTracer
 
 	Color::Color(ColorIntern color) : red(color.red), blue(color.blue), green(color.green), alpha(color.alpha)
 	{
+		red = red > 255 ? 255 : red;
+		green = green > 255 ? 255 : green;
+		blue = blue > 255 ? 255 : blue;
 
+		red = red < 0 ? 0 : red;
+		green = green < 0 ? 0 : green;
+		blue = blue < 0 ? 0 : blue;
 	}
 
 	Color::Color(int red, int green, int blue, int alpha) : red(red), green(green), blue(blue), alpha(alpha)
@@ -51,6 +57,10 @@ namespace RayTracer
 		int green = (colorA.green + colorB.green)	> 255 ? 255 : (colorA.green + colorB.green) < 0 ? 0 : (colorA.green + colorB.green);
 		int blue = (colorA.blue + colorB.blue)		> 255 ? 255 : (colorA.blue + colorB.blue)	< 0 ? 0 : (colorA.blue + colorB.blue);
 		
+		if (red > 255)
+		{
+			int i = 12;
+		}
 		return ColorIntern(red, green, blue, 255);
 	}
 
