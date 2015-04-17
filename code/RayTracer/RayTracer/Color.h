@@ -1,13 +1,18 @@
 #pragma once
+#include <vector>
+
 namespace RayTracer
 {
 	class ColorIntern
 	{
+		// Values for absorbance
+		float redAbsorbance, greenAbsorbance, blueAbsorbance; 
 	public:
 		int red, green, blue, alpha;
 		ColorIntern();
 		ColorIntern(int red, int green, int blue, int alpha);
 
+		static int sanitizeColor(int proposedValue);
 		static ColorIntern blendAddition(ColorIntern colorA, ColorIntern colorB);
 		static ColorIntern intensifyColor(ColorIntern colorA, float multiplier);
 	};
