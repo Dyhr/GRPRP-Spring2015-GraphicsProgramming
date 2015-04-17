@@ -16,6 +16,6 @@ namespace RayTracer
 
 		float d = (Vector3d::dotProduct(Vector3d(line.position,position),normal)) / (Vector3d::dotProduct(line.direction, normal));
 
-		return d > 0 ? line.getPositionAlongLine(d) : Point3d();
+		return d < 0 ? line.getPositionAlongLine(d) : Point3d();
 	}
 }
