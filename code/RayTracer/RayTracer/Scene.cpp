@@ -157,7 +157,8 @@ namespace RayTracer {
 		if (closestObject.isReal)
 		{
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
-			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightObjects);
+			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord);
+			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightsThatHit);
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 		}
 		// White color stub
@@ -170,9 +171,36 @@ namespace RayTracer {
 		list<LightBase*> lightsThatHit = list<LightBase*>();
 		for each (LightBase* light in lightObjects)
 		{
-			
+			if (light->getLightType() == AMBIENT)
+			{
+				lightsThatHit.push_back(light);
+				continue;
+			}
+
+			Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
+			bool isIntercepted = false;
+			for each (Object3d* object in sceneObjects)
+			{
+				Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.2f));
+				if (hit.x != 0 && hit.y != 0 && hit.z != 0)
+				{
+					isIntercepted = true;
+					break;
+				}
+			}
+			if (!isIntercepted)
+			{
+				lightsThatHit.push_back(light);
+			}
 		}
-		
-		return vector<LightBase*>(0);
+
+		// copy to vector 
+		vector<LightBase*> lightsToReturn = vector<LightBase*>(lightsThatHit.size());
+		int i = 0;
+		for each (LightBase* light in lightsThatHit)
+		{
+			lightsToReturn[i++] = light;
+		}
+		return lightsToReturn;
 	}
 }
