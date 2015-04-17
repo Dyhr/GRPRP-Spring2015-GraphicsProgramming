@@ -1,5 +1,6 @@
 #pragma once
-#include "Scene.h"
+#include "Vector3d.h"
+#include "LightBase.h"
 #include "Color.h"
 #include <vector>
 

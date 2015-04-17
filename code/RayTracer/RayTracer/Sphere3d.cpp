@@ -5,10 +5,6 @@
 #include <iostream>
 
 namespace RayTracer{
-	Sphere3d::Sphere3d() : centerPosition(Point3d(0.0, 0.0, 0.0)), radius(float(0.0))
-	{
-
-	}
 
 	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders) : centerPosition(center), radius(_radius), shaders(shaders)
 	{
