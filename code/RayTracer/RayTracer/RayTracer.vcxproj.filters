@@ -63,6 +63,9 @@
     <ClInclude Include="Point3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpecularShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -105,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Point3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecularShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -88,6 +88,7 @@
     <ClInclude Include="PositionalLight.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderBase.h" />
+    <ClInclude Include="SpecularShader.h" />
     <ClInclude Include="Sphere3d.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Vector3d.h" />
@@ -104,6 +105,7 @@
     <ClCompile Include="Point3d.cpp" />
     <ClCompile Include="PositionalLight.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SpecularShader.cpp" />
     <ClCompile Include="Sphere3d.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
