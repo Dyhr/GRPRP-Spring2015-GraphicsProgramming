@@ -125,11 +125,6 @@ namespace RayTracer {
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightObjects);
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
-			// TODO shade the object
-			//outColor.alpha = 255;
-			//outColor.red = 200;
-			//outColor.green = 255;
-			//outColor.blue = 255;
 		}
 		// White color stub
 
