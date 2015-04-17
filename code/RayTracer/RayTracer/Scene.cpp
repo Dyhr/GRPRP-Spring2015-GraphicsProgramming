@@ -17,6 +17,7 @@
 #include "DirectionalLight.h"
 #include "SpecularShader.h"
 #include "Plane3d.h"
+#include "Triangle3d.h"
 
 using namespace std;
 
@@ -56,7 +57,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(3);
+		sceneObjects = vector<Object3d*>(5);
 		shadersOnObject1 = vector<ShaderBase*>(2);
 		shadersOnObject2 = vector<ShaderBase*>(2);
 
@@ -67,9 +68,11 @@ namespace RayTracer {
 		shadersOnObject2[1] = new DiffuseShader(ColorIntern(0, 255, 255, 255));
 		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
 		sceneObjects[0] = new Sphere3d(Point3d(0, 0, 10), 1, shadersOnObject1);
-		sceneObjects[1] = new Sphere3d(Point3d(0, 2.1f, 10), 1, shadersOnObject2);
+		sceneObjects[1] = new Sphere3d(Point3d(-2, 0, 8), 1, shadersOnObject1);
+		sceneObjects[2] = new Sphere3d(Point3d(0, 2.1f, 10), 1, shadersOnObject2);
 		//sceneObjects[2] = new Sphere3d(Point3d(80, 120, 10), 20, shadersOnObject1);
-		sceneObjects[2] = new Plane3d(Point3d(0,-1,0), Vector3d(0,1,0), shadersOnObject1);
+		sceneObjects[3] = new Plane3d(Point3d(0,-1,0), Vector3d(0,1,0), shadersOnObject1);
+		sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = &AmbientLight(0.1f);
@@ -91,6 +94,7 @@ namespace RayTracer {
 		for(vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 			delete *it;
 		}
+		// TODO more of this
 
 		return arr;
 	}

@@ -23,6 +23,7 @@ namespace RayTracer{
 		static Vector3d normalize(Vector3d);
 		static Vector3d negate(Vector3d);
 		static float dotProduct(Vector3d, Vector3d);
+		static Vector3d crossProduct(Vector3d lhs, Vector3d rhs);
 		static float distance(Vector3d, Vector3d); 
 
 		// Other math

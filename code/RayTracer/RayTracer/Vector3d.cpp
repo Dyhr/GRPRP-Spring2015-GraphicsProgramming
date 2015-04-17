@@ -50,6 +50,12 @@ namespace RayTracer
 	float Vector3d::dotProduct(Vector3d v1, Vector3d v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	}
+	Vector3d Vector3d::crossProduct(Vector3d lhs, Vector3d rhs) {
+		float a = lhs.y * rhs.z - lhs.z * rhs.y;
+		float b = lhs.z * rhs.x - lhs.x * rhs.z;
+		float c = lhs.x * rhs.y - lhs.y * rhs.x;
+		return Vector3d(a,b,c);
+	}
 
 	float Vector3d::distance(Vector3d v1, Vector3d v2) {
 		return subtract(v1, v2).length;
