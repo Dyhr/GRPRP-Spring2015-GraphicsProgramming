@@ -54,6 +54,12 @@ namespace RayTracer{
 			// The lowest tValue corresponds to the first intersection
 			float lowestTValue = tValue1 < tValue2 ? tValue1 : tValue2;
 
+			if (lowestTValue < 0.0)
+			{
+				// This means, that the the intersection is in the opposite direstion of the line
+				return Point3d();
+			}
+
 			// First solution: (-(b)+sqrt(D))/(2*a)
 			float intersectX1 = lowestTValue * line.direction.x;
 			float intersectY1 = lowestTValue * line.direction.y;
