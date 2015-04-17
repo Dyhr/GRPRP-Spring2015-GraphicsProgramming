@@ -7,7 +7,7 @@
 using namespace std;
 
 namespace RayTracer{
-	ref class Object3d
+	class Object3d
 	{
 	public:
 		virtual Vector3d CalculateNormal(Vector3d) = 0; // normal based on position.. what?
