@@ -116,7 +116,7 @@ namespace RayTracer {
 	{
 		// Center of viewport is located in (0,0,0)
 		float px = -(width*viewPortSize) / 2.0f + viewPortSize * x;
-		float py =  (width*viewPortSize) / 2.0f - viewPortSize * y;
+		float py =  (height*viewPortSize) / 2.0f - viewPortSize * y;
 
 		return Line3d(Point3d(), Vector3d::normalize(Vector3d(px, py, zLocation)));
 	}
