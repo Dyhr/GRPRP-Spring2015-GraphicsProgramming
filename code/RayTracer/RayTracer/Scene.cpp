@@ -59,7 +59,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(5);
+		sceneObjects = vector<Object3d*>(4);
 		shadersOnObject1 = vector<ShaderBase*>(2);
 		shadersOnObject2 = vector<ShaderBase*>(2);
 
@@ -68,18 +68,20 @@ namespace RayTracer {
 
 		shadersOnObject2[0] = new AmbientShader(ambientColorOnObjects());
 		shadersOnObject2[1] = new DiffuseShader(ColorIntern(0, 255, 255, 255));
-		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
+		//shadersOnObject1[2] = new SpecularShader(ColorIntern(240, 240, 240, 255), 10);
+
 		sceneObjects[0] = new Sphere3d(Point3d(0, 0, 10), 1, shadersOnObject1);
 		sceneObjects[1] = new Sphere3d(Point3d(-2, 0, 8), 1, shadersOnObject1);
 		sceneObjects[2] = new Sphere3d(Point3d(0, 2.1f, 10), 1, shadersOnObject2);
 		//sceneObjects[2] = new Sphere3d(Point3d(80, 120, 10), 20, shadersOnObject1);
 		sceneObjects[3] = new Plane3d(Point3d(0,-1,0), Vector3d(0,1,0), shadersOnObject1);
-		sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
+		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
 
 		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.2f);
-		lightObjects[1] = new DirectionalLight(0.5f, Vector3d(0.5f, -1, 0.3f));
-		lightObjects[2] = new PositionalLight(0.6f, Point3d(5, 0, 3), 14.0f, ColorIntern(100,255,255,255));
+		lightObjects[1] = new DirectionalLight(0.5f, Vector3d(0.5f, -1, 0.3f), ColorIntern(255,150,180,255));
+		lightObjects[2] = new DirectionalLight(0.5f, Vector3d(0.0f, -0.1f, 1.0f), ColorIntern(180, 150, 255, 255));
+		//lightObjects[2] = new PositionalLight(0.6f, Point3d(5, 0, 3), 14.0f, ColorIntern(100,255,255,255));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
