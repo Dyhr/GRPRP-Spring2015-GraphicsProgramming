@@ -3,12 +3,17 @@
 
 namespace RayTracer
 {
-	DirectionalLight::DirectionalLight() : intensity(0.0f), direction(Vector3d())
+	DirectionalLight::DirectionalLight() : intensity(0.0f), direction(Vector3d()), color(ColorIntern(255, 255, 255, 255))
 	{
 
 	}
 
-	DirectionalLight::DirectionalLight(float intensity, Vector3d direction) : intensity(intensity), direction(direction)
+	DirectionalLight::DirectionalLight(float intensity, Vector3d direction) : intensity(intensity), direction(direction), color(ColorIntern(255, 255, 255, 255))
+	{
+
+	}
+
+	DirectionalLight::DirectionalLight(float intensity, Vector3d direction, ColorIntern color) : intensity(intensity), direction(direction), color(color)
 	{
 
 	}
@@ -26,6 +31,11 @@ namespace RayTracer
 	float DirectionalLight::GetIntensityOnPoint(Point3d position)
 	{
 		return intensity;
+	}
+
+	ColorIntern DirectionalLight::getLightColor()
+	{
+		return color;
 	}
 }
 

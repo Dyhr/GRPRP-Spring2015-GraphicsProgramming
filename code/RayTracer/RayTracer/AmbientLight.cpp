@@ -3,12 +3,17 @@
 
 namespace RayTracer
 {
-	AmbientLight::AmbientLight() : intensity(0.0f)
+	AmbientLight::AmbientLight() : intensity(0.0f), color(ColorIntern(255, 255, 255, 255))
 	{
 
 	}
 
-	AmbientLight::AmbientLight(float _intensity) : intensity(_intensity)
+	AmbientLight::AmbientLight(float _intensity) : intensity(_intensity), color(ColorIntern(255,255,255,255))
+	{
+
+	}
+
+	AmbientLight::AmbientLight(float _intensity, ColorIntern color) : intensity(_intensity), color(color)
 	{
 
 	}
@@ -25,5 +30,10 @@ namespace RayTracer
 	float AmbientLight::GetIntensityOnPoint(Point3d position)
 	{
 		return intensity;
+	}
+
+	ColorIntern AmbientLight::getLightColor()
+	{
+		return color;
 	}
 }

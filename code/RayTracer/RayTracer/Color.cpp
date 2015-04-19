@@ -46,17 +46,25 @@ namespace RayTracer
 
 	ColorIntern ColorIntern::blendAddition(ColorIntern colorA, ColorIntern colorB)
 	{
-		int red = sanitizeColor(colorA.red + colorB.red);
+		int red =	sanitizeColor(colorA.red + colorB.red);
 		int green = sanitizeColor(colorA.green + colorB.green);
-		int blue = sanitizeColor(colorA.blue + colorB.blue);
+		int blue =	sanitizeColor(colorA.blue + colorB.blue);
+		return ColorIntern(red, green, blue, 255);
+	}
+
+	ColorIntern ColorIntern::blendMultiply(ColorIntern colorA, ColorIntern colorB)
+	{
+		int red =	sanitizeColor(colorA.red * colorB.red / 255);
+		int green = sanitizeColor(colorA.green * colorB.green / 255);
+		int blue =	sanitizeColor(colorA.blue * colorB.blue / 255);
 		return ColorIntern(red, green, blue, 255);
 	}
 
 	ColorIntern ColorIntern::intensifyColor(ColorIntern colorA, float multiplier)
 	{
-		int red = (int)sanitizeColor((int)(colorA.red * multiplier));
-		int green = (int)sanitizeColor((int)(colorA.green * multiplier));
-		int blue = (int)sanitizeColor((int)(colorA.blue * multiplier));
+		int red =	sanitizeColor(colorA.red * multiplier);
+		int green = sanitizeColor(colorA.green * multiplier);
+		int blue =	sanitizeColor(colorA.blue * multiplier);
 
 		return ColorIntern(red, green, blue, 255);
 	}
@@ -65,14 +73,14 @@ namespace RayTracer
 	{
 		if (proposedColorValue > 255)
 		{
-			return 255;
+			return (int)255;
 		}
 		else if (proposedColorValue < 0)
 		{
-			return 0;
+			return (int)0;
 		}
 
-		return proposedColorValue;
+		return (int)proposedColorValue;
 	}
 }
 

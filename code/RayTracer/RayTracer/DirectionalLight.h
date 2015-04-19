@@ -6,12 +6,16 @@ namespace RayTracer
 	{
 		float intensity;
 		Vector3d direction;
+		ColorIntern color;
 	public:
 		DirectionalLight();
 		DirectionalLight(float intensity, Vector3d direction);
+		DirectionalLight(float intensity, Vector3d direction, ColorIntern color);
+
 		Vector3d GetLightOnPoint(Point3d position);
 		float GetIntensityOnPoint(Point3d position);
 		LightType getLightType();
+		ColorIntern getLightColor();
 	};
 }
 
