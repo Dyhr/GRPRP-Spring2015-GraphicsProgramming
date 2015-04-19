@@ -31,6 +31,8 @@ namespace RayTracer
 	{
 		// Return vector going from lightsource to position
 		return Vector3d(position, centerPosition);
+
+		// NOTE! normalizing this will lead to bugs in the shadow function, since lenght is used there.
 	}
 
 	float PositionalLight::GetIntensityOnPoint(Point3d position)

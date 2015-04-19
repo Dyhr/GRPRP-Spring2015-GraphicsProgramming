@@ -70,7 +70,7 @@ namespace RayTracer {
 		shadersOnObject2[1] = new DiffuseShader(ColorIntern(0, 255, 255, 255));
 		//shadersOnObject1[2] = new SpecularShader(ColorIntern(240, 240, 240, 255), 10);
 
-		sceneObjects[0] = new Sphere3d(Point3d(0, 0, 10), 1, shadersOnObject1);
+		sceneObjects[0] = new Sphere3d(Point3d(0, -0.3f, 10), 1, shadersOnObject1);
 		sceneObjects[1] = new Sphere3d(Point3d(-2, 0, 8), 1, shadersOnObject1);
 		sceneObjects[2] = new Sphere3d(Point3d(0, 2.1f, 10), 1, shadersOnObject2);
 		//sceneObjects[2] = new Sphere3d(Point3d(80, 120, 10), 20, shadersOnObject1);
@@ -79,9 +79,9 @@ namespace RayTracer {
 
 		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.2f);
-		lightObjects[1] = new DirectionalLight(0.5f, Vector3d(0.5f, -1, 0.3f), ColorIntern(255,150,180,255));
-		lightObjects[2] = new DirectionalLight(0.5f, Vector3d(0.0f, -0.1f, 1.0f), ColorIntern(180, 150, 255, 255));
-		//lightObjects[2] = new PositionalLight(0.6f, Point3d(5, 0, 3), 14.0f, ColorIntern(100,255,255,255));
+		lightObjects[1] = new DirectionalLight(0.3f, Vector3d(0.5f, -1, 0.3f), ColorIntern(255,150,180,255));
+		//lightObjects[2] = new DirectionalLight(0.5f, Vector3d(0.0f, -0.1f, 1.0f), ColorIntern(180, 150, 255, 255));
+		lightObjects[2] = new PositionalLight(0.9f, Point3d(5, 0, 3), 14.0f, ColorIntern(100,255,255,255));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
@@ -179,9 +179,9 @@ namespace RayTracer {
 					Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.001f));
 					if (hit.x != 0 && hit.y != 0 && hit.z != 0)
 					{
+						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
 						if (light->getLightType() == POSITIONAL && Vector3d(point, hit).length > light->GetLightOnPoint(point).length)
 						{
-							lightsThatHit.push_back(light);
 						}
 						else
 						{
