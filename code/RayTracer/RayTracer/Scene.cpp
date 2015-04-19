@@ -115,8 +115,8 @@ namespace RayTracer {
 	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
 		// Center of viewport is located in (0,0,0)
-		float px = -(viewPortWidth) / 2.0f + viewSize * x;
-		float py = (viewPortHeight) / 2.0f - viewSize * y;
+		float px = -(viewPortWidth) / 2.0f + viewPortSize * x;
+		float py = (viewPortHeight) / 2.0f - viewPortSize * y;
 
 		return Line3d(Point3d(), Vector3d::normalize(Vector3d(px, py, zLocation)));
 	}
