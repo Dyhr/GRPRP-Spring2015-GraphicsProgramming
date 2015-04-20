@@ -8,7 +8,7 @@ namespace RayTracer{
 	{
 	public:
 		// Denotes either a) a point in space (in which case length must be 0) or b) a vector with a direction
-		const float x, y, z, length;
+		float x, y, z, length;
 		Vector3d(); // the empty constructor.
 		Vector3d(float, float, float);	// This represents a) a point or b) a vector
 		Vector3d(Point3d endPoint, Point3d startPoint);	// This represents a parametrization: (x,y,z) = (x0,y0,z0) + t*(x1,y1,z1) <- Nope, Wrong! 

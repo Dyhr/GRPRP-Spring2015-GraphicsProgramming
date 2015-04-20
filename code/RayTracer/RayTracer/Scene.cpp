@@ -82,7 +82,7 @@ namespace RayTracer {
 		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
 
-		sceneObjects[5] = new Sphere3d(Point3d(-2, -2, 8), 1, shadersWhite,Material(0.1f,0.6f,1.1f));
+		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhite,Material(0.1f,0.9f,1.4f));
 		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhite,Material(0.4f));
 
 
@@ -100,7 +100,7 @@ namespace RayTracer {
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				ColorIntern color = rayTrace(ray,1,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
+				ColorIntern color = rayTrace(ray,2,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
 
 				Color^ outColor = gcnew Color(color); // convert to outgoing color
 				setColor(x, y, outColor);
@@ -176,7 +176,7 @@ namespace RayTracer {
 					// Get reflection ray
 					Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, ray.direction);
 					Point3d pointForOutgoingReflectedRay = closestObject.collisionCoord;
-					Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.01f);
+					Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.001f);
 
 					ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1, currentRefractionIndex);
 
@@ -186,11 +186,20 @@ namespace RayTracer {
 
 				if (materialOfObject.transparency > 0.0f)
 				{
-					Vector3d vectorForRefractedRay = Vector3d::refractionVector(normal, ray.direction, currentRefractionIndex, materialOfObject.materialRefractionIndex);
-					Point3d pointForOutgoingRefractedRay = closestObject.collisionCoord;
-					Line3d reflectedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.01f);
+					Vector3d newNormal = normal;
+					float nextRefraction = materialOfObject.materialRefractionIndex;
+					if (currentRefractionIndex != sceneRefractionIndex)
+					{
+						newNormal = Vector3d::negate(newNormal);
+						nextRefraction = sceneRefractionIndex;
+					}
+					
 
-					ColorIntern refractionContribution = rayTrace(reflectedRay, count - 1, materialOfObject.materialRefractionIndex > 0.0f);
+					Vector3d vectorForRefractedRay = Vector3d::refractionVector(newNormal, Vector3d::negate(ray.direction), currentRefractionIndex, nextRefraction);
+					Point3d pointForOutgoingRefractedRay = closestObject.collisionCoord;
+					Line3d reflectedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.001f);
+
+					ColorIntern refractionContribution = rayTrace(reflectedRay, count - 1, nextRefraction);
 
 					shadingColor = ColorIntern::blendByAmount(refractionContribution, shadingColor, materialOfObject.transparency);
 
