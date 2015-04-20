@@ -8,8 +8,8 @@ namespace RayTracer
 	{
 	}
 
-	Plane3d::Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders, float reflectiveness) : 
-		position(point), normal(normal), Object3d(shaders,reflectiveness)
+	Plane3d::Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders, Material material) : 
+		position(point), normal(normal), Object3d(shaders,material)
 	{
 
 	}

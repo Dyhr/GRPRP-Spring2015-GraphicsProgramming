@@ -9,9 +9,9 @@ namespace RayTracer {
 
 	}
 
-	Triangle3d::Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders, float reflectiveness) :
+	Triangle3d::Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders, Material material) :
 		a(a), b(b), c(c), u(Vector3d(b, a)), v(Vector3d(c, a)),
-		normal(Vector3d::crossProduct(Vector3d(b, a), Vector3d(c, a))), Object3d(shaders,reflectiveness)
+		normal(Vector3d::crossProduct(Vector3d(b, a), Vector3d(c, a))), Object3d(shaders,material)
 	{
 
 	}

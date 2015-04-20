@@ -9,14 +9,16 @@
 
 using namespace std;
 
+#include "Material.h"
+
 namespace RayTracer{
 	class Object3d
 	{
 	public:
 		const vector<ShaderBase*> shaders;
-		const float reflectiveness;
-		Object3d(vector<ShaderBase*> shaders) : shaders(shaders), reflectiveness(0.0f) { }
-		Object3d(vector<ShaderBase*> shaders, float reflectiveness) : shaders(shaders), reflectiveness(reflectiveness) {  }
+		const Material material;
+		Object3d(vector<ShaderBase*> shaders) : shaders(shaders), material(Material()) { }
+		Object3d(vector<ShaderBase*> shaders, Material material) : shaders(shaders), material(material) {  }
 
 		virtual Vector3d CalculateNormal(Point3d) = 0; 
 		virtual Point3d CalculateCollisionPosition(Line3d) = 0;

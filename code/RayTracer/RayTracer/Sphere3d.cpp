@@ -11,7 +11,7 @@ namespace RayTracer{
 
 	}
 
-	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders, float reflectiveness) : centerPosition(center), radius(_radius), Object3d(shaders,reflectiveness)
+	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders, Material material) : centerPosition(center), radius(_radius), Object3d(shaders,material)
 	{
 
 	}

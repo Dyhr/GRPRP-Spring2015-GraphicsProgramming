@@ -13,7 +13,7 @@ namespace RayTracer
 		const Point3d position;
 	public:
 		Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders);
-		Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders,float reflectiveness);
+		Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders,Material material);
 
 		Vector3d CalculateNormal(Point3d); // normal based on position always the same for a plane.
 		Point3d CalculateCollisionPosition(Line3d);

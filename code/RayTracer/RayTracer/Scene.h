@@ -15,6 +15,7 @@ namespace RayTracer {
 		array<Color^>^ render();
 		ColorIntern backgroundColor();
 		ColorIntern ambientColorOnObjects();
+		float sceneRefractionIndex = 1.0f;
 	private:
 		int width, height;
 		float viewPortWidth, viewPortHeight, viewPortSize, zLocation;
@@ -24,7 +25,7 @@ namespace RayTracer {
 		void setColor(int x, int y, Color^ color);
 		Line3d getRayFromScreen(int x, int y);
 		CollisionObject findClosestObject(Line3d ray);
-		ColorIntern rayTrace(Line3d ray, int count);
+		ColorIntern rayTrace(Line3d ray, int count, float currentRefractionIndex);
 
 		vector<LightBase*> getLightsThatHitPoint(Point3d point);
 	};

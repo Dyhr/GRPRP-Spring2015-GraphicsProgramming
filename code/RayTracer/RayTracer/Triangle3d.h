@@ -11,7 +11,7 @@ namespace RayTracer {
 		const Vector3d u, v, normal;
 	public:
 		Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders);
-		Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders, float reflectiveness);
+		Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders, Material material);
 
 		Vector3d CalculateNormal(Point3d point);
 		Point3d CalculateCollisionPosition(Line3d line);
