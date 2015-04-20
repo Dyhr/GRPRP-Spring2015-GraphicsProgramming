@@ -14,8 +14,9 @@ namespace RayTracer{
 	{
 	public:
 		const vector<ShaderBase*> shaders;
-
-		Object3d(vector<ShaderBase*> shaders) : shaders(shaders) { }
+		const float reflectiveness;
+		Object3d(vector<ShaderBase*> shaders) : shaders(shaders), reflectiveness(0.0f) { }
+		Object3d(vector<ShaderBase*> shaders, float reflectiveness) : shaders(shaders), reflectiveness(reflectiveness) {  }
 
 		virtual Vector3d CalculateNormal(Point3d) = 0; 
 		virtual Point3d CalculateCollisionPosition(Line3d) = 0;

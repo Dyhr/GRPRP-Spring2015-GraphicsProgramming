@@ -82,8 +82,8 @@ namespace RayTracer {
 		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
 
-		sceneObjects[5] = new Sphere3d(Point3d(-2, -2, 8), 1, shadersWhite);
-		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhite);
+		sceneObjects[5] = new Sphere3d(Point3d(-2, -2, 8), 1, shadersWhite,0.4f);
+		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhite,0.2f);
 
 
 		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
@@ -177,7 +177,7 @@ namespace RayTracer {
 
 				ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1);
 
-				shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, 0.4f);
+				shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, closestObject.object -> reflectiveness);
 			}
 			
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);

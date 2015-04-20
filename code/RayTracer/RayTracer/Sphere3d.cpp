@@ -11,6 +11,11 @@ namespace RayTracer{
 
 	}
 
+	Sphere3d::Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders, float reflectiveness) : centerPosition(center), radius(_radius), Object3d(shaders,reflectiveness)
+	{
+
+	}
+
 	// Returns (for now) vector that is normal to the sphere through point.
 	// The returned vector is normalized
 	Vector3d Sphere3d::CalculateNormal(Point3d pointAtSphere)

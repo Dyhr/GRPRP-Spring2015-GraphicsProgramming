@@ -4,7 +4,16 @@
 namespace RayTracer {
 	Triangle3d::Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders)
 		: a(a), b(b), c(c), u(Vector3d(b, a)), v(Vector3d(c, a)),
-			normal(Vector3d::crossProduct(Vector3d(b, a), Vector3d(c, a))), Object3d(shaders) {
+			normal(Vector3d::crossProduct(Vector3d(b, a), Vector3d(c, a))), Object3d(shaders) 
+	{
+
+	}
+
+	Triangle3d::Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders, float reflectiveness) :
+		a(a), b(b), c(c), u(Vector3d(b, a)), v(Vector3d(c, a)),
+		normal(Vector3d::crossProduct(Vector3d(b, a), Vector3d(c, a))), Object3d(shaders,reflectiveness)
+	{
+
 	}
 
 	Vector3d Triangle3d::CalculateNormal(Point3d point) {
