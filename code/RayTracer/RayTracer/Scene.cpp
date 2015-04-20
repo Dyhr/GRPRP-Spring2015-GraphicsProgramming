@@ -169,15 +169,32 @@ namespace RayTracer {
 			
 			if (count > 0)
 			{
-				// Take reflection into account
-				// Get reflection ray
-				Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, ray.direction);
-				Point3d pointForOutgoingReflectedRay = closestObject.collisionCoord;
-				Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.01f);
+				Material materialOfObject = closestObject.object->material;
+				if (materialOfObject.reflectiveness > 0.0f)
+				{
+					// Take reflection into account
+					// Get reflection ray
+					Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, ray.direction);
+					Point3d pointForOutgoingReflectedRay = closestObject.collisionCoord;
+					Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.01f);
 
-				ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1, currentRefractionIndex);
+					ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1, currentRefractionIndex);
 
-				shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, closestObject.object -> material.reflectiveness);
+					shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, materialOfObject.reflectiveness);
+
+				}
+
+				if (materialOfObject.transparency > 0.0f)
+				{
+					Vector3d vectorForRefractedRay = Vector3d::refractionVector(normal, ray.direction, currentRefractionIndex, materialOfObject.materialRefractionIndex);
+					Point3d pointForOutgoingRefractedRay = closestObject.collisionCoord;
+					Line3d reflectedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.01f);
+
+					ColorIntern refractionContribution = rayTrace(reflectedRay, count - 1, materialOfObject.materialRefractionIndex > 0.0f);
+
+					shadingColor = ColorIntern::blendByAmount(refractionContribution, shadingColor, materialOfObject.transparency);
+
+				}
 			}
 			
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
