@@ -31,13 +31,13 @@ namespace RayTracer{
 
 		//	As this method may be given a Line3d instance that does not originate from (0,0,0) a translation is made
 		//	to ease the calculation
-		
 
-		// Move from spot to origin
+		// Move circle from spot to origin; hence we can act as if line is originating from origo. 
 		Vector3d translatedCenter = Vector3d(centerPosition,line.position);
 
+
 		// Do calculations
-		float a = Vector3d::dotProduct(line.direction,line.direction);
+		float a = Vector3d::dotProduct(line.direction,line.direction);		// What? This will always return 1.0, if line.direction is normalized
 		float b = 2.0f*(Vector3d::dotProduct(line.direction, Vector3d::negate(translatedCenter)));
 		float c = Vector3d::dotProduct(translatedCenter, translatedCenter) - (radius*radius);
 

@@ -24,7 +24,7 @@ namespace RayTracer {
 		void setColor(int x, int y, Color^ color);
 		Line3d getRayFromScreen(int x, int y);
 		CollisionObject findClosestObject(Line3d ray);
-		ColorIntern rayTrace(Line3d ray);
+		ColorIntern rayTrace(Line3d ray, int count);
 
 		vector<LightBase*> getLightsThatHitPoint(Point3d point);
 	};

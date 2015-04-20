@@ -15,6 +15,7 @@ namespace RayTracer
 		static int sanitizeColor(int proposedValue);
 		static ColorIntern blendAddition(ColorIntern colorA, ColorIntern colorB);
 		static ColorIntern intensifyColor(ColorIntern colorA, float multiplier);
+		static ColorIntern blendByAmount(ColorIntern colorA, ColorIntern colorB, float ratioAToB);
 	};
 
 	public ref class Color

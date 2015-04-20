@@ -76,22 +76,22 @@ namespace RayTracer
 	{
 		// Define exiting vector originating from the origin of normal
 		// http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
-		//Vector3d step1 = multiply(incoming, 2.0f);			// 2*a
-		//float step2 = dotProduct(step1, normal);					// 2*a*n
-		//float step3 = step2 / pow(normal.length, 2);				// (2*a*n)/(|n|^2)
-		//Vector3d step4 = multiply(normal, step3);			// ((2*a*n)/(|n|^2)) x n
-		//Vector3d final = subtract(incoming, step4);				// a - ( ((2*a*n)/(|n|^2)) x n )
-		//return final;
+		Vector3d step1 = multiply(incoming, 2.0f);			// 2*a
+		float step2 = dotProduct(step1, normal);					// 2*a*n
+		float step3 = step2 / pow(normal.length, 2);				// (2*a*n)/(|n|^2)
+		Vector3d step4 = multiply(normal, step3);			// ((2*a*n)/(|n|^2)) x n
+		Vector3d final = subtract(incoming, step4);				// a - ( ((2*a*n)/(|n|^2)) x n )
+		return final;
 
-		Vector3d normalNormalized = Vector3d::normalize(normal);
+		/*Vector3d normalNormalized = Vector3d::normalize(normal);
 		Vector3d incomingNormalized = Vector3d::normalize(incomingNormalized);
 
 		Vector3d ln = Vector3d::multiply(normalNormalized, (Vector3d::dotProduct(incomingNormalized, normalNormalized)*2.0f));
 		Vector3d reflective = Vector3d::add(Vector3d::negate(incomingNormalized), ln);
-		return Vector3d::normalize(Vector3d::negate(reflective));
+		return Vector3d::normalize(Vector3d::negate(reflective));*/
 	}
 
-	Vector3d Vector3d::refractionVector(Vector3d, Vector3d, float, float) // normal and an incoming - refractionindex of from and to material
+	Vector3d Vector3d::refractionVector(Vector3d incoming, Vector3d normal, float refractionIndexFromMaterial, float refractionIndexToMaterial)
 	{
 		// Dummy implementation: Haven't had time to look into this yet!
 		return Vector3d();

@@ -27,8 +27,8 @@ namespace RayTracer{
 		static float distance(Vector3d, Vector3d); 
 
 		// Other math
-		static Vector3d reflectionVector(Vector3d normal, Vector3d incoming); // normal and an incoming
-		static Vector3d refractionVector(Vector3d, Vector3d, float, float); // normal and an incoming - refractionindex of from and to material
+		static Vector3d reflectionVector(Vector3d normal, Vector3d incoming);
+		static Vector3d refractionVector(Vector3d normal, Vector3d incoming, float refractionIndexFromMaterial, float refractionIndexToMaterial);
 		static bool isSameDirection(Vector3d, Vector3d);
 	};
 }

@@ -83,7 +83,7 @@ namespace RayTracer {
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				ColorIntern color = rayTrace(ray);
+				ColorIntern color = rayTrace(ray,1);	// TODO: 10 should be replaced by variable
 
 				Color^ outColor = gcnew Color(color); // convert to outgoing color
 				setColor(x, y, outColor);
@@ -133,13 +133,12 @@ namespace RayTracer {
 					previousDistance = distanceFromRayStart;
 					collision = &CollisionObject(object, hit);
 				}
-
 			}
 		}
 		return *collision;
 	}
 
-	ColorIntern Scene::rayTrace(Line3d ray)
+	ColorIntern Scene::rayTrace(Line3d ray, int count)
 	{
 		ColorIntern outColor = backgroundColor();
 
@@ -149,6 +148,20 @@ namespace RayTracer {
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
 			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord); // todo Use
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightsThatHit);
+			
+			if (count > 0)
+			{
+				// Take reflection into account
+				// Get reflection ray
+				Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, ray.direction);
+				Point3d pointForOutgoingReflectedRay = closestObject.collisionCoord;
+				Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.01f);
+
+				ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1);
+
+				shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, 0.4f);
+			}
+			
 			outColor = ColorIntern::blendAddition(outColor, shadingColor);
 		}
 

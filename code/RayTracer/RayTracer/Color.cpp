@@ -74,5 +74,22 @@ namespace RayTracer
 
 		return proposedColorValue;
 	}
+
+	// ratioAtoB must be a number between 0 and 1 
+	ColorIntern ColorIntern::blendByAmount(ColorIntern colorA, ColorIntern colorB, float ratioAToB)
+	{
+		if (ratioAToB < 0.0 || ratioAToB > 1.0)
+		{
+			// TODO: Throw relevant exception
+		}
+
+		int newRed = sanitizeColor(colorA.red * ratioAToB + colorB.red *(1.0 - ratioAToB));
+		int newGreen = sanitizeColor(colorA.green * ratioAToB + colorB.green *(1.0 - ratioAToB));
+		int newBlue = sanitizeColor(colorA.blue * ratioAToB + colorB.blue *(1.0 - ratioAToB));
+
+		return ColorIntern(newRed, newGreen, newBlue, 255);
+	}
+
+
 }
 
