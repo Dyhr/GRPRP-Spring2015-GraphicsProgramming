@@ -64,10 +64,11 @@ namespace RayTracer {
 
 		shadersWhite = vector<ShaderBase*>(2);
 		shadersRed = vector<ShaderBase*>(2);
-		shadersGreen = vector<ShaderBase*>(2);
+		shadersGreen = vector<ShaderBase*>(3);
 
 		shadersWhite[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
 		shadersWhite[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
+		shadersGreen[2] = new SpecularShader(ColorIntern(255, 255, 255, 255),5.0f);
 
 		shadersRed[0] = new AmbientShader(ColorIntern(235, 45, 20, 255));
 		shadersRed[1] = new DiffuseShader(ColorIntern(235, 45, 20, 255));
@@ -82,8 +83,8 @@ namespace RayTracer {
 		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
 
-		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhite,Material(0.1f,0.9f,1.4f));
-		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhite,Material(0.4f));
+		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhite,Material(0.1f));
+		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersGreen,Material(0.4f));
 
 
 		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
