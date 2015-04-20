@@ -6,7 +6,7 @@ namespace RayTracer
 	class ColorIntern
 	{
 		// Values for absorbance
-		float redAbsorbance, greenAbsorbance, blueAbsorbance; 
+		float redAbsorbance, greenAbsorbance, blueAbsorbance; // todo tror ikke vi skal bruge dem her - wind
 	public:
 		int red, green, blue, alpha;
 		ColorIntern();
@@ -14,6 +14,7 @@ namespace RayTracer
 
 		static int sanitizeColor(int proposedValue);
 		static ColorIntern blendAddition(ColorIntern colorA, ColorIntern colorB);
+		static ColorIntern blendMultiply(ColorIntern colorA, ColorIntern colorB);
 		static ColorIntern intensifyColor(ColorIntern colorA, float multiplier);
 		static ColorIntern blendByAmount(ColorIntern colorA, ColorIntern colorB, float ratioAToB);
 	};

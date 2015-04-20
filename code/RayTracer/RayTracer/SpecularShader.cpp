@@ -20,17 +20,18 @@ namespace RayTracer
 		for (vector<LightBase*>::iterator it = lights.begin(); it != lights.end(); ++it) 
 		{
 			LightBase* light = *it;
+			ColorIntern lightOnObjectColor = ColorIntern::blendMultiply(specularColor, light->getLightColor());
 			if ((light->getLightType()) != AMBIENT)
 			{
 				Vector3d normalNormalized = Vector3d::normalize(normalToSurface);
 				Vector3d lightIncommingNormalized = Vector3d::normalize(light->GetLightOnPoint(pointOnObject));
-				Vector3d eyeVectorNormalized = Vector3d::normalize(eyeVector);
+				Vector3d eyeVectorNormalized = Vector3d::negate(Vector3d::normalize(eyeVector));
 				Vector3d reflectionVector = Vector3d::reflectionVector(normalNormalized, lightIncommingNormalized);
 				
-				float dotP = Vector3d::dotProduct(eyeVectorNormalized, reflectionVector);
+				float dotP = Vector3d::dotProduct(eyeVectorNormalized, reflectionVector) < 0 ? 0 : Vector3d::dotProduct(eyeVectorNormalized, reflectionVector);
 				float intensity = pow(dotP, kExpValue) * light->GetIntensityOnPoint(pointOnObject);
 
-				ColorIntern specular = ColorIntern::intensifyColor(specularColor, intensity);
+				ColorIntern specular = ColorIntern::intensifyColor(lightOnObjectColor, intensity);
 				colorToReturn = ColorIntern::blendAddition(colorToReturn, specular);
 			}
 		}

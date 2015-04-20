@@ -15,9 +15,11 @@
 #include "DiffuseShader.h"
 #include "AmbientLight.h"
 #include "DirectionalLight.h"
+#include "PositionalLight.h"
 #include "SpecularShader.h"
 #include "Plane3d.h"
 #include "Triangle3d.h"
+
 
 using namespace std;
 
@@ -30,7 +32,7 @@ namespace RayTracer {
 
 	ColorIntern Scene::ambientColorOnObjects()
 	{
-		ColorIntern ambientColor = ColorIntern(40, 40, 40, 255);
+		ColorIntern ambientColor = ColorIntern(200, 200, 200, 255);
 		return ambientColor;
 	}
 
@@ -52,31 +54,46 @@ namespace RayTracer {
 
 	vector<Object3d*> sceneObjects;
 	vector<LightBase*> lightObjects;
-	vector<ShaderBase*> shadersOnObject1;
-	vector<ShaderBase*> shadersOnObject2;
+	vector<ShaderBase*> shadersWhite;
+	vector<ShaderBase*> shadersRed;
+	vector<ShaderBase*> shadersGreen;
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(5);
-		shadersOnObject1 = vector<ShaderBase*>(2);
-		shadersOnObject2 = vector<ShaderBase*>(2);
+		sceneObjects = vector<Object3d*>(7);
 
-		shadersOnObject1[0] = new AmbientShader(ambientColorOnObjects());
-		shadersOnObject1[1] = new DiffuseShader(ColorIntern(255, 0, 255, 255));
+		shadersWhite = vector<ShaderBase*>(2);
+		shadersRed = vector<ShaderBase*>(2);
+		shadersGreen = vector<ShaderBase*>(2);
 
-		shadersOnObject2[0] = new AmbientShader(ambientColorOnObjects());
-		shadersOnObject2[1] = new DiffuseShader(ColorIntern(0, 255, 255, 255));
-		//shadersOnObject1[2] = &SpecularShader(ColorIntern(230, 230, 230, 255), 0.5f);
-		sceneObjects[0] = new Sphere3d(Point3d(0, 0, 10), 1, shadersOnObject1);
-		sceneObjects[1] = new Sphere3d(Point3d(-2, 0, 8), 1, shadersOnObject1);
-		sceneObjects[2] = new Sphere3d(Point3d(0, 2.1f, 10), 1, shadersOnObject2);
-		//sceneObjects[2] = new Sphere3d(Point3d(80, 120, 10), 20, shadersOnObject1);
-		sceneObjects[3] = new Plane3d(Point3d(0,-1,0), Vector3d(0,1,0), shadersOnObject1);
-		sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
+		shadersWhite[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
+		shadersWhite[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
 
-		lightObjects = vector<LightBase*>(2);
-		lightObjects[0] = &AmbientLight(0.1f);
-		lightObjects[1] = &DirectionalLight(0.8f, Vector3d(0.5f, -1, 0.3f));
+		shadersRed[0] = new AmbientShader(ColorIntern(235, 45, 20, 255));
+		shadersRed[1] = new DiffuseShader(ColorIntern(235, 45, 20, 255));
+
+		shadersGreen[0] = new AmbientShader(ColorIntern(30, 235, 55, 255));
+		shadersGreen[1] = new DiffuseShader(ColorIntern(30, 235, 55, 255));
+		
+		// planes
+		sceneObjects[0] = new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite);
+		sceneObjects[1] = new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersWhite);
+		sceneObjects[2] = new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersWhite);
+		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
+		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
+
+		sceneObjects[5] = new Sphere3d(Point3d(-2, -2, 8), 1, shadersWhite);
+		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhite);
+
+
+		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
+
+		lightObjects = vector<LightBase*>(3);
+		lightObjects[0] = new AmbientLight(0.15f);
+		//lightObjects[1] = new DirectionalLight(0.3f, Vector3d(0.5f, -1, 0.3f), ColorIntern(255,150,180,255));
+		//lightObjects[2] = new DirectionalLight(0.5f, Vector3d(0.0f, -0.1f, 1.0f), ColorIntern(180, 150, 255, 255));
+		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4, 10), 10.0f, ColorIntern(255,230,230,255));
+		lightObjects[2] = new PositionalLight(0.2f, Point3d(0, 0, 0), 10.0f, ColorIntern(255, 255, 255, 255));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
@@ -110,8 +127,8 @@ namespace RayTracer {
 	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
 		// Center of viewport is located in (0,0,0)
-		float px = -(width*viewPortSize) / 2.0f + viewPortSize * x;
-		float py =  (width*viewPortSize) / 2.0f - viewPortSize * y;
+		float px = -(viewPortWidth) / 2.0f + viewPortSize * x;
+		float py = (viewPortHeight) / 2.0f - viewPortSize * y;
 
 		return Line3d(Point3d(), Vector3d::normalize(Vector3d(px, py, zLocation)));
 	}
@@ -146,7 +163,8 @@ namespace RayTracer {
 		if (closestObject.isReal)
 		{
 			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
-			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord); // todo Use
+			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord); // shadows
+
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightsThatHit);
 			
 			if (count > 0)
@@ -176,23 +194,32 @@ namespace RayTracer {
 			if (light->getLightType() == AMBIENT)
 			{
 				lightsThatHit.push_back(light);
-				continue;
 			}
-
-			Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-			bool isIntercepted = false;
-			for each (Object3d* object in sceneObjects)
+			else
 			{
-				Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.001f));
-				if (hit.x != 0 && hit.y != 0 && hit.z != 0)
+				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
+				bool isIntercepted = false;
+				for each (Object3d* object in sceneObjects)
 				{
-					isIntercepted = true;
-					break;
+					Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.001f));
+					if (hit.x != 0 && hit.y != 0 && hit.z != 0)
+					{
+						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+						if (light->getLightType() == POSITIONAL && Vector3d(point, hit).length > light->GetLightOnPoint(point).length)
+						{
+						}
+						else
+						{
+							isIntercepted = true;
+							break;
+						}
+						
+					}
 				}
-			}
-			if (!isIntercepted)
-			{
-				lightsThatHit.push_back(light);
+				if (!isIntercepted)
+				{
+					lightsThatHit.push_back(light);
+				}
 			}
 		}
 

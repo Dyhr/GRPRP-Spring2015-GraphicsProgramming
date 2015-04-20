@@ -20,7 +20,9 @@ namespace RayTracer{
 			LightBase* light = *it;
 			if ((light->getLightType()) == AMBIENT)
 			{
-				ColorIntern ambientColor = ColorIntern::intensifyColor(objectColor, light->GetIntensityOnPoint(pointOnObject));
+				ColorIntern lightOnObjectColor = ColorIntern::blendMultiply(objectColor, light->getLightColor());
+
+				ColorIntern ambientColor = ColorIntern::intensifyColor(lightOnObjectColor, light->GetIntensityOnPoint(pointOnObject));
 				colorToReturn = ColorIntern::blendAddition(colorToReturn, ambientColor);
 			}
 		}
