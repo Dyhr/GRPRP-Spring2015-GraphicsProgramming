@@ -7,9 +7,9 @@
 namespace RayTracer {
 	class Triangle3d : public Object3d {
 	private:
+	public:
 		const Point3d a, b, c;
 		const Vector3d u, v, normal;
-	public:
 		Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders);
 		Triangle3d(Point3d a, Point3d b, Point3d c, vector<ShaderBase*> shaders, Material material);
 

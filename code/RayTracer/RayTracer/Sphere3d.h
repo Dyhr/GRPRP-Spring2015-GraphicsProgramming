@@ -11,6 +11,7 @@ namespace RayTracer{
 		const float radius;
 		
 	public:
+		Sphere3d(Point3d center, float _radius);
 		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders);
 		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders, Material material);
 		

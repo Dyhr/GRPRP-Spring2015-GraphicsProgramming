@@ -95,7 +95,7 @@ namespace RayTracer
 
 		Vector3d vector1 = multiply(incomingNormalized, r);
 		
-		float factor = r * c - sqrt(1.0 - r*r*(1 - c*c));
+		float factor = r * c - sqrt(1.0f - r*r*(1 - c*c));
 		Vector3d vector2 = multiply(normalNormalized, factor);
 
 		return add(vector1, vector2);

@@ -84,6 +84,7 @@
     <ClInclude Include="LightBase.h" />
     <ClInclude Include="Line3d.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh3d.h" />
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="Plane3d.h" />
     <ClInclude Include="Point3d.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Line3d.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh3d.cpp" />
     <ClCompile Include="Plane3d.cpp" />
     <ClCompile Include="Point3d.cpp" />
     <ClCompile Include="PositionalLight.cpp" />

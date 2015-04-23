@@ -62,9 +62,9 @@ namespace RayTracer
 
 	ColorIntern ColorIntern::intensifyColor(ColorIntern colorA, float multiplier)
 	{
-		int red =	sanitizeColor(colorA.red * multiplier);
-		int green = sanitizeColor(colorA.green * multiplier);
-		int blue =	sanitizeColor(colorA.blue * multiplier);
+		int red =	sanitizeColor((int)(colorA.red * multiplier));
+		int green = sanitizeColor((int)(colorA.green * multiplier));
+		int blue = sanitizeColor((int)(colorA.blue * multiplier));
 
 		return ColorIntern(red, green, blue, 255);
 	}
@@ -91,9 +91,9 @@ namespace RayTracer
 			// TODO: Throw relevant exception
 		}
 
-		int newRed = sanitizeColor(colorA.red * ratioAToB + colorB.red *(1.0 - ratioAToB));
-		int newGreen = sanitizeColor(colorA.green * ratioAToB + colorB.green *(1.0 - ratioAToB));
-		int newBlue = sanitizeColor(colorA.blue * ratioAToB + colorB.blue *(1.0 - ratioAToB));
+		int newRed = sanitizeColor((int)(colorA.red * ratioAToB + colorB.red *(1.0f - ratioAToB)));
+		int newGreen = sanitizeColor((int)(colorA.green * ratioAToB + colorB.green *(1.0f - ratioAToB)));
+		int newBlue = sanitizeColor((int)(colorA.blue * ratioAToB + colorB.blue *(1.0f - ratioAToB)));
 
 		return ColorIntern(newRed, newGreen, newBlue, 255);
 	}
