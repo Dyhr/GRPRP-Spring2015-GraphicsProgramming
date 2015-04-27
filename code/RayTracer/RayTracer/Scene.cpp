@@ -155,15 +155,15 @@ namespace RayTracer {
 
 		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 			Object3d* object = *it;
-			Point3d hit = object->CalculateCollisionPosition(ray);
-			if (hit.x != 0 || hit.y != 0 || hit.z != 0)
+			RayHit hit = object->CalculateCollision(ray);
+			if (hit.success)
 			{
-				float distanceFromRayStart = Vector3d(hit, ray.position).length;
+				float distanceFromRayStart = Vector3d(hit.point, ray.position).length;
 
 				if (distanceFromRayStart > 0 && distanceFromRayStart < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
 				{
 					previousDistance = distanceFromRayStart;
-					collision = &CollisionObject(object, hit);
+					collision = &CollisionObject(object, hit.point);
 				}
 			}
 		}
