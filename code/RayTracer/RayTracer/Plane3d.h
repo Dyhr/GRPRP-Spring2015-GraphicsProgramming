@@ -17,6 +17,7 @@ namespace RayTracer
 
 		Vector3d CalculateNormal(Point3d); // normal based on position always the same for a plane.
 		Point3d CalculateCollisionPosition(Line3d);
+		RayHit CalculateCollision(Line3d line);
 	};
 
 }

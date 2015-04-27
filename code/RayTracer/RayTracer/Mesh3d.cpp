@@ -40,22 +40,26 @@ namespace RayTracer {
 		return Vector3d(0, 1, 0);
 	}
 	Point3d Mesh3d::CalculateCollisionPosition(Line3d line) {
-		Point3d sphereHit = boundingSphere->CalculateCollisionPosition(line);
-		if(sphereHit.x != 0 || sphereHit.y != 0 || sphereHit.z != 0) {
-			Point3d* hit = new Point3d();
+		RayHit hit = CalculateCollision(line);
+		return hit.point;
+	}
+	RayHit Mesh3d::CalculateCollision(Line3d line) {
+		RayHit sphereHit = boundingSphere->CalculateCollision(line);
+		if(sphereHit.success) {
+			RayHit* hit = new RayHit();
 			float distance = 10000000.0f;
 			for each(Triangle3d* triangle in triangles) {
-				Point3d* triHit = &triangle->CalculateCollisionPosition(line);
-				if(triHit->x != 0 || triHit->y != 0 || triHit->z != 0) {
-					float d = Vector3d(line.position, *triHit).length;
+				RayHit triHit = triangle->CalculateCollision(line);
+				if(triHit.success) {
+					float d = Vector3d(line.position, triHit.point).length;
 					if(d > 0 && d < distance) {
-						hit = triHit;
+						hit = &triHit;
 						distance = d; 
 					}
 				}
 			}
 			return *hit;
 		}
-		return sphereHit;
+		return RayHit();
 	}
 }

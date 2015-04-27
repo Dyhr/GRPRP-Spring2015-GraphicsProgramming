@@ -24,4 +24,12 @@ namespace RayTracer
 
 		return d > 0 ? line.getPositionAlongLine(d) : Point3d();
 	}
+	RayHit Plane3d::CalculateCollision(Line3d line) {
+		if(Vector3d::dotProduct(line.direction, normal) == 0) return RayHit();
+
+		float d = (Vector3d::dotProduct(Vector3d(position, line.position), normal)) / (Vector3d::dotProduct(line.direction, normal));
+		Point3d point = line.getPositionAlongLine(d);
+
+		return d > 0?RayHit(point,normal):RayHit();
+	}
 }

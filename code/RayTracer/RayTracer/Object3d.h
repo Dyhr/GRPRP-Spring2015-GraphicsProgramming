@@ -12,6 +12,15 @@ using namespace std;
 #include "Material.h"
 
 namespace RayTracer{
+	struct RayHit {
+		bool success;
+		Point3d point;
+		Vector3d normal;
+
+		RayHit() :success(false), point(Point3d()), normal(Vector3d()) {}
+		RayHit(Point3d point, Vector3d normal) :success(true), point(point), normal(normal) {}
+	};
+
 	class Object3d
 	{
 	public:
@@ -22,6 +31,7 @@ namespace RayTracer{
 
 		virtual Vector3d CalculateNormal(Point3d) = 0; 
 		virtual Point3d CalculateCollisionPosition(Line3d) = 0;
+		virtual RayHit CalculateCollision(Line3d) = 0;
 
 		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights) {
 			ColorIntern colorToReturn = ColorIntern();

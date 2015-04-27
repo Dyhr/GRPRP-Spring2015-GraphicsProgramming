@@ -15,6 +15,10 @@ namespace RayTracer
 		z(float(endPoint.z-startPoint.z)),
 		length(float(sqrt(pow((endPoint.x - startPoint.x), 2) + pow((endPoint.y - startPoint.y), 2) + pow((endPoint.z - startPoint.z), 2)))) { }
 
+	Vector3d Vector3d::fromPoint(Point3d point) {
+		return Vector3d(point.x, point.y, point.z);
+	}
+
 
 	// Math
 

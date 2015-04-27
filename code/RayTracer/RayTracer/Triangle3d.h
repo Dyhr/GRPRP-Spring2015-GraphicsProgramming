@@ -15,6 +15,7 @@ namespace RayTracer {
 
 		Vector3d CalculateNormal(Point3d point);
 		Point3d CalculateCollisionPosition(Line3d line);
+		RayHit CalculateCollision(Line3d line);
 	};
 }
 

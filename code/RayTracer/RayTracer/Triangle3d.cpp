@@ -22,8 +22,12 @@ namespace RayTracer {
 	float abs(float f) {
 		return f < 0 ? -f : f;
 	}
-	// Source http://geomalgorithms.com/a06-_intersect-2.html#intersect3D_RayTriangle%28%29
 	Point3d Triangle3d::CalculateCollisionPosition(Line3d line) {
+		RayHit hit = CalculateCollision(line);
+		return hit.point;
+	}
+	// Source http://geomalgorithms.com/a06-_intersect-2.html#intersect3D_RayTriangle%28%29
+	RayHit Triangle3d::CalculateCollision(Line3d line) {
 		float     r, a, b;              // params to calc ray-plane intersect
 
 		Vector3d dir = line.direction;              // ray direction vector
@@ -31,13 +35,13 @@ namespace RayTracer {
 		a = -Vector3d::dotProduct(normal, w0);
 		b = Vector3d::dotProduct(normal, dir);
 		if(abs(b) < 0.000001f) {     // ray is  parallel to triangle plane
-			return Point3d(); // Disjoint. no intersect
+			return RayHit(); // Disjoint. no intersect
 		}
 
 		// get intersect point of ray with triangle plane
 		r = a / b;
 		if(r < 0.0)                    // ray points away from triangle
-			return Point3d();                   // => no intersect
+			return RayHit();                   // => no intersect
 		// for a segment, also test if (r > 1.0) => no intersect
 
 		Point3d I = line.getPositionAlongLine(r);            // intersect point of ray and plane
@@ -56,11 +60,11 @@ namespace RayTracer {
 		float s, t;
 		s = (uv * wv - vv * wu) / D;
 		if(s < 0.0 || s > 1.0)         // I is outside T
-			return Point3d();
+			return RayHit();
 		t = (uv * wu - uu * wv) / D;
 		if(t < 0.0 || (s + t) > 1.0)  // I is outside T
-			return Point3d();
+			return RayHit();
 
-		return I;                       // I is in T
+		return RayHit(I,normal);                       // I is in T
 	}
 }
