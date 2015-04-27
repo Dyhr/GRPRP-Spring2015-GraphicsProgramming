@@ -62,7 +62,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(8);
+		sceneObjects = vector<Object3d*>(9);
 
 		shadersWhite = vector<ShaderBase*>(2);
 		shadersWhiteSpecular = vector<ShaderBase*>(3);
@@ -96,7 +96,9 @@ namespace RayTracer {
 		meshTris[0] = new Triangle3d(Point3d(-5, -2, 12), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
 		meshTris[1] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(5, -2, 10), shadersWhiteSpecular);
 		meshTris[2] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
-		sceneObjects[7] = new Mesh3d(Point3d(),meshTris,shadersWhiteSpecular, Material(0.1f));
+		sceneObjects[7] = new Mesh3d(Point3d(), meshTris, shadersRed, Material());
+
+		sceneObjects[8] = new Triangle3d(Point3d(-1, 0, 10), Point3d(0, 1, 12), Point3d(-5, 4, 10), shadersGreen);
 
 		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
 
@@ -163,7 +165,7 @@ namespace RayTracer {
 				if (distanceFromRayStart > 0 && distanceFromRayStart < previousDistance) // can only do this since the start point is placed at (0,0,0) NEED TO FIX THIS for recoursion
 				{
 					previousDistance = distanceFromRayStart;
-					collision = &CollisionObject(object, hit.point);
+					collision = &CollisionObject(object, hit);
 				}
 			}
 		}
@@ -177,10 +179,10 @@ namespace RayTracer {
 		CollisionObject closestObject = findClosestObject(ray);
 		if (closestObject.isReal)
 		{
-			Vector3d normal = closestObject.object->CalculateNormal(closestObject.collisionCoord);
-			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.collisionCoord); // shadows
+			Vector3d normal = closestObject.hit.normal;
+			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.hit.point); // shadows
 
-			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.collisionCoord, lightsThatHit);
+			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.hit.point, lightsThatHit);
 			
 			if (count > 0)
 			{
@@ -190,7 +192,7 @@ namespace RayTracer {
 					// Take reflection into account
 					// Get reflection ray
 					Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, ray.direction);
-					Point3d pointForOutgoingReflectedRay = closestObject.collisionCoord;
+					Point3d pointForOutgoingReflectedRay = closestObject.hit.point;
 					Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.001f);
 
 					ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1, currentRefractionIndex);
@@ -211,7 +213,7 @@ namespace RayTracer {
 					
 
 					Vector3d vectorForRefractedRay = Vector3d::refractionVector(newNormal, Vector3d::negate(ray.direction), currentRefractionIndex, nextRefraction);
-					Point3d pointForOutgoingRefractedRay = closestObject.collisionCoord;
+					Point3d pointForOutgoingRefractedRay = closestObject.hit.point;
 					Line3d reflectedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.001f);
 
 					ColorIntern refractionContribution = rayTrace(reflectedRay, count - 1, nextRefraction);

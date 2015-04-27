@@ -7,9 +7,9 @@ namespace RayTracer{
 	{
 	public:
 		CollisionObject();
-		CollisionObject(Object3d*, Point3d);
+		CollisionObject(Object3d*, RayHit);
 		Object3d* object;
-		Point3d collisionCoord;
+		RayHit hit;
 		bool isReal;
 	};
 }

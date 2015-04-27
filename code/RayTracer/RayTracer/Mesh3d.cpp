@@ -52,10 +52,11 @@ namespace RayTracer {
 				RayHit triHit = triangle->CalculateCollision(line);
 				if(triHit.success) {
 					float d = Vector3d(line.position, triHit.point).length;
-					if(d > 0 && d < distance) {
+					if(d < distance) {
 						hit = &triHit;
 						distance = d; 
 					}
+					return triHit;
 				}
 			}
 			return *hit;
