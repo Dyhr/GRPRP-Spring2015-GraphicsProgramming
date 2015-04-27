@@ -242,11 +242,11 @@ namespace RayTracer {
 				bool isIntercepted = false;
 				for each (Object3d* object in sceneObjects)
 				{
-					Point3d hit = object->CalculateCollisionPosition(ray.pushStartAlongLine(0.001f));
-					if (hit.x != 0 && hit.y != 0 && hit.z != 0)
+					RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
+					if (hit.success)
 					{
 						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-						if (light->getLightType() == POSITIONAL && Vector3d(point, hit).length > light->GetLightOnPoint(point).length)
+						if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
 						{
 						}
 						else
