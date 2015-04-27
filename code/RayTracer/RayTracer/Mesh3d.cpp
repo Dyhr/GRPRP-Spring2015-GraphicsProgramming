@@ -45,12 +45,12 @@ namespace RayTracer {
 			Point3d* hit = new Point3d();
 			float distance = 10000000.0f;
 			for each(Triangle3d* triangle in triangles) {
-				Point3d triHit = triangle->CalculateCollisionPosition(line);
-				if(triHit.x != 0 || triHit.y != 0 || triHit.z != 0) {
-					float d = Vector3d(Point3d(), triHit).length;
-					if(d < distance) {
-						hit = &triHit;
-						distance = d;
+				Point3d* triHit = &triangle->CalculateCollisionPosition(line);
+				if(triHit->x != 0 || triHit->y != 0 || triHit->z != 0) {
+					float d = Vector3d(line.position, *triHit).length;
+					if(d > 0 && d < distance) {
+						hit = triHit;
+						distance = d; 
 					}
 				}
 			}

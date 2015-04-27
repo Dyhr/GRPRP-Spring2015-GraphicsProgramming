@@ -19,6 +19,7 @@
 #include "SpecularShader.h"
 #include "Plane3d.h"
 #include "Triangle3d.h"
+#include "Mesh3d.h"
 
 
 using namespace std;
@@ -61,7 +62,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(7);
+		sceneObjects = vector<Object3d*>(8);
 
 		shadersWhite = vector<ShaderBase*>(2);
 		shadersWhiteSpecular = vector<ShaderBase*>(3);
@@ -91,6 +92,11 @@ namespace RayTracer {
 		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material());
 		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhiteSpecular, Material(0.4f));
 
+		vector<Triangle3d*> meshTris = vector<Triangle3d*>(3);
+		meshTris[0] = new Triangle3d(Point3d(-5, -2, 12), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
+		meshTris[1] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(5, -2, 10), shadersWhiteSpecular);
+		meshTris[2] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
+		sceneObjects[7] = new Mesh3d(Point3d(),meshTris,shadersWhiteSpecular, Material(0.1f));
 
 		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
 
@@ -150,7 +156,7 @@ namespace RayTracer {
 		for (vector<Object3d*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 			Object3d* object = *it;
 			Point3d hit = object->CalculateCollisionPosition(ray);
-			if (hit.x != 0 && hit.y != 0 && hit.z != 0)
+			if (hit.x != 0 || hit.y != 0 || hit.z != 0)
 			{
 				float distanceFromRayStart = Vector3d(hit, ray.position).length;
 
