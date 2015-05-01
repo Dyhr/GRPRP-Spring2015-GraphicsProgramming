@@ -94,15 +94,21 @@ namespace RayTracer
 		Vector3d normalNormalized = normalize(normal);
 		Vector3d incomingNormalized = normalize(incoming);
 
-		float r = refractionIndexFromMaterial / refractionIndexToMaterial;
-		float c = -1.0f * dotProduct(normalNormalized, incomingNormalized);
+		float n = refractionIndexFromMaterial / refractionIndexToMaterial;
+		Vector3d v1 = multiply(incomingNormalized, n);
 
-		Vector3d vector1 = multiply(incomingNormalized, r);
-		
-		float factor = r * c - sqrt(1.0f - r*r*(1 - c*c));
-		Vector3d vector2 = multiply(normalNormalized, factor);
+		float cosI = dotProduct(normalNormalized, incomingNormalized);
+		float sinI = n * n * (1.0f - cosI * cosI);
 
-		return add(vector1, vector2);
+		if (sinI > 1.0f)
+		{
+			// We have total internal reflection
+			return Vector3d();
+		}
+
+		Vector3d v2 = multiply(normalNormalized, -1.0f*(n * cosI + sqrt(1.0f - sinI)));
+
+		return normalize(add(v1, v2));
 	}
 
 	// Notice, that isSameDirection returns false if v1 and v2 are parallel but pointing in opposite directions

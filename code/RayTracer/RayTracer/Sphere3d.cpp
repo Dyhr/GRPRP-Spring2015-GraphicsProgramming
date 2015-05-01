@@ -57,34 +57,62 @@ namespace RayTracer{
 
 		// For now, arbitrarily chosen threshold for "0"
 		float threshold = 0.01f;
-		if(d > threshold) {
+		if(d > 0.0f) 
+		{
 			// Two solutions:
+		
 			float tValue1 = (-1.0f*b + sqrt(pow(b, 2) - 4.0f*a*c)) / (2.0f*a);
 			float tValue2 = (-1.0f*b - sqrt(pow(b, 2) - 4.0f*a*c)) / (2.0f*a);
 
-			// The lowest tValue corresponds to the first intersection
-			float lowestTValue = tValue1 < tValue2?tValue1:tValue2;
-
-			if(lowestTValue < 0.0) {
-				// This means, that the the intersection is in the opposite direstion of the line
+			float lowestTValue;
+			// The lowest, nonnegative tValue corresponds to the first intersection
+			if(tValue1 > 0.0f && tValue2 > 0.0f && tValue1 < tValue2)
+			{
+				lowestTValue = tValue1;
+			}
+			else if (tValue1 > 0.0f && tValue2 > 0.0f && tValue2 < tValue1)
+			{
+				lowestTValue = tValue2;
+			}
+			else if (tValue1 < 0.0f && tValue2 > 0.0f)
+			{
+				lowestTValue = tValue2;
+			}
+			else if (tValue2 < 0.0f && tValue1 > 0.0f)
+			{
+				lowestTValue = tValue1;
+			}
+			else
+			{
+				// Both are negative, and hence no valid solution
 				return RayHit();
 			}
+
 
 			// First solution: (-(b)+sqrt(D))/(2*a) and Make up for initial translation
 			Vector3d intersect = Vector3d::add(Vector3d::multiply(line.direction, lowestTValue), Vector3d::fromPoint(line.position));
 			Point3d point = Point3d(intersect.x, intersect.y, intersect.z);
 
 			return RayHit(point,CalculateNormal(point));
-		} else if(d > 0.0 && d < threshold) {
+		} 
+		else if(d > 0.0 && d < threshold) 
+		{
 			// One solution: (-b)/(2*a)
 			float tValue = (-1.0f*b) / (2.0f*a);
+
+			if (tValue < 0.0f)
+			{
+				return RayHit();
+			}
 
 			// Corresponding point on line with given t and Make up for initial translation
 			Vector3d intersect = Vector3d::add(Vector3d::multiply(line.direction, tValue), Vector3d::fromPoint(line.position));
 			Point3d point = Point3d(intersect.x, intersect.y, intersect.z);
 
 			return RayHit(point, CalculateNormal(point));
-		} else {
+		} 
+		else 
+		{
 			// No solutions: Return empty array
 			return RayHit();
 		}
