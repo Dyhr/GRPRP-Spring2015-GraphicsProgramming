@@ -24,7 +24,7 @@ namespace RayTracer{
 					Point3d point = Point3d(position.x - deltaX / 2.0f + deltaX / (float)(1.0f * amtOfLightsX) * (float)k,
 											position.y - deltaY / 2.0f + deltaY / (float)(1.0f * amtOfLightsY) * (float)j,
 											position.z - deltaZ / 2.0f + deltaZ / (float)(1.0f * amtOfLightsZ) * (float)i);
-					lights[index++] = new PositionalLight(totalIntensity / lightsTimes3, point, fallOff, color);
+					lights[index++] = new PositionalLight(totalIntensity / (float)(1.0f*lightsTimes3), point, fallOff, color);
 				}
 			}
 		}
