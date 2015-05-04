@@ -69,8 +69,10 @@ void savebmp(const char *filename, int w, int h, int dpi, RGBType *data)
 
 int _tmain(int argc, _TCHAR* argv[])
 { 
-	int v[11] = { 'G', 'd', 'k', 'k', 'n', 31, 'v', 'n', 'q', 'k', 'c' };
+	int v[2][2] = { { 'A', 'P' }, { 'T', 'Q' } };
 
+	extent<2> e(2, 2);
+	
 	array_view<int> av(11, v);
 	parallel_for_each(av.extent, [=](index<1> idx) restrict(amp)
 	{
