@@ -95,9 +95,8 @@ namespace RayTracer
 		Vector3d incomingNormalized = normalize(incoming);
 
 		float n = refractionIndexFromMaterial / refractionIndexToMaterial;
-		Vector3d v1 = multiply(incomingNormalized, n);
 
-		float cosI = dotProduct(normalNormalized, incomingNormalized);
+		float cosI = -dotProduct(normalNormalized, incomingNormalized);
 		float sinI = n * n * (1.0f - cosI * cosI);
 
 		if (sinI > 1.0f)
@@ -105,8 +104,11 @@ namespace RayTracer
 			// We have total internal reflection
 			return Vector3d();
 		}
+		float cosT = sqrt(1.0f-sinI);
 
-		Vector3d v2 = multiply(normalNormalized, -1.0f*(n * cosI + sqrt(1.0f - sinI)));
+		Vector3d v1 = multiply(incomingNormalized, n);
+
+		Vector3d v2 = multiply(normalNormalized, (n *cosI - cosT));
 
 		return normalize(add(v1, v2));
 	}
