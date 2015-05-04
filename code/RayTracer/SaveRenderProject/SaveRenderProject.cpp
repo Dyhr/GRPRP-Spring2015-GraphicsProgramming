@@ -2,6 +2,9 @@
 //
 
 #include "stdafx.h"
+#include <iostream>
+#include <amp.h> 
+using namespace concurrency;
 
 struct RGBType{
 public:
@@ -9,7 +12,7 @@ public:
 };
 
 void savebmp(const char *filename, int w, int h, int dpi, RGBType *data)
-{
+{/*
 	FILE *f;
 	int k = w*h;
 	int s = 4 * k;
@@ -60,13 +63,25 @@ void savebmp(const char *filename, int w, int h, int dpi, RGBType *data)
 		unsigned char color[3] = { rgb.b, rgb.g, rgb.r };
 		fwrite(color, 1, 3, f);
 	}
-	fclose(f);
+	fclose(f);*/
 	return;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 { 
-	int dpi = 72;
+	int v[11] = { 'G', 'd', 'k', 'k', 'n', 31, 'v', 'n', 'q', 'k', 'c' };
+
+	array_view<int> av(11, v);
+	parallel_for_each(av.extent, [=](index<1> idx) restrict(amp)
+	{
+		av[idx] += 1;
+	});
+
+	for (unsigned int i = 0; i < 11; i++)
+		std::cout << static_cast<char>(av[i]);
+}
+
+	/*int dpi = 72;
 	int width = 1000;
 	int height = 1000;
 	int n = width*height;
@@ -84,5 +99,5 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	savebmp("render.bmp", 100, 100, 50, pixels);
 	return 0;
-}
+}*/
 
