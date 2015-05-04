@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClInclude Include="AmbientLight.h" />
     <ClInclude Include="AmbientShader.h" />
+    <ClInclude Include="BoxSoftLight.h" />
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="DiffuseShader.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="AmbientLight.cpp" />
     <ClCompile Include="AmbientShader.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="BoxSoftLight.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="DiffuseShader.cpp" />
@@ -113,7 +115,6 @@
     <ClCompile Include="Point3d.cpp" />
     <ClCompile Include="PositionalLight.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SoftLightbase.cpp" />
     <ClCompile Include="SpecularShader.cpp" />
     <ClCompile Include="Sphere3d.cpp" />
     <ClCompile Include="Stdafx.cpp">
