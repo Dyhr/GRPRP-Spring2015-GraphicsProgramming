@@ -62,7 +62,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(9);
+		sceneObjects = vector<Object3d*>(7);
 
 		shadersWhite = vector<ShaderBase*>(2);
 		shadersWhiteSpecular = vector<ShaderBase*>(3);
@@ -92,13 +92,13 @@ namespace RayTracer {
 		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material());
 		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 12), 2, shadersWhiteSpecular, Material(0.4f));
 
-		vector<Triangle3d*> meshTris = vector<Triangle3d*>(3);
-		meshTris[0] = new Triangle3d(Point3d(-5, -2, 12), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
-		meshTris[1] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(5, -2, 10), shadersWhiteSpecular);
-		meshTris[2] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
-		sceneObjects[7] = new Mesh3d(Point3d(), meshTris, shadersRed, Material());
-
-		sceneObjects[8] = new Triangle3d(Point3d(-1, 0, 10), Point3d(0, 1, 12), Point3d(-5, 4, 10), shadersGreen);
+		// vector<Triangle3d*> meshTris = vector<Triangle3d*>(3);
+		// meshTris[0] = new Triangle3d(Point3d(-5, -2, 12), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
+		// meshTris[1] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(5, -2, 10), shadersWhiteSpecular);
+		// meshTris[2] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
+		// sceneObjects[7] = new Mesh3d(Point3d(), meshTris, shadersRed, Material());
+		// 
+		// sceneObjects[8] = new Triangle3d(Point3d(-1, 0, 10), Point3d(0, 1, 12), Point3d(-5, 4, 10), shadersGreen);
 
 		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
 
