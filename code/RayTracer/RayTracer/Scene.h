@@ -16,6 +16,7 @@ namespace RayTracer {
 		ColorIntern backgroundColor();
 		ColorIntern ambientColorOnObjects();
 		float sceneRefractionIndex = 1.0f;
+		int amtOfShadowRays = 1;
 	private:
 		int width, height;
 		float viewPortWidth, viewPortHeight, viewPortSize, zLocation;
