@@ -99,7 +99,7 @@ namespace RayTracer {
 		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
 
-		sceneObjects[5] = new Sphere3d(Point3d(-1, 0, 8), 1, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.03f));
+		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.03f));
 		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.8f, 1.04f));
 
 		// vector<Triangle3d*> meshTris = vector<Triangle3d*>(3);
