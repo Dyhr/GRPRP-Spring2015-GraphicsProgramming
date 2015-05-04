@@ -62,18 +62,18 @@ namespace RayTracer {
 	vector<ShaderBase*> shadersWhiteSpecular;
 	vector<ShaderBase*> shadersRed;
 	vector<ShaderBase*> shadersGreen;
-	vector<ShaderBase*> shadersBlue;
+	vector<ShaderBase*> shadersBlack;
 	vector<ShaderBase*> shadersYellow;
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(7);
+		sceneObjects = vector<Object3d*>(8);
 
 		shadersWhite = vector<ShaderBase*>(2);
 		shadersWhiteSpecular = vector<ShaderBase*>(3);
 		shadersRed = vector<ShaderBase*>(2);
 		shadersGreen = vector<ShaderBase*>(2);
-		shadersBlue = vector<ShaderBase*>(2);
+		shadersBlack = vector<ShaderBase*>(2);
 		shadersYellow = vector<ShaderBase*>(2);
 
 		shadersWhite[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
@@ -89,21 +89,22 @@ namespace RayTracer {
 		shadersGreen[0] = new AmbientShader(ColorIntern(30, 235, 55, 255));
 		shadersGreen[1] = new DiffuseShader(ColorIntern(30, 235, 55, 255));
 
-		shadersBlue[0] = new AmbientShader(ColorIntern(30, 55, 235, 255));
-		shadersBlue[1] = new DiffuseShader(ColorIntern(30, 55, 235, 255));
+		shadersBlack[0] = new AmbientShader(ColorIntern(3, 3, 3, 255));
+		shadersBlack[1] = new DiffuseShader(ColorIntern(3, 3, 3, 255));
 
 		shadersYellow[0] = new AmbientShader(ColorIntern(235, 235, 55, 255));
 		shadersYellow[1] = new DiffuseShader(ColorIntern(235, 235, 55, 255));
 		
 		// planes
 		sceneObjects[0] = new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite);
-		sceneObjects[1] = new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersBlue);
-		sceneObjects[2] = new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersYellow);
+		sceneObjects[1] = new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersYellow);
+		sceneObjects[2] = new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersWhite);
 		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
+		sceneObjects[5] = new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack);
 
-		sceneObjects[5] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.01f));
-		sceneObjects[6] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.02f));
+		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.01f));
+		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.02f));
 
 		// vector<Triangle3d*> meshTris = vector<Triangle3d*>(3);
 		// meshTris[0] = new Triangle3d(Point3d(-5, -2, 12), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
@@ -123,7 +124,7 @@ namespace RayTracer {
 		lightObjects[1] = new PositionalLight(0.2f, Point3d(0, 0, 0), 10.0f, ColorIntern(255, 255, 255, 255));
 
 		softLightObjects = vector<SoftLightbase*>(1);
-		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4, 10), 10.0f, ColorIntern(255, 230, 230, 255), 2, 0, 1, 4);
+		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4, 10), 10.0f, ColorIntern(255, 230, 230, 255), 2, 0, 1, 11,1,11);
 
 		//lightObjects[3] = new PositionalLight(0.2f, Point3d(-4.0f, 0, 10), 2.0f, ColorIntern(235, 45, 20, 255));
 		//lightObjects[4] = new PositionalLight(0.2f, Point3d(4.5f, 0, 10), 2.0f, ColorIntern(30, 235, 55, 255));
