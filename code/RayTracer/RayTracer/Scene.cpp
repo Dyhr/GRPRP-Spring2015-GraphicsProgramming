@@ -124,7 +124,7 @@ namespace RayTracer {
 		lightObjects[1] = new PositionalLight(0.2f, Point3d(0, 0, 0), 10.0f, ColorIntern(255, 255, 255, 255));
 
 		softLightObjects = vector<SoftLightbase*>(1);
-		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 2.0f, 0.1f, 2.0f, 8,1,8);
+		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 8,1,8);
 
 		//lightObjects[3] = new PositionalLight(0.2f, Point3d(-4.0f, 0, 10), 2.0f, ColorIntern(235, 45, 20, 255));
 		//lightObjects[4] = new PositionalLight(0.2f, Point3d(4.5f, 0, 10), 2.0f, ColorIntern(30, 235, 55, 255));

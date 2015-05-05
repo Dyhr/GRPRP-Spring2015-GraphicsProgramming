@@ -13,6 +13,7 @@ namespace RayTracer{
 	BoxSoftLight::BoxSoftLight(float totalIntensity, Point3d position, float fallOff, ColorIntern color, float deltaX, float deltaY, float deltaZ, int amtOfLightsX, int amtOfLightsY, int amtOfLightsZ)
 	{
 		int lightsTimes3 = amtOfLightsX * amtOfLightsY * amtOfLightsZ;
+		float eachLightIntensity = totalIntensity / (float)(1.0f*lightsTimes3);
 		lights = vector<LightBase*>(lightsTimes3);
 		int index = 0;
 		for (size_t i = 0; i < amtOfLightsZ; i++)
@@ -24,7 +25,7 @@ namespace RayTracer{
 					Point3d point = Point3d(position.x - deltaX / 2.0f + deltaX / (float)(1.0f * amtOfLightsX) * (float)k,
 											position.y - deltaY / 2.0f + deltaY / (float)(1.0f * amtOfLightsY) * (float)j,
 											position.z - deltaZ / 2.0f + deltaZ / (float)(1.0f * amtOfLightsZ) * (float)i);
-					lights[index++] = new PositionalLight(totalIntensity / (float)(1.0f*lightsTimes3), point, fallOff, color);
+					lights[index++] = new PositionalLight(eachLightIntensity, point, fallOff, color);
 				}
 			}
 		}
