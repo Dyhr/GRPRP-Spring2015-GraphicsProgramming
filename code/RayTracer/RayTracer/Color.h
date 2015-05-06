@@ -5,8 +5,6 @@ namespace RayTracer
 {
 	class ColorIntern
 	{
-		// Values for absorbance
-		float redAbsorbance, greenAbsorbance, blueAbsorbance; // todo tror ikke vi skal bruge dem her - wind
 	public:
 		int red, green, blue, alpha;
 		ColorIntern();

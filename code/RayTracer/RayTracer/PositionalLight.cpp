@@ -37,7 +37,8 @@ namespace RayTracer
 
 	float PositionalLight::GetIntensityOnPoint(Point3d position)
 	{
-		return intensity / ((Vector3d(position, centerPosition).length / fallOff) < 1 ? 1 : (Vector3d(position, centerPosition).length / fallOff));
+		float intensityToReturn = intensity / ((Vector3d(position, centerPosition).length / fallOff));
+		return intensityToReturn > intensity ? intensity : intensityToReturn;
 	}
 
 	ColorIntern PositionalLight::getLightColor()
