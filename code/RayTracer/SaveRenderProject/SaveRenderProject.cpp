@@ -3,10 +3,9 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include <amp.h> 
-using namespace concurrency;
 
-struct RGBType{
+struct RGBType
+{
 public:
 	int r, g, b;
 };
@@ -69,37 +68,5 @@ void savebmp(const char *filename, int w, int h, int dpi, RGBType *data)
 
 int _tmain(int argc, _TCHAR* argv[])
 { 
-	int v[2][2] = { { 'A', 'P' }, { 'T', 'Q' } };
 
-	extent<2> e(2, 2);
-	
-	array_view<int> av(11, v);
-	parallel_for_each(av.extent, [=](index<1> idx) restrict(amp)
-	{
-		av[idx] += 1;
-	});
-
-	for (unsigned int i = 0; i < 11; i++)
-		std::cout << static_cast<char>(av[i]);
 }
-
-	/*int dpi = 72;
-	int width = 1000;
-	int height = 1000;
-	int n = width*height;
-
-	RGBType *pixels = new RGBType[n];
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < height; y++)
-		{
-			int thisone = y*width + x;
-			pixels[thisone].r = 23;
-			pixels[thisone].g = 222;
-			pixels[thisone].b = 10;
-		}
-	}
-	savebmp("render.bmp", 100, 100, 50, pixels);
-	return 0;
-}*/
-

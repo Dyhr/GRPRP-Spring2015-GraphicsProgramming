@@ -11,7 +11,7 @@ namespace RayTracer {
 
 	public ref class Scene {
 	public:
-		Scene(int height, int width, float viewsize, float viewdistance);
+		Scene(int height, int width, float viewdistance);
 		array<Color^>^ render();
 		ColorIntern backgroundColor();
 		ColorIntern ambientColorOnObjects();
@@ -19,7 +19,7 @@ namespace RayTracer {
 		int amtOfShadowRays = 1;
 	private:
 		int width, height;
-		float viewPortWidth, viewPortHeight, viewPortSize, zLocation;
+		float viewPortWidth, viewPortHeight, stepSize, zLocation;
 		array<Color^>^ arr;
 
 		Color^ getColor(int x, int y);

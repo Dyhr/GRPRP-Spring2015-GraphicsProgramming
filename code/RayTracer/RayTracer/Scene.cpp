@@ -38,18 +38,19 @@ namespace RayTracer {
 		return ambientColor;
 	}
 
-	Scene::Scene(int width, int height, float viewSize, float viewDistance)
+	Scene::Scene(int width, int height, float viewDistance)
 	{
-		this->width = width;
-		this->height = height;
-		this->viewPortWidth = width * viewSize;
-		this->viewPortHeight = height * viewSize;
-		this->viewPortSize = viewSize;
+		this->width = width;						// Pixel-width
+		this->height = height;						// Pixel-height
+		this->viewPortWidth = 30;		// 30
+		this->viewPortHeight = 20; // 22
+		this->stepSize = viewPortWidth / width;
 		this->zLocation = viewDistance;
 
 		this->arr = gcnew array<Color^>(width*height);
 
-		for(int i = 0; i < width*height; i++) {
+		for(int i = 0; i < width*height; i++) 
+		{
 			this->arr[i] = gcnew Color;
 		}
 	}
@@ -70,7 +71,7 @@ namespace RayTracer {
 		sceneObjects = vector<Object3d*>(8);
 
 		shadersWhite = vector<ShaderBase*>(2);
-		shadersWhiteSpecular = vector<ShaderBase*>(3);
+		shadersWhiteSpecular = vector<ShaderBase*>(0);
 		shadersRed = vector<ShaderBase*>(2);
 		shadersGreen = vector<ShaderBase*>(2);
 		shadersBlack = vector<ShaderBase*>(2);
@@ -79,9 +80,9 @@ namespace RayTracer {
 		shadersWhite[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
 		shadersWhite[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
 
-		shadersWhiteSpecular[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
-		shadersWhiteSpecular[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
-		shadersWhiteSpecular[2] = new SpecularShader(ColorIntern(255, 255, 255, 255),5.0f);
+		//shadersWhiteSpecular[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
+		//shadersWhiteSpecular[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
+		//shadersWhiteSpecular[2] = new SpecularShader(ColorIntern(255, 255, 255, 255),5.0f);
 
 		shadersRed[0] = new AmbientShader(ColorIntern(235, 45, 20, 255));
 		shadersRed[1] = new DiffuseShader(ColorIntern(235, 45, 20, 255));
@@ -103,31 +104,15 @@ namespace RayTracer {
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
 		sceneObjects[5] = new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack);
 
-		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.01f));
-		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.02f));
-
-		// vector<Triangle3d*> meshTris = vector<Triangle3d*>(3);
-		// meshTris[0] = new Triangle3d(Point3d(-5, -2, 12), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
-		// meshTris[1] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(5, -2, 10), shadersWhiteSpecular);
-		// meshTris[2] = new Triangle3d(Point3d(-1, -1, 8), Point3d(0, -1, 12), Point3d(-5, 2, 10), shadersWhiteSpecular);
-		// sceneObjects[7] = new Mesh3d(Point3d(), meshTris, shadersRed, Material());
-		// 
-		// sceneObjects[8] = new Triangle3d(Point3d(-1, 0, 10), Point3d(0, 1, 12), Point3d(-5, 4, 10), shadersGreen);
-
-		//sceneObjects[4] = new Triangle3d(Point3d(-6, 3.8f, 10), Point3d(0, 4.5f, 12), Point3d(-2, 2.2f, 5), shadersOnObject2);
+		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.01f));
+		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.02f));
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = new AmbientLight(0.15f);
-		//lightObjects[1] = new DirectionalLight(0.3f, Vector3d(0.5f, -1, 0.3f), ColorIntern(255,150,180,255));
-		//lightObjects[2] = new DirectionalLight(0.5f, Vector3d(0.0f, -0.1f, 1.0f), ColorIntern(180, 150, 255, 255));
-		//lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4, 10), 10.0f, ColorIntern(255,230,230,255));
-		lightObjects[1] = new PositionalLight(0.2f, Point3d(0, 0, 0), 10.0f, ColorIntern(255, 255, 255, 255));
+		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255));
 
-		softLightObjects = vector<SoftLightbase*>(1);
-		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 8,1,8);
-
-		//lightObjects[3] = new PositionalLight(0.2f, Point3d(-4.0f, 0, 10), 2.0f, ColorIntern(235, 45, 20, 255));
-		//lightObjects[4] = new PositionalLight(0.2f, Point3d(4.5f, 0, 10), 2.0f, ColorIntern(30, 235, 55, 255));
+		softLightObjects = vector<SoftLightbase*>(0);
+		// softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 8,1,8);
 
 		// This is where the magic happens: main-loop!
 
@@ -163,8 +148,8 @@ namespace RayTracer {
 	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
 		// Center of viewport is located in (0,0,0)
-		float px = -(viewPortWidth) / 2.0f + viewPortSize * x;
-		float py = (viewPortHeight) / 2.0f - viewPortSize * y;
+		float px = -(viewPortWidth) / 2.0f + stepSize * x;
+		float py = (viewPortHeight) / 2.0f - stepSize * y;
 
 		return Line3d(Point3d(), Vector3d::normalize(Vector3d(px, py, zLocation)));
 	}
@@ -198,6 +183,7 @@ namespace RayTracer {
 		CollisionObject closestObject = findClosestObject(ray);
 		if (closestObject.isReal)
 		{
+			outColor = ColorIntern(0, 0, 0, 255);
 			Vector3d normal = closestObject.hit.normal;
 			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.hit.point); // shadows
 
