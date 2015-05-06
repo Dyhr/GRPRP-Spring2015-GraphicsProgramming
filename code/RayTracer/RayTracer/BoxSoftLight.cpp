@@ -22,9 +22,10 @@ namespace RayTracer{
 			{
 				for (size_t k = 0; k < amtOfLightsX; k++)
 				{
-					Point3d point = Point3d(position.x - deltaX / 2.0f + deltaX / (float)(1.0f * amtOfLightsX) * (float)k,
-											position.y - deltaY / 2.0f + deltaY / (float)(1.0f * amtOfLightsY) * (float)j,
-											position.z - deltaZ / 2.0f + deltaZ / (float)(1.0f * amtOfLightsZ) * (float)i);
+					float x = position.x - deltaX / 2.0f + (deltaX / (float)(1.0f * amtOfLightsX)) * (float)k;
+					float y = position.y - deltaY / 2.0f + (deltaY / (float)(1.0f * amtOfLightsY)) * (float)j;
+					float z = position.z - deltaZ / 2.0f + (deltaZ / (float)(1.0f * amtOfLightsZ)) * (float)i;
+					Point3d point = Point3d(x, y, z);
 					lights[index++] = new PositionalLight(eachLightIntensity, point, fallOff, color);
 				}
 			}
