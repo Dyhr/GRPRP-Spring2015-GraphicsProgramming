@@ -79,6 +79,7 @@ namespace RayTracer {
 
 
 		TwoSpheresInCornellBox();
+		amtOfShadowRays = 0; // set this to something higher to add soft shadows
 
 
 		lightObjects = vector<LightBase*>(3);
@@ -96,7 +97,7 @@ namespace RayTracer {
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				ColorIntern color = rayTrace(ray,6,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
+				ColorIntern color = rayTrace(ray,4,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
 
 				Color^ outColor = gcnew Color(color); // convert to outgoing color
 				setColor(x, y, outColor);
@@ -324,6 +325,51 @@ namespace RayTracer {
 		return lightsToReturn;
 	}
 
+
+	vector<LightBase*> Scene::getLightsThatHitPointSoftShadows(Point3d point)
+	{
+		list<LightBase*> lightsThatHit = list<LightBase*>();
+		for each (LightBase* light in lightObjects)
+		{
+			if (light->getLightType() == AMBIENT)
+			{
+				lightsThatHit.push_back(light);
+			}
+			else
+			{
+				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
+				float newIntensity = 1.0f;
+				for each (Object3d* object in sceneObjects)
+				{
+					RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
+					if (hit.success)
+					{
+						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+						if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+						{
+						}
+						else
+						{
+							newIntensity = newIntensity - ((1.0f / sceneObjects.size())*object->material.transparency);
+						}
+					}
+				}
+				if (newIntensity>= 0.001f)
+				{
+					lightsThatHit.push_back(light->getCopyOfLight(newIntensity));
+				}
+			}
+		}
+		// copy to vector 
+		vector<LightBase*> lightsToReturn = vector<LightBase*>(lightsThatHit.size());
+		int i = 0;
+		for each (LightBase* light in lightsThatHit)
+		{
+			lightsToReturn[i++] = light;
+		}
+		return lightsToReturn;
+	}
+
 	void Scene::initLists()
 	{
 
@@ -362,8 +408,8 @@ namespace RayTracer {
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.8f, 1.03f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.4f, 0.95f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.1f, 1.03f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
 	
 	}
 }

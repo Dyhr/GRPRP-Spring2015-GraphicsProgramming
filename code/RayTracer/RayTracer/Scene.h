@@ -33,6 +33,7 @@ namespace RayTracer {
 		ColorIntern rayTrace(Line3d ray, int count, float currentRefractionIndex);
 
 		vector<LightBase*> getLightsThatHitPoint(Point3d point);
+		vector<LightBase*> getLightsThatHitPointSoftShadows(Point3d point);
 
 
 		void initLists();
