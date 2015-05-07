@@ -40,5 +40,7 @@ namespace RayTracer {
 		void setUpCornellBox();
 
 		void TwoSpheresInCornellBox();
+		void TrianglesInCornellBox();
+		void MeshInCornellBox();
 	};
 }

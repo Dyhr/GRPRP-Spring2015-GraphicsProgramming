@@ -79,7 +79,9 @@ namespace RayTracer {
 		shadersBlack =			vector<ShaderBase*>();
 		shadersYellow =			vector<ShaderBase*>();
 
-		TwoSpheresInCornellBox();
+		//TwoSpheresInCornellBox();
+		MeshInCornellBox();
+		amtOfShadowRays = 30; // set this to something higher to add soft shadows
 
 		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.15f);
@@ -409,5 +411,27 @@ namespace RayTracer {
 		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
 		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
 	
+	}
+	void Scene::TrianglesInCornellBox() {
+		setUpCornellBox();
+
+		sceneObjects.push_back(new Triangle3d(Point3d(-3, -2, 8), Point3d(-3, 2, 12), Point3d(-1, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+
+		vector<Triangle3d*> triangles = vector<Triangle3d*>(0);
+		triangles.push_back(new Triangle3d(Point3d(-1, -3, 9), Point3d(-1, 2, 12), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+		triangles.push_back(new Triangle3d(Point3d(-1, 2, 12), Point3d(3, 1, 13), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+		sceneObjects.push_back(new Mesh3d(Point3d(), triangles, shadersGreen, Material(0.0f, 0.0f, 0.95f)));
+	}
+	void Scene::MeshInCornellBox() {
+		std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
+		std::vector< Point3d > temp_vertices;
+		std::vector< Vector3d > temp_normals;
+
+		FILE * file = fopen("d.obj", "r");
+		if(file == NULL) {
+			printf("Impossible to open the file !\n");
+			return;
+		}
+		printf("Nothing is impossible!");
 	}
 }
