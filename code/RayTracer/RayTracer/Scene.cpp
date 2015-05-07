@@ -408,11 +408,15 @@ namespace RayTracer {
 
 	void Scene::falloffOnLight()
 	{
+		shadowsOn = false;
 		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 
 		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
+		sceneObjects.push_back(new Sphere3d(Point3d(-4, -2.7f, 12), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(0, -2.7f, 25), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(7, -2.7f, 37), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
 
-		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 15.0f, ColorIntern(255, 255, 255, 255)));
+		lightObjects.push_back(new PositionalLight(0.75f, Point3d(3, 2, 0), 5.0f, ColorIntern(255, 255, 255, 255)));
 	}
 
 	void Scene::positionalAndAmbientLight()
