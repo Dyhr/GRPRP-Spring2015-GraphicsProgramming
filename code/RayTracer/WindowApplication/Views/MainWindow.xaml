@@ -7,7 +7,7 @@
         <Grid Name="TheGrid">
             <Image Name="RenderBitmap"/>
         </Grid>
-        <Button Content="Render" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="44" Height="22" Click="ButtonBase_OnClick" HorizontalAlignment="Right" />
-        <Label x:Name="StatusLabel" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,398,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
+        <Button Content="Render" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="72" Height="22" Click="ButtonBase_OnClick" HorizontalAlignment="Right" />
+        <Label x:Name="StatusLabel" VerticalAlignment="Bottom" Content="" HorizontalAlignment="Right" Margin="0,0,10,32" Height="26" Width="72"/>
     </Grid>
 </Window>
