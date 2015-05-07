@@ -331,7 +331,7 @@ namespace RayTracer {
 			else
 			{
 				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.5f);
+				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 1.0f);
 
 				float newIntensity = 1.0f;
 				for each (Object3d* object in sceneObjects)

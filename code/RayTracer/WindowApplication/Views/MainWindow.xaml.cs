@@ -11,6 +11,7 @@ namespace WindowApplication.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool inProgress = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,10 +32,16 @@ namespace WindowApplication.Views
 
         private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            StatusLabel.Content = "In progress...";
-            var renderer = new SceneRenderer((int)TheGrid.ActualWidth,(int)TheGrid.ActualHeight);
-            RenderBitmap.Source = await renderer.Render();
-            StatusLabel.Content = "done";
+            if (!inProgress)
+            {
+                inProgress = true;
+                StatusLabel.Content = "In progress...";
+                var renderer = new SceneRenderer((int)TheGrid.ActualWidth, (int)TheGrid.ActualHeight);
+                RenderBitmap.Source = await renderer.Render();
+                StatusLabel.Content = "Done";
+                inProgress = false;
+            }
+            
         }
     }
 }
