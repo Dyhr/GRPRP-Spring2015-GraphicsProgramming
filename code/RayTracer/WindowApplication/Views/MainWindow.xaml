@@ -12,5 +12,6 @@
             <Image Name="RenderBitmap"/>
         </Grid>
         <Button Content="Render" VerticalAlignment="Bottom" Grid.Column="1" Margin="10,0,10,10" Height="22" Click="ButtonBase_OnClick" />
+        <Label x:Name="StatusLabel" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,398,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
     </Grid>
 </Window>

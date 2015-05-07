@@ -29,10 +29,12 @@ namespace WindowApplication.Views
             return output.ToArray();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
+            StatusLabel.Content = "In progress...";
             var renderer = new SceneRenderer((int)TheGrid.ActualWidth,(int)TheGrid.ActualHeight);
-            RenderBitmap.Source = renderer.Render();
+            RenderBitmap.Source = await renderer.Render();
+            StatusLabel.Content = "done";
         }
     }
 }
