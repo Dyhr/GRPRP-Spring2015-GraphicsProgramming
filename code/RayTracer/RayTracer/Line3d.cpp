@@ -39,10 +39,10 @@ namespace RayTracer{
 
 		
 		for (size_t i = 0; i < amountOfLines; i++)
-		{ 
-			float randomX = (((float)rand() / (float)RAND_MAX) * 2 - 1) * twistAmount;
-			float randomY = (((float)rand() / (float)RAND_MAX) * 2 - 1) * twistAmount;
-			float randomZ = (((float)rand() / (float)RAND_MAX) * 2 - 1) * twistAmount;
+		{
+			float randomX = (((float)rand() / (float)RAND_MAX) * 2.0f - 1.0f) * (float)twistAmount;
+			float randomY = (((float)rand() / (float)RAND_MAX) * 2.0f - 1.0f) * (float)twistAmount;
+			float randomZ = (((float)rand() / (float)RAND_MAX) * 2.0f - 1.0f) * (float)twistAmount;
 
 			float dx = direction.x + randomX;
 			float dy = direction.y + randomY;
