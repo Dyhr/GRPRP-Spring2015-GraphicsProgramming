@@ -403,8 +403,8 @@ namespace RayTracer {
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular,	 Material(0.0f, 0.9f, 1.0f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular,		Material(0.0f, 0.9f, 1.04f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular,	 Material(0.0f, 0.8f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular,		Material(0.0f, 0.9f, 1.03f)));
 	}
 
 	void Scene::falloffOnLight()
