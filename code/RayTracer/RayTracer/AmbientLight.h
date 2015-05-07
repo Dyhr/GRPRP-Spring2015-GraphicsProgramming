@@ -11,7 +11,7 @@ namespace RayTracer
 		AmbientLight();
 		AmbientLight(float intensity);
 		AmbientLight(float intensity, ColorIntern color);
-		LightBase* getCopyOfLight();
+		LightBase* getCopyOfLight(float intensityFactor);
 
 		Vector3d GetLightOnPoint(Point3d position);
 		float GetIntensityOnPoint(Point3d position);

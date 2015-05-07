@@ -18,9 +18,9 @@ namespace RayTracer
 
 	}
 
-	LightBase* AmbientLight::getCopyOfLight()
+	LightBase* AmbientLight::getCopyOfLight(float intensityFactor)
 	{
-		return new AmbientLight(intensity,color);
+		return new AmbientLight(intensity*intensityFactor,color)
 	}
 
 	LightType AmbientLight::getLightType()
