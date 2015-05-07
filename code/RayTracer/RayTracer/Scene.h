@@ -22,6 +22,10 @@ namespace RayTracer {
 		float viewPortWidth, viewPortHeight, stepSize, zLocation;
 		array<Color^>^ arr;
 
+
+		ColorIntern getReflectionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex);
+		ColorIntern getRefractionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex, Material materialOfObject);
+
 		Color^ getColor(int x, int y);
 		void setColor(int x, int y, Color^ color);
 		Line3d getRayFromScreen(int x, int y);
@@ -29,5 +33,11 @@ namespace RayTracer {
 		ColorIntern rayTrace(Line3d ray, int count, float currentRefractionIndex);
 
 		vector<LightBase*> getLightsThatHitPoint(Point3d point);
+
+
+		void initLists();
+		void setUpCornellBox();
+
+		void TwoSpheresInCornellBox();
 	};
 }

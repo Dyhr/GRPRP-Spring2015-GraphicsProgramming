@@ -56,7 +56,7 @@ namespace RayTracer{
 		float d = pow(b, 2.0f) - 4.0f*a*c;
 
 		// For now, arbitrarily chosen threshold for "0"
-		float threshold = 0.01f;
+		float threshold = 0.001f;
 		if(d > 0.0f) 
 		{
 			// Two solutions:

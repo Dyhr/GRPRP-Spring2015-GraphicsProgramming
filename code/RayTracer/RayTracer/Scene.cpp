@@ -42,8 +42,8 @@ namespace RayTracer {
 	{
 		this->width = width;						// Pixel-width
 		this->height = height;						// Pixel-height
-		this->viewPortWidth = 30;		// 30
-		this->viewPortHeight = 20; // 22
+		this->viewPortWidth = 30;
+		this->viewPortHeight = 20;
 		this->stepSize = viewPortWidth / width;
 		this->zLocation = viewDistance;
 
@@ -68,44 +68,16 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		sceneObjects = vector<Object3d*>(8);
+		sceneObjects = vector<Object3d*>();
 
-		shadersWhite = vector<ShaderBase*>(2);
-		shadersWhiteSpecular = vector<ShaderBase*>(0);
-		shadersRed = vector<ShaderBase*>(2);
-		shadersGreen = vector<ShaderBase*>(2);
-		shadersBlack = vector<ShaderBase*>(2);
-		shadersYellow = vector<ShaderBase*>(2);
+		shadersWhite =			vector<ShaderBase*>();
+		shadersWhiteSpecular =	vector<ShaderBase*>();
+		shadersRed =			vector<ShaderBase*>();
+		shadersGreen =			vector<ShaderBase*>();
+		shadersBlack =			vector<ShaderBase*>();
+		shadersYellow =			vector<ShaderBase*>();
 
-		shadersWhite[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
-		shadersWhite[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
-
-		//shadersWhiteSpecular[0] = new AmbientShader(ColorIntern(255, 240, 245, 255));
-		//shadersWhiteSpecular[1] = new DiffuseShader(ColorIntern(255, 240, 245, 255));
-		//shadersWhiteSpecular[2] = new SpecularShader(ColorIntern(255, 255, 255, 255),5.0f);
-
-		shadersRed[0] = new AmbientShader(ColorIntern(235, 45, 20, 255));
-		shadersRed[1] = new DiffuseShader(ColorIntern(235, 45, 20, 255));
-
-		shadersGreen[0] = new AmbientShader(ColorIntern(30, 235, 55, 255));
-		shadersGreen[1] = new DiffuseShader(ColorIntern(30, 235, 55, 255));
-
-		shadersBlack[0] = new AmbientShader(ColorIntern(3, 3, 3, 255));
-		shadersBlack[1] = new DiffuseShader(ColorIntern(3, 3, 3, 255));
-
-		shadersYellow[0] = new AmbientShader(ColorIntern(235, 235, 55, 255));
-		shadersYellow[1] = new DiffuseShader(ColorIntern(235, 235, 55, 255));
-		
-		// planes
-		sceneObjects[0] = new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite);
-		sceneObjects[1] = new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersYellow);
-		sceneObjects[2] = new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersWhite);
-		sceneObjects[3] = new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed);
-		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
-		sceneObjects[5] = new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack);
-
-		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.01f));
-		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.02f));
+		TwoSpheresInCornellBox();
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = new AmbientLight(0.15f);
@@ -195,47 +167,17 @@ namespace RayTracer {
 				if (materialOfObject.reflectiveness > 0.0f)
 				{
 					// Take reflection into account
-					// Get reflection ray
-					Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, ray.direction);
-					Point3d pointForOutgoingReflectedRay = closestObject.hit.point;
-					Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.001f);
-
-					ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1, currentRefractionIndex);
+					ColorIntern reflectionContribution = getReflectionColor(normal,ray.direction,count,closestObject.hit.point,currentRefractionIndex);
 
 					shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, materialOfObject.reflectiveness);
-
 				}
 
 				if (materialOfObject.transparency > 0.0f)
 				{
-					float nextRefraction;
-					Vector3d newNormal = normal;
-					if (Vector3d::dotProduct(normal,ray.direction) < 0.0f) // entering object
-					{
-						nextRefraction = materialOfObject.materialRefractionIndex;
-					}
-					else // leaving object
-					{
-						nextRefraction = sceneRefractionIndex;
-						newNormal = Vector3d::negate(newNormal);
-					}
+					// Take refraction into account
+					ColorIntern refractionContribution = getRefractionColor(normal,ray.direction,count - 1,closestObject.hit.point,currentRefractionIndex,materialOfObject);
 
-					Vector3d vectorForRefractedRay = Vector3d::refractionVector(ray.direction, newNormal, currentRefractionIndex, nextRefraction);
-					if (vectorForRefractedRay.length != 0.0f)
-					{
-						Point3d pointForOutgoingRefractedRay = closestObject.hit.point;
-						Line3d refractedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.0001f);
-
-						
-						/*float dotP = Vector3d::dotProduct(vectorForRefractedRay, newNormal);
-							float x = closestObject.hit.point.x;
-							float y = closestObject.hit.point.y;
-							float z = closestObject.hit.point.z;
-*/
-						ColorIntern refractionContribution = rayTrace(refractedRay, count - 1, nextRefraction);
-
-						shadingColor = ColorIntern::blendByAmount(refractionContribution, shadingColor, materialOfObject.transparency);
-					}
+					shadingColor = ColorIntern::blendByAmount(refractionContribution, shadingColor, materialOfObject.transparency);
 				}
 			}
 			
@@ -243,6 +185,49 @@ namespace RayTracer {
 		}
 
 		return outColor;
+	}
+
+	ColorIntern Scene::getReflectionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex)
+	{
+		// Get reflection ray
+		Vector3d vectorForOutgoingReflectedRay = Vector3d::reflectionVector(normal, incomingDirection);
+		Point3d pointForOutgoingReflectedRay = hitPoint;
+		Line3d reflectedRay = Line3d(pointForOutgoingReflectedRay, vectorForOutgoingReflectedRay).pushStartAlongLine(0.001f);
+
+		ColorIntern reflectionContribution = rayTrace(reflectedRay, count - 1, currentRefractionIndex);
+
+		return reflectionContribution;
+	}
+
+	ColorIntern Scene::getRefractionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex, Material materialOfObject)
+	{
+		float nextRefraction;
+		Vector3d newNormal = normal;
+		if (Vector3d::dotProduct(normal, incomingDirection) < 0.0f) // entering object
+		{
+			nextRefraction = materialOfObject.materialRefractionIndex;
+		}
+		else // leaving object
+		{
+			nextRefraction = sceneRefractionIndex;
+			newNormal = Vector3d::negate(newNormal);
+		}
+
+		Vector3d vectorForRefractedRay = Vector3d::refractionVector(incomingDirection, newNormal, currentRefractionIndex, nextRefraction);
+		if (vectorForRefractedRay.length != 0.0f)
+		{
+			Point3d pointForOutgoingRefractedRay = hitPoint;
+			Line3d refractedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.0001f);
+
+			ColorIntern refractionContribution = rayTrace(refractedRay, count - 1, nextRefraction);
+			return refractionContribution;
+		}
+		else
+		{
+			// We have total internal reflection; we must use the reflection
+			ColorIntern reflectionContribution = getReflectionColor(normal, incomingDirection, count - 1, hitPoint, currentRefractionIndex);
+			return reflectionContribution;
+		}
 	}
 
 	vector<LightBase*> Scene::getLightsThatHitPoint(Point3d point)
@@ -326,5 +311,45 @@ namespace RayTracer {
 			lightsToReturn[i++] = light;
 		}
 		return lightsToReturn;
+	}
+
+	void Scene::initLists()
+	{
+
+	}
+
+	void Scene::setUpCornellBox()
+	{
+		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+
+		shadersRed.push_back(new AmbientShader(ColorIntern(235, 45, 20, 255)));
+		shadersRed.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
+
+		shadersGreen.push_back(new AmbientShader(ColorIntern(30, 235, 55, 255)));
+		shadersGreen.push_back(new DiffuseShader(ColorIntern(30, 235, 55, 255)));
+
+		shadersBlack.push_back(new AmbientShader(ColorIntern(3, 3, 3, 255)));
+		shadersBlack.push_back(new DiffuseShader(ColorIntern(3, 3, 3, 255)));
+
+		shadersYellow.push_back(new AmbientShader(ColorIntern(235, 235, 55, 255)));
+		shadersYellow.push_back(new DiffuseShader(ColorIntern(235, 235, 55, 255)));
+
+		// Planes
+		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
+		sceneObjects.push_back(new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersYellow));
+		sceneObjects.push_back(new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersWhite));
+		sceneObjects.push_back(new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed));
+		sceneObjects.push_back(new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen));
+		sceneObjects.push_back(new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack));
+	}
+
+	void Scene::TwoSpheresInCornellBox()
+	{
+		setUpCornellBox();
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 1.0f, 0.9f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 0.9f)));
+	
 	}
 }
