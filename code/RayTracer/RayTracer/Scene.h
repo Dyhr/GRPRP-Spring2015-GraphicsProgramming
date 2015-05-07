@@ -44,6 +44,7 @@ namespace RayTracer {
 		void setUpCornellBox();
 		void TwoSpheresInCornellBox();
 		void falloffOnLight();
+		void falloffOnLightBrightBackground();
 		void coloredLightSetup();
 		void positionalAndAmbientLight();
 		void lonelySphere();
@@ -63,8 +64,8 @@ namespace RayTracer {
 		//Shadow Slides
 		void hardShadows();
 		void hardShadowsBlend();
-		void softShadowsLowAmt();
-		void softShadowsHighAmt();
+		void softShadows();
+		void softShadowsBlend();
 
 	};
 }
