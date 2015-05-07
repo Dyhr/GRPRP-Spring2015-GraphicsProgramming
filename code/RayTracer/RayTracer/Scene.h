@@ -44,6 +44,7 @@ namespace RayTracer {
 		void setUpCornellBox();
 		void TwoSpheresInCornellBox();
 		void falloffOnLight();
+		void coloredLightSetup();
 		void positionalAndAmbientLight();
 		void lonelySphere();
 		void lonelyTriangle();

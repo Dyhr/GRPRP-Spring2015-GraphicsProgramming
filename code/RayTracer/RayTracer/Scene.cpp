@@ -72,7 +72,8 @@ namespace RayTracer {
 	{
 		initLists();
 
-		WindSetup();
+		falloffOnLight();
+		//WindSetup();
 		//DirectionalLightOnly();
 		srand(time(NULL));
 
@@ -506,6 +507,22 @@ namespace RayTracer {
 		sceneObjects.push_back(new Sphere3d(Point3d(1, 0, 4), 0.7f, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
 
 		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4, 4)));
+	}
+
+	void Scene::coloredLightSetup()
+	{
+		shadowsOn = false;
+		amtOfShadowRays = 0;
+		shadersWhite.push_back(new AmbientShader(ColorIntern(80, 80, 80, 255)));
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(225, 225, 225, 255)));
+		//shadersWhite.push_back(new SpecularShader(ColorIntern(250, 250, 250, 255), 12));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(0, -0.2f, 4), 1.3f, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+
+		lightObjects.push_back(new AmbientLight(0.1f));
+		lightObjects.push_back(new PositionalLight(1.0f, Point3d(-2, 4, 3),	25, ColorIntern(255,25,25,255)));
+		lightObjects.push_back(new PositionalLight(1.0f, Point3d(2, 4, 3),	25, ColorIntern(25, 255, 25, 255)));
+		lightObjects.push_back(new PositionalLight(1.0f, Point3d(0, 2, 1), 25, ColorIntern(25, 25, 255, 255)));
 	}
 	
 
