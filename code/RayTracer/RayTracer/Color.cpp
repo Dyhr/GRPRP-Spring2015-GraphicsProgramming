@@ -11,13 +11,9 @@ namespace RayTracer
 
 	Color::Color(ColorIntern color) : red(color.red), blue(color.blue), green(color.green), alpha(color.alpha)
 	{
-		red = red > 255 ? 255 : red;
-		green = green > 255 ? 255 : green;
-		blue = blue > 255 ? 255 : blue;
-
-		red = red < 0 ? 0 : red;
-		green = green < 0 ? 0 : green;
-		blue = blue < 0 ? 0 : blue;
+		red = sanitizeColor((int)red);
+		green = sanitizeColor((int)green);
+		blue = sanitizeColor((int)blue);
 	}
 
 	Color::Color(int red, int green, int blue, int alpha) : red(red), green(green), blue(blue), alpha(alpha)
@@ -31,6 +27,19 @@ namespace RayTracer
 			// throw exception
 		}
 	}
+	int Color::sanitizeColor(int proposedColorValue)
+	{
+		if (proposedColorValue > 255)
+		{
+			return (int)255;
+		}
+		else if (proposedColorValue < 0)
+		{
+			return (int)0;
+		}
+
+		return (int)proposedColorValue;
+	}
 
 
 	// Intern Color
@@ -39,7 +48,7 @@ namespace RayTracer
 
 	}
 
-	ColorIntern::ColorIntern(int red, int green, int blue, int alpha) : red(sanitizeColor(red)), green(sanitizeColor(green)), blue(sanitizeColor(blue)), alpha(alpha)
+	ColorIntern::ColorIntern(float red, float green, float blue, float alpha) : red(sanitizeColor(red)), green(sanitizeColor(green)), blue(sanitizeColor(blue)), alpha(alpha)
 	{
 
 	}
@@ -62,25 +71,25 @@ namespace RayTracer
 
 	ColorIntern ColorIntern::intensifyColor(ColorIntern colorA, float multiplier)
 	{
-		int red =	sanitizeColor((int)(colorA.red * multiplier));
-		int green = sanitizeColor((int)(colorA.green * multiplier));
-		int blue = sanitizeColor((int)(colorA.blue * multiplier));
+		int red =	sanitizeColor(colorA.red * multiplier);
+		int green = sanitizeColor(colorA.green * multiplier);
+		int blue = sanitizeColor(colorA.blue * multiplier);
 
 		return ColorIntern(red, green, blue, 255);
 	}
 
-	int ColorIntern::sanitizeColor(int proposedColorValue)
+	float ColorIntern::sanitizeColor(float proposedColorValue)
 	{
-		if (proposedColorValue > 255)
+		if (proposedColorValue > 255.0f)
 		{
-			return (int)255;
+			return (float)255.0f;
 		}
-		else if (proposedColorValue < 0)
+		else if (proposedColorValue < 0.0f)
 		{
-			return (int)0;
+			return (float)0.0f;
 		}
 
-		return (int)proposedColorValue;
+		return (float)proposedColorValue;
 	}
 
 	// ratioAtoB must be a number between 0 and 1 
@@ -91,9 +100,9 @@ namespace RayTracer
 			// TODO: Throw relevant exception
 		}
 
-		int newRed = sanitizeColor((int)(colorA.red * ratioAToB + colorB.red *(1.0f - ratioAToB)));
-		int newGreen = sanitizeColor((int)(colorA.green * ratioAToB + colorB.green *(1.0f - ratioAToB)));
-		int newBlue = sanitizeColor((int)(colorA.blue * ratioAToB + colorB.blue *(1.0f - ratioAToB)));
+		int newRed = sanitizeColor(colorA.red * ratioAToB + colorB.red *(1.0f - ratioAToB));
+		int newGreen = sanitizeColor(colorA.green * ratioAToB + colorB.green *(1.0f - ratioAToB));
+		int newBlue = sanitizeColor(colorA.blue * ratioAToB + colorB.blue *(1.0f - ratioAToB));
 
 		return ColorIntern(newRed, newGreen, newBlue, 255);
 	}

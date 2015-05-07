@@ -54,6 +54,19 @@ namespace RayTracer
 	float Vector3d::dotProduct(Vector3d v1, Vector3d v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	}
+
+	float Vector3d::sineToAngle(Vector3d v1, Vector3d v2)
+	{
+		return sqrt(1.0f-dotProduct(normalize(v1),normalize(v2)));
+	}
+
+	float Vector3d::cosineToAngle(Vector3d v1, Vector3d v2)
+	{
+		return dotProduct(normalize(v1),normalize(v2));
+	}
+
+
+
 	Vector3d Vector3d::crossProduct(Vector3d lhs, Vector3d rhs) {
 		float a = lhs.y * rhs.z - lhs.z * rhs.y;
 		float b = lhs.z * rhs.x - lhs.x * rhs.z;
@@ -111,6 +124,26 @@ namespace RayTracer
 		Vector3d v2 = multiply(normalNormalized, (n *cosI - cosT));
 
 		return normalize(add(v1, v2));
+	}
+
+	float Vector3d::reflectanceContributionOfRefraction(Vector3d normal, Vector3d incoming, float refractionIndexFromMaterial, float refractionIndexToMaterial)
+	{
+		// http://en.wikipedia.org/wiki/Fresnel_equations
+		float n1 = refractionIndexFromMaterial;
+		float n2 = refractionIndexToMaterial;
+		float n = n1 / n2;
+		float sin = sineToAngle(normal,incoming);
+		float cos = cosineToAngle(normal, incoming);
+
+		float rsTop = n1*cos - n2 * sqrt(1.0f - (n*n*sin*sin));
+		float rsBot = n1*cos + n2 * sqrt(1.0f - (n*n*sin*sin));
+		float rs = (rsTop/rsBot) * (rsTop/rsBot);
+
+		float rpTop = n1 * sqrt(1.0f - (n*n*sin*sin)) - n2*cos;
+		float rpBot = n1 * sqrt(1.0f - (n*n*sin*sin)) + n2*cos;
+		float rp = (rpTop / rpBot) * (rpTop / rpBot);
+
+		return (rs+rp)/2;
 	}
 
 	// Notice, that isSameDirection returns false if v1 and v2 are parallel but pointing in opposite directions

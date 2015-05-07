@@ -6,11 +6,11 @@ namespace RayTracer
 	class ColorIntern
 	{
 	public:
-		int red, green, blue, alpha;
+		float red, green, blue, alpha;
 		ColorIntern();
-		ColorIntern(int red, int green, int blue, int alpha);
+		ColorIntern(float red, float green, float blue, float alpha);
 
-		static int sanitizeColor(int proposedValue);
+		static float sanitizeColor(float proposedValue);
 		static ColorIntern blendAddition(ColorIntern colorA, ColorIntern colorB);
 		static ColorIntern blendMultiply(ColorIntern colorA, ColorIntern colorB);
 		static ColorIntern intensifyColor(ColorIntern colorA, float multiplier);
@@ -24,6 +24,7 @@ namespace RayTracer
 		Color();
 		Color(int red, int green, int blue, int alpha);
 		Color(ColorIntern color);
+		static int sanitizeColor(int proposedValue);
 	};
 }
 
