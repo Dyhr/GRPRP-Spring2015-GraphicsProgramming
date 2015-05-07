@@ -18,6 +18,11 @@ namespace RayTracer
 
 	}
 
+	LightBase* DirectionalLight::getCopyOfLight()
+	{
+		return new DirectionalLight(intensity, direction, color);
+	}
+
 	LightType DirectionalLight::getLightType()
 	{
 		return DIRECTIONAL;

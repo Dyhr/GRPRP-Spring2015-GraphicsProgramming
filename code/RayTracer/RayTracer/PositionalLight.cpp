@@ -22,6 +22,11 @@ namespace RayTracer
 
 	}
 
+	LightBase* PositionalLight::getCopyOfLight()
+	{
+		return new PositionalLight(intensity, centerPosition, fallOff, color);
+	}
+
 	LightType PositionalLight::getLightType()
 	{
 		return POSITIONAL;
