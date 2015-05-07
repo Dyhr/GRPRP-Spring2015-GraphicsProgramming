@@ -215,19 +215,23 @@ namespace RayTracer {
 			newNormal = Vector3d::negate(newNormal);
 		}
 
+		float amtOfReflectance = Vector3d::reflectanceContributionOfRefraction(newNormal, incomingDirection, currentRefractionIndex, nextRefraction);
+
 		Vector3d vectorForRefractedRay = Vector3d::refractionVector(incomingDirection, newNormal, currentRefractionIndex, nextRefraction);
 		if (vectorForRefractedRay.length != 0.0f)
 		{
+			ColorIntern reflectanceContribution = getReflectionColor(newNormal, incomingDirection, count, hitPoint, currentRefractionIndex);
+
 			Point3d pointForOutgoingRefractedRay = hitPoint;
 			Line3d refractedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.0001f);
 
 			ColorIntern refractionContribution = rayTrace(refractedRay, count - 1, nextRefraction);
-			return refractionContribution;
+			return ColorIntern::blendByAmount(reflectanceContribution, refractionContribution, amtOfReflectance);
 		}
 		else
 		{
 			// We have total internal reflection; we must use the reflection
-			ColorIntern reflectionContribution = getReflectionColor(normal, incomingDirection, count - 1, hitPoint, currentRefractionIndex);
+			ColorIntern reflectionContribution = getReflectionColor(normal, incomingDirection, count, hitPoint, currentRefractionIndex);
 			return reflectionContribution;
 		}
 	}
