@@ -81,9 +81,10 @@ namespace RayTracer {
 		TwoSpheresInCornellBox();
 
 
-		lightObjects = vector<LightBase*>(2);
+		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.15f);
-		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255));
+		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 15.0f, ColorIntern(255, 255, 255, 255));
+		lightObjects[2] = new PositionalLight(0.2f, Point3d(-1, 0, -1), 5.0f, ColorIntern(255, 255, 255, 255));
 
 		softLightObjects = vector<SoftLightbase*>(0);
 		//softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 11,1,10);
@@ -162,28 +163,28 @@ namespace RayTracer {
 			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.hit.point); // shadows
 
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.hit.point, lightsThatHit);
-			
+			outColor = ColorIntern::blendAddition(shadingColor,outColor);
 			if (count > 0)
 			{
 				Material materialOfObject = closestObject.object->material;
 				if (materialOfObject.reflectiveness > 0.0f)
 				{
 					// Take reflection into account
-					ColorIntern reflectionContribution = getReflectionColor(normal,ray.direction,count,closestObject.hit.point,currentRefractionIndex);
+					ColorIntern reflectionContribution = getReflectionColor(normal,ray.direction, count,closestObject.hit.point,currentRefractionIndex);
 
-					shadingColor = ColorIntern::blendByAmount(reflectionContribution, shadingColor, materialOfObject.reflectiveness);
+					outColor = ColorIntern::blendByAmount(reflectionContribution, outColor, materialOfObject.reflectiveness);
 				}
 
 				if (materialOfObject.transparency > 0.0f)
 				{
 					// Take refraction into account
-					ColorIntern refractionContribution = getRefractionColor(normal,ray.direction,count - 1,closestObject.hit.point,currentRefractionIndex,materialOfObject);
+					ColorIntern refractionContribution = getRefractionColor(normal,ray.direction, count,closestObject.hit.point,currentRefractionIndex,materialOfObject);
 
-					shadingColor = ColorIntern::blendByAmount(refractionContribution, shadingColor, materialOfObject.transparency);
+					outColor = ColorIntern::blendByAmount(refractionContribution, outColor, materialOfObject.transparency);
 				}
 			}
 			
-			outColor = ColorIntern::blendAddition(outColor, shadingColor);
+			//outColor = ColorIntern::blendAddition(outColor, shadingColor);
 		}
 
 		return outColor;
@@ -251,7 +252,7 @@ namespace RayTracer {
 				bool isIntercepted = false;
 				for each (Object3d* object in sceneObjects)
 				{
-					if (!object->material.transparency > 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
+					if (object->material.transparency < 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
 					{
 						RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
 						if (hit.success)
@@ -289,7 +290,7 @@ namespace RayTracer {
 					bool isIntercepted = false;
 					for each (Object3d* object in sceneObjects)
 					{
-						if (!object->material.transparency > 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
+						if (object->material.transparency < 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
 						{
 							RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
 							if (hit.success)
@@ -357,9 +358,12 @@ namespace RayTracer {
 	void Scene::TwoSpheresInCornellBox()
 	{
 		setUpCornellBox();
+		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 1.0f, 0.9f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 0.9f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.1f, 0.8f, 1.03f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.2f, 0.5f, 0.95f)));
 	
 	}
 }
