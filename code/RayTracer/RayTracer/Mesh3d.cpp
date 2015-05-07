@@ -34,6 +34,18 @@ namespace RayTracer {
 		}
 
 		boundingSphere = new Sphere3d(center, radius);
+
+		for each(Triangle3d* triangle in triangles) {
+			(triangle->a.x) += pos.x;
+			(triangle->a.y) += pos.y;
+			(triangle->a.z) += pos.z;
+			(triangle->b.x) += pos.x;
+			(triangle->b.y) += pos.y;
+			(triangle->b.z) += pos.z;
+			(triangle->c.x) += pos.x;
+			(triangle->c.y) += pos.y;
+			(triangle->c.z) += pos.z;
+		}
 	}
 
 	Vector3d Mesh3d::CalculateNormal(Point3d point) {

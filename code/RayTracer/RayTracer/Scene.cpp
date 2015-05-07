@@ -82,7 +82,9 @@ namespace RayTracer {
 		shadersBlack =			vector<ShaderBase*>();
 		shadersYellow =			vector<ShaderBase*>();
 
-		TwoSpheresInCornellBox();
+		//TwoSpheresInCornellBox();
+		MeshInCornellBox();
+		amtOfShadowRays = 30; // set this to something higher to add soft shadows
 
 		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.15f);
@@ -423,5 +425,65 @@ namespace RayTracer {
 		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
 		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
 	
+	}
+	void Scene::TrianglesInCornellBox() {
+		setUpCornellBox();
+
+		sceneObjects.push_back(new Triangle3d(Point3d(-3, -2, 8), Point3d(-3, 2, 12), Point3d(-1, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+
+		vector<Triangle3d*> triangles = vector<Triangle3d*>(0);
+		triangles.push_back(new Triangle3d(Point3d(-1, -3, 9), Point3d(-1, 2, 12), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+		triangles.push_back(new Triangle3d(Point3d(-1, 2, 12), Point3d(3, 1, 13), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+		sceneObjects.push_back(new Mesh3d(Point3d(), triangles, shadersGreen, Material(0.0f, 0.0f, 0.95f)));
+	}
+	void Scene::MeshInCornellBox() {
+		setUpCornellBox();
+
+		vector< unsigned int > vertexIndices, normalIndices;
+		vector< Point3d > temp_vertices;
+		vector< Vector3d > temp_normals;
+		vector< Triangle3d* > triangles;
+
+		FILE* file = fopen("d.obj", "r");
+		if(file == NULL) {
+			printf("Impossible to open the file d.obj !\n");
+			return;
+		}
+		while(true) {
+			char lineHeader[128];
+			// read the first word of the line
+			int res = fscanf(file, "%s", lineHeader);
+			if(res == EOF)
+				break; // EOF = End Of File. Quit the loop.
+
+			// else : parse lineHeader
+			if(strcmp(lineHeader, "v") == 0) {
+				Point3d vertex = Point3d();
+				fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+				temp_vertices.push_back(vertex);
+			} else if(strcmp(lineHeader, "vn") == 0) {
+				Vector3d normal = Vector3d();
+				fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
+				temp_normals.push_back(normal);
+			} else if(strcmp(lineHeader, "f") == 0) {
+				std::string vertex1, vertex2, vertex3;
+				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+				int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				if(matches != 9) {
+					printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+					return;
+				}
+				vertexIndices.push_back(vertexIndex[0]);
+				vertexIndices.push_back(vertexIndex[1]);
+				vertexIndices.push_back(vertexIndex[2]);
+				normalIndices.push_back(normalIndex[0]);
+				normalIndices.push_back(normalIndex[1]);
+				normalIndices.push_back(normalIndex[2]);
+
+				triangles.push_back(new Triangle3d(temp_vertices[vertexIndex[0] - 1], temp_vertices[vertexIndex[1] - 1], temp_vertices[vertexIndex[2] - 1], shadersBlack, Material(0.0f, 0.0f, 1.0f)));
+			}
+		}
+
+		sceneObjects.push_back(new Mesh3d(Point3d(0,0,8), triangles, shadersRed, Material(0.0f, 0.0f, 0.95f)));
 	}
 }
