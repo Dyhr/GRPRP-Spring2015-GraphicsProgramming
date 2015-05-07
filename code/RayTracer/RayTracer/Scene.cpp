@@ -104,15 +104,15 @@ namespace RayTracer {
 		sceneObjects[4] = new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen);
 		sceneObjects[5] = new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack);
 
-		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.01f));
+		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.8f, 0.2f, 1.01f));
 		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.02f));
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = new AmbientLight(0.15f);
 		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255));
 
-		softLightObjects = vector<SoftLightbase*>(0);
-		// softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 8,1,8);
+		softLightObjects = vector<SoftLightbase*>(1);
+		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 11,1,10);
 
 		// This is where the magic happens: main-loop!
 
@@ -260,19 +260,21 @@ namespace RayTracer {
 				bool isIntercepted = false;
 				for each (Object3d* object in sceneObjects)
 				{
-					RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
-					if (hit.success)
+					if (!object->material.transparency > 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
 					{
-						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-						if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+						RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
+						if (hit.success)
 						{
+							// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+							if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+							{
+							}
+							else
+							{
+								isIntercepted = true;
+								break;
+							}
 						}
-						else
-						{
-							isIntercepted = true;
-							break;
-						}
-						
 					}
 				}
 				if (!isIntercepted)
@@ -296,19 +298,21 @@ namespace RayTracer {
 					bool isIntercepted = false;
 					for each (Object3d* object in sceneObjects)
 					{
-						RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
-						if (hit.success)
+						if (!object->material.transparency > 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
 						{
-							// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-							if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+							RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
+							if (hit.success)
 							{
+								// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+								if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+								{
+								}
+								else
+								{
+									isIntercepted = true;
+									break;
+								}
 							}
-							else
-							{
-								isIntercepted = true;
-								break;
-							}
-
 						}
 					}
 					if (!isIntercepted)
