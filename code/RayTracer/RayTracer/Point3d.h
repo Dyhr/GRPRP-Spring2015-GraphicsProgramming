@@ -5,7 +5,7 @@ namespace RayTracer{
 	public:
 		Point3d();
 		Point3d(float, float, float);
-		const float x, y, z;
+		float x, y, z;
 	};
 }
 

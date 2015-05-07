@@ -1,17 +1,18 @@
 #pragma once
 #include "Vector3d.h"
 #include <vector>
-#include <cstdlib>
-#include <ctime>
+#include <stdio.h>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h> 
 
 using namespace std;
 
 namespace RayTracer{
+	
 	// Line3d should be thought of as a parametrization: (x(t),y(t),z(t)) = (x0,y0,z0) + t*(x1,y2,z2)
 	class Line3d
 	{
 	private: 
-		
 	public:
 		const Point3d position;
 		const Vector3d direction;

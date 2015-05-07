@@ -26,12 +26,12 @@ namespace WindowApplication
             _height = height;
         }
 
-        public ImageSource Render()
+        public async Task<ImageSource> Render()
         {
             var output = new Bitmap(_width, _height);
 
             var scene = new Scene(output.Width, output.Height, 30);
-            var result = scene.render();
+            var result = await Task.Run(()=>scene.render());
 
             for (int i = 0; i < result.Length; i++)
             {

@@ -42,8 +42,8 @@ namespace RayTracer {
 	{
 		this->width = width;						// Pixel-width
 		this->height = height;						// Pixel-height
-		this->viewPortWidth = 33;
-		this->viewPortHeight = 23;
+		this->viewPortWidth = 35;
+		this->viewPortHeight = 25;
 		this->stepSizeX = viewPortWidth / width;
 		this->stepSizeY = viewPortHeight / height;
 
@@ -73,6 +73,8 @@ namespace RayTracer {
 		initLists();
 		
 		lonelyPlane();
+		srand(time(NULL));
+
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
@@ -143,7 +145,14 @@ namespace RayTracer {
 		{
 			outColor = ColorIntern(0, 0, 0, 255);
 			Vector3d normal = closestObject.hit.normal;
-			vector<LightBase*> lightsThatHit = getLightsThatHitPointSoftShadows(closestObject.hit.point); // shadows
+			vector<LightBase*> lightsThatHit;
+			if (shadowsOn)
+			{
+				lightsThatHit = getLightsThatHitPointSoftShadows(closestObject.hit.point); // shadows
+			}else
+			{
+				lightsThatHit = lightObjects;
+			}
 
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.hit.point, lightsThatHit);
 			outColor = ColorIntern::blendAddition(shadingColor,outColor);
@@ -212,6 +221,7 @@ namespace RayTracer {
 			ColorIntern refractionContribution = rayTrace(refractedRay, count - 1, nextRefraction);
 			return refractionContribution;
 		}
+		return ColorIntern(0,0,0,255);
 	}
 
 	vector<LightBase*> Scene::getLightsThatHitPoint(Point3d point)
@@ -314,23 +324,27 @@ namespace RayTracer {
 			else
 			{
 				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.005f);
+				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.1f);
 
 				float newIntensity = 1.0f;
 				for each (Object3d* object in sceneObjects)
 				{
-					for each (Line3d shadowRay in rays)
+					if (object->objectType() == NONPLANE)
 					{
-						RayHit hit = object->CalculateCollision(shadowRay.pushStartAlongLine(0.001f));
-						if (hit.success)
+						for each (Line3d shadowRay in rays)
 						{
-							// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-							if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+							RayHit hit = object->CalculateCollision(shadowRay.pushStartAlongLine(0.01f));
+							if (hit.success)
 							{
-							}
-							else
-							{
-								newIntensity -= ((1.0f / sceneObjects.size()));//* object->material.transparency);
+								// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+								if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+								{
+								}
+								else
+								{
+									//float cos = Vector3d::cosineToAngle(shadowRay.direction, ray.direction);
+									newIntensity -= (1.0f / (float)sceneObjects.size()) * (1.0f - object->material.transparency);//* object->material.transparency);
+								}
 							}
 						}
 					}
@@ -483,5 +497,66 @@ namespace RayTracer {
 		shadersYellow.push_back(new DiffuseShader(ColorIntern(235, 235, 55, 255)));
 	}
 
+	void Scene::TrianglesInCornellBox() 
+	{
+		setUpCornellBox();
 
+		sceneObjects.push_back(new Triangle3d(Point3d(-3, -2, 8), Point3d(-3, 2, 12), Point3d(-1, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+
+		vector<Triangle3d*> triangles = vector<Triangle3d*>(0);
+		triangles.push_back(new Triangle3d(Point3d(-1, -3, 9), Point3d(-1, 2, 12), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+		triangles.push_back(new Triangle3d(Point3d(-1, 2, 12), Point3d(3, 1, 13), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
+		sceneObjects.push_back(new Mesh3d(Point3d(), triangles, shadersGreen, Material(0.0f, 0.0f, 0.95f)));
+	}
+	void Scene::MeshInCornellBox() 
+	{
+		setUpCornellBox();
+
+		vector< unsigned int > vertexIndices, normalIndices;
+		vector< Point3d > temp_vertices;
+		vector< Vector3d > temp_normals;
+		vector< Triangle3d* > triangles;
+
+		FILE* file = fopen("d.obj", "r");
+		if(file == NULL) {
+			printf("Impossible to open the file d.obj !\n");
+			return;
+		}
+		while(true) {
+			char lineHeader[128];
+			// read the first word of the line
+			int res = fscanf(file, "%s", lineHeader);
+			if(res == EOF)
+				break; // EOF = End Of File. Quit the loop.
+
+			// else : parse lineHeader
+			if(strcmp(lineHeader, "v") == 0) {
+				Point3d vertex = Point3d();
+				fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+				temp_vertices.push_back(vertex);
+			} else if(strcmp(lineHeader, "vn") == 0) {
+				Vector3d normal = Vector3d();
+				fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
+				temp_normals.push_back(normal);
+			} else if(strcmp(lineHeader, "f") == 0) {
+				std::string vertex1, vertex2, vertex3;
+				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+				int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				if(matches != 9) {
+					printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+					return;
+				}
+				vertexIndices.push_back(vertexIndex[0]);
+				vertexIndices.push_back(vertexIndex[1]);
+				vertexIndices.push_back(vertexIndex[2]);
+				normalIndices.push_back(normalIndex[0]);
+				normalIndices.push_back(normalIndex[1]);
+				normalIndices.push_back(normalIndex[2]);
+
+				triangles.push_back(new Triangle3d(temp_vertices[vertexIndex[0] - 1], temp_vertices[vertexIndex[1] - 1], temp_vertices[vertexIndex[2] - 1], shadersBlack, Material(0.0f, 0.0f, 1.0f)));
+			}
+		}
+
+		sceneObjects.push_back(new Mesh3d(Point3d(0,0,8), triangles, shadersRed, Material(0.0f, 0.0f, 0.95f)));
+	}
 }

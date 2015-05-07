@@ -10,6 +10,7 @@ namespace RayTracer{
 	public:
 		const Point3d centerPosition;
 		const float radius;
+		ObjectType objectType(){ return NONPLANE; };
 		Sphere3d(Point3d center, float _radius);
 		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders);
 		Sphere3d(Point3d center, float _radius, vector<ShaderBase*> shaders, Material material);
