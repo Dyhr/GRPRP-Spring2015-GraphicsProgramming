@@ -19,7 +19,7 @@ namespace RayTracer {
 		int amtOfShadowRays = 1;
 	private:
 		int width, height;
-		float viewPortWidth, viewPortHeight, stepSize, zLocation;
+		float viewPortWidth, viewPortHeight, stepSizeX, stepSizeY, zLocation;
 		array<Color^>^ arr;
 
 
