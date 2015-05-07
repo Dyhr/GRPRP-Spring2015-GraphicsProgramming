@@ -72,7 +72,7 @@ namespace RayTracer {
 	{
 		initLists();
 		
-		lonelyPlane();
+		DirectionalLightOnly();
 		srand(time(NULL));
 
 
@@ -476,6 +476,32 @@ namespace RayTracer {
 
 		lightObjects.push_back(new PositionalLight(0.75f, Point3d(2, 6.0f, 0), 20.0f, ColorIntern(255, 255, 255, 255)));
 		lightObjects.push_back(new AmbientLight(0.15f));
+	}
+
+	void Scene::DirectionalLightOnly()
+	{
+		shadowsOn = false;
+		amtOfShadowRays = 0;
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
+		shadersWhite.push_back(new SpecularShader(ColorIntern(240, 240, 240, 255), 10));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+
+		lightObjects.push_back(new DirectionalLight(0.75, Vector3d(-3, -3, 0)));
+	}
+
+	void Scene::PositionalLightOnly()
+	{
+		shadowsOn = false;
+		amtOfShadowRays = 0;
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
+		shadersWhite.push_back(new SpecularShader(ColorIntern(240, 240, 240, 255), 10));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, 0, 4), 0.7f, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 0, 4), 0.7f, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+
+		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4, 4)));
 	}
 	
 

@@ -51,6 +51,8 @@ namespace RayTracer {
 		void SphereWithDiffuseShaderOnly();
 		void SphereWithSpecularShaderOnly();
 		void SphereWithAmbientDiffuseAndSpecularShader();
+		void DirectionalLightOnly();
+		void PositionalLightOnly();
 		void TrianglesInCornellBox();
 		void MeshInCornellBox();
 	};
