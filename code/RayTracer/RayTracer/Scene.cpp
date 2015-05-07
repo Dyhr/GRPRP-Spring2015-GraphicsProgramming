@@ -67,7 +67,7 @@ namespace RayTracer {
 	array<Color^>^ Scene::render()
 	{
 		initLists();
-		NonReflectingSpheresAndReflectingPlane();
+		ReflectionMadnessOfSpheres();
 		//softShadowsBlend();
 		//WindSetup();
 		//DirectionalLightOnly();
@@ -552,8 +552,8 @@ namespace RayTracer {
 		shadersRed.push_back(new AmbientShader(ColorIntern(235, 45, 20, 255)));
 		shadersRed.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
 
-		shadersGreen.push_back(new AmbientShader(ColorIntern(30, 235, 55, 255)));
-		shadersGreen.push_back(new DiffuseShader(ColorIntern(30, 235, 55, 255)));
+		shadersGreen.push_back(new AmbientShader(ColorIntern(32, 99, 9, 255)));
+		shadersGreen.push_back(new DiffuseShader(ColorIntern(32, 99, 9, 255)));
 
 		shadersBlack.push_back(new AmbientShader(ColorIntern(3, 3, 3, 255)));
 		shadersBlack.push_back(new DiffuseShader(ColorIntern(3, 3, 3, 255)));
@@ -738,19 +738,41 @@ namespace RayTracer {
 	void Scene::NonReflectingSpheresAndReflectingPlane()
 	{
 		setUpShaders();
+		depth = 4;
 
 		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
 
 		sceneObjects.push_back(new Sphere3d(Point3d(1, -1, 7), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.0f)));
-		sceneObjects.push_back(new Plane3d(Point3d(0, -2, 0), Vector3d(0, 1, 0), shadersGreen,Material(0.8f,0.0f, 1.0f)));
-		sceneObjects.push_back(new Plane3d(Point3d(-3, 0, 8), Vector3d(1, 0, -1), shadersRed, Material(0.8f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Plane3d(Point3d(0, -2, 0), Vector3d(0, 1, 0), shadersGreen,Material(0.0f,0.0f, 1.0f)));
+		sceneObjects.push_back(new Plane3d(Point3d(-3, 0, 8), Vector3d(1, 0, -1), shadersWhite, Material(0.8f, 0.0f, 1.0f)));
 		sceneObjects.push_back(new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack, Material(0.0f, 0.0f, 1.0f)));
 
 		lightObjects.push_back(new AmbientLight(0.15f));
 		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4.5f, 6), 15.0f, ColorIntern(255, 255, 255, 255)));
 		lightObjects.push_back(new PositionalLight(0.2f, Point3d(-1, 0, -1), 5.0f, ColorIntern(255, 255, 255, 255)));
+	}
+
+	void Scene::ReflectionMadnessOfSpheres()
+	{
+		setUpShaders();
+		depth = 4;
+
+		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(1, -1, 7), 1, shadersWhiteSpecular, Material(0.8f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -1, 4), 1, shadersWhiteSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2.5, -1, 3), 1, shadersWhiteSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 1, 4), 1, shadersWhiteSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1.5, -0.5, 6), 0.5, shadersWhiteSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Plane3d(Point3d(0, -2, 0), Vector3d(0, 1, 0), shadersGreen, Material(0.0f, 0.0f, 1.0f)));
+
+		lightObjects.push_back(new AmbientLight(0.1f));
+		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4.5f, 6), 20.0f, ColorIntern(255, 255, 255, 255)));
+		lightObjects.push_back(new PositionalLight(0.2f, Point3d(-1, 0, -1), 15.0f, ColorIntern(255, 255, 255, 255)));
 	}
 
 

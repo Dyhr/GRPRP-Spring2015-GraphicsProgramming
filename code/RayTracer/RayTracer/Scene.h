@@ -68,5 +68,6 @@ namespace RayTracer {
 		void hardShadowsBlend();
 		void softShadows();
 		void softShadowsBlend();
+		void ReflectionMadnessOfSpheres();
 	};
 }
