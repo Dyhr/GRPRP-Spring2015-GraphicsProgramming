@@ -28,7 +28,7 @@ using namespace std;
 namespace RayTracer {
 
 	ColorIntern Scene::backgroundColor(){
-		ColorIntern background = ColorIntern(10, 10, 10, 255);
+		ColorIntern background = ColorIntern(0, 0, 0, 255);
 		return background;
 	}
 
@@ -70,36 +70,18 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
-		srand(time(NULL));
-		sceneObjects = vector<Object3d*>();
-
-		shadersWhite =			vector<ShaderBase*>();
-		shadersWhiteSpecular =	vector<ShaderBase*>();
-		shadersRed =			vector<ShaderBase*>();
-		shadersGreen =			vector<ShaderBase*>();
-		shadersBlack =			vector<ShaderBase*>();
-		shadersYellow =			vector<ShaderBase*>();
-
+		initLists();
 		WindSetup();
-		//TwoSpheresInCornellBox();
-		//MeshInCornellBox();
 
-		lightObjects = vector<LightBase*>(3);
-		lightObjects[0] = new AmbientLight(0.15f);
-		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 15.0f, ColorIntern(255, 255, 255, 255));
-		lightObjects[2] = new PositionalLight(0.2f, Point3d(-1, 0, -1), 5.0f, ColorIntern(255, 255, 255, 255));
-
-		softLightObjects = vector<SoftLightbase*>(0);
-		//softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 11,1,10);
+		//lonelyPlane();
+		srand(time(NULL));
 
 		// This is where the magic happens: main-loop!
-
-	
 		for (int x = 0; x < width; x++)
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				ColorIntern color = rayTrace(ray,5,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
+				ColorIntern color = rayTrace(ray,3,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
 
 				Color^ outColor = gcnew Color(color); // convert to outgoing color
 				setColor(x, y, outColor);
@@ -385,13 +367,122 @@ namespace RayTracer {
 
 	void Scene::initLists()
 	{
+		sceneObjects = vector<Object3d*>();
+		shadersWhite = vector<ShaderBase*>();
+		shadersWhiteSpecular = vector<ShaderBase*>();
+		shadersRed = vector<ShaderBase*>();
+		shadersGreen = vector<ShaderBase*>();
+		shadersBlack = vector<ShaderBase*>();
+		shadersYellow = vector<ShaderBase*>();
 
+		lightObjects = vector<LightBase*>();
 	}
 
 	void Scene::setUpCornellBox()
+	{	// Planes
+		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
+		sceneObjects.push_back(new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersYellow));
+		sceneObjects.push_back(new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersWhite));
+		sceneObjects.push_back(new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed));
+		sceneObjects.push_back(new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen));
+		sceneObjects.push_back(new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack));
+
+		positionalAndAmbientLight();
+	}
+
+	void Scene::TwoSpheresInCornellBox()
+	{
+		setUpCornellBox();
+		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular,	 Material(1.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular,		Material(0.0f, 1.0f, 1.02f)));
+	}
+
+	void Scene::falloffOnLight()
+	{
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+
+		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
+
+		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 15.0f, ColorIntern(255, 255, 255, 255)));
+	}
+
+	void Scene::positionalAndAmbientLight()
+	{
+		lightObjects.push_back(new AmbientLight(0.15f));
+		lightObjects.push_back(new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 15.0f, ColorIntern(255, 255, 255, 255)));
+		lightObjects.push_back(new PositionalLight(0.2f, Point3d(-1, 0, -1), 5.0f, ColorIntern(255, 255, 255, 255)));
+	}
+
+	void Scene::lonelySphere()
+	{
+		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 255, 255, 255)));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(0, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		lightObjects.push_back(new AmbientLight(0.75f));
+	}
+
+	void Scene::lonelyTriangle()
+	{
+		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 255, 255, 255)));
+		sceneObjects.push_back(new Triangle3d(Point3d(-1.0f, 0.0f, 8.0f), Point3d(2.0f, 0.0f, 8.0f), Point3d(0.0f, -1.0f, 3.0f), shadersWhite));
+		lightObjects.push_back(new AmbientLight(0.75f));
+	}
+
+	void Scene::lonelyPlane()
+	{
+		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 255, 255, 255)));
+		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
+		lightObjects.push_back(new AmbientLight(0.75f));
+	}
+
+	void Scene::lonelyNonReflectingSphereOnTopOfFloor()
+	{
+		lonelySphere();
+		falloffOnLight();
+	}
+
+	void Scene::SphereWithAmbientShaderOnly()
+	{
+		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 20, 20, 255)));
+		sceneObjects.push_back(new Sphere3d(Point3d(0, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		lightObjects.push_back(new AmbientLight(0.15f));
+	}
+
+	void Scene::SphereWithDiffuseShaderOnly()
+	{
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
+		sceneObjects.push_back(new Sphere3d(Point3d(0, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		lightObjects.push_back(new PositionalLight(1.00, Point3d(0, 6.0f, 0), 20.0f, ColorIntern(255, 255, 255, 255)));
+	}
+
+	void Scene::SphereWithSpecularShaderOnly()
+	{
+		shadersWhite.push_back(new SpecularShader(ColorIntern(240, 240, 240, 255), 10));
+		sceneObjects.push_back(new Sphere3d(Point3d(0, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		lightObjects.push_back(new PositionalLight(1.00, Point3d(2, 6.0f, 0), 20.0f, ColorIntern(255, 255, 255, 255)));
+	}
+
+	void Scene::SphereWithAmbientDiffuseAndSpecularShader()
+	{
+		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 20, 20, 255)));
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
+		shadersWhite.push_back(new SpecularShader(ColorIntern(240, 240, 240, 255), 10));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(0, 0, 4), 1, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+
+		lightObjects.push_back(new PositionalLight(0.75f, Point3d(2, 6.0f, 0), 20.0f, ColorIntern(255, 255, 255, 255)));
+		lightObjects.push_back(new AmbientLight(0.15f));
+	}
+	
+
+	void Scene::setUpShaders()
 	{
 		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
-		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		//shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 
 		shadersRed.push_back(new AmbientShader(ColorIntern(235, 45, 20, 255)));
 		shadersRed.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
@@ -404,26 +495,6 @@ namespace RayTracer {
 
 		shadersYellow.push_back(new AmbientShader(ColorIntern(235, 235, 55, 255)));
 		shadersYellow.push_back(new DiffuseShader(ColorIntern(235, 235, 55, 255)));
-
-		// Planes
-		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
-		sceneObjects.push_back(new Plane3d(Point3d(0, 0, 15), Vector3d(0, 0, -1), shadersYellow));
-		sceneObjects.push_back(new Plane3d(Point3d(0, 5, 0), Vector3d(0, -1, 0), shadersWhite));
-		sceneObjects.push_back(new Plane3d(Point3d(-5, 0, 0), Vector3d(1, 0, 0), shadersRed));
-		sceneObjects.push_back(new Plane3d(Point3d(5, 0, 0), Vector3d(-1, 0, 0), shadersGreen));
-		sceneObjects.push_back(new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack));
-	}
-
-	void Scene::TwoSpheresInCornellBox()
-	{
-		setUpCornellBox();
-		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
-		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
-		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
-
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
-	
 	}
 
 	void Scene::WindSetup()
@@ -437,7 +508,8 @@ namespace RayTracer {
 		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
 
 	}
-	void Scene::TrianglesInCornellBox() {
+	void Scene::TrianglesInCornellBox() 
+	{
 		setUpCornellBox();
 
 		sceneObjects.push_back(new Triangle3d(Point3d(-3, -2, 8), Point3d(-3, 2, 12), Point3d(-1, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
@@ -447,7 +519,8 @@ namespace RayTracer {
 		triangles.push_back(new Triangle3d(Point3d(-1, 2, 12), Point3d(3, 1, 13), Point3d(2, -2, 8), shadersRed, Material(0.0f, 0.0f, 0.95f)));
 		sceneObjects.push_back(new Mesh3d(Point3d(), triangles, shadersGreen, Material(0.0f, 0.0f, 0.95f)));
 	}
-	void Scene::MeshInCornellBox() {
+	void Scene::MeshInCornellBox() 
+	{
 		setUpCornellBox();
 
 		vector< unsigned int > vertexIndices, normalIndices;

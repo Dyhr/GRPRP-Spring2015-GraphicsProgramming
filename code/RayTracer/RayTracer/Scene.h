@@ -39,9 +39,19 @@ namespace RayTracer {
 
 
 		void initLists();
+		void setUpShaders();
 		void setUpCornellBox();
-
 		void TwoSpheresInCornellBox();
+		void falloffOnLight();
+		void positionalAndAmbientLight();
+		void lonelySphere();
+		void lonelyTriangle();
+		void lonelyNonReflectingSphereOnTopOfFloor();
+		void lonelyPlane();
+		void SphereWithAmbientShaderOnly();
+		void SphereWithDiffuseShaderOnly();
+		void SphereWithSpecularShaderOnly();
+		void SphereWithAmbientDiffuseAndSpecularShader();
 		void TrianglesInCornellBox();
 		void MeshInCornellBox();
 		void WindSetup();
