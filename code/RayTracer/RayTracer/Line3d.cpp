@@ -11,7 +11,7 @@ namespace RayTracer{
 
 	Line3d::Line3d(Point3d position, Vector3d direction):position(position), direction(direction)
 	{
-
+		srand(static_cast <unsigned> (time(0)));
 	}
 
 	Point3d Line3d::getPositionAlongLine(float t)
@@ -30,5 +30,26 @@ namespace RayTracer{
 		Point3d newStartPoint = getPositionAlongLine(pushAmount);
 		Line3d newLine = Line3d(newStartPoint, direction);
 		return newLine;
+	}
+
+	vector<Line3d> Line3d::getTwistedLines(int amountOfLines, float twistAmount)
+	{
+		vector<Line3d> lines = vector<Line3d>();
+		lines.push_back(*this);
+
+		float halfTwist = twistAmount / 2;
+		for (size_t i = 0; i < amountOfLines; i++)
+		{
+			float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / twistAmount));
+			float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / twistAmount));
+			float z = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / twistAmount));
+
+			x = direction.x + (x - halfTwist);
+			y = direction.y + (y - halfTwist);
+			z = direction.z + (z - halfTwist);
+
+			lines.push_back(Line3d(position,Vector3d(x,y,z)));
+		}
+		return lines;
 	}
 }

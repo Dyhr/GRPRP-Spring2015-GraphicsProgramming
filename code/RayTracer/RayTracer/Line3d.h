@@ -1,10 +1,17 @@
 #pragma once
 #include "Vector3d.h"
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
 
 namespace RayTracer{
 	// Line3d should be thought of as a parametrization: (x(t),y(t),z(t)) = (x0,y0,z0) + t*(x1,y2,z2)
 	class Line3d
 	{
+	private: 
+		
 	public:
 		const Point3d position;
 		const Vector3d direction;
@@ -14,5 +21,7 @@ namespace RayTracer{
 
 		Point3d getPositionAlongLine(float);
 		Line3d pushStartAlongLine(float);
+
+		vector<Line3d> getTwistedLines(int amountOfLines, float twistAmount);
 	};
 }
