@@ -42,8 +42,8 @@ namespace RayTracer {
 	{
 		this->width = width;						// Pixel-width
 		this->height = height;						// Pixel-height
-		this->viewPortWidth = 30;
-		this->viewPortHeight = 20;
+		this->viewPortWidth = 33;
+		this->viewPortHeight = 23;
 		this->stepSizeX = viewPortWidth / width;
 		this->stepSizeY = viewPortHeight / height;
 
@@ -80,7 +80,7 @@ namespace RayTracer {
 		shadersYellow =			vector<ShaderBase*>();
 
 		TwoSpheresInCornellBox();
-		amtOfShadowRays = 0; // set this to something higher to add soft shadows
+		amtOfShadowRays = 30; // set this to something higher to add soft shadows
 
 		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.15f);
@@ -97,7 +97,7 @@ namespace RayTracer {
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				ColorIntern color = rayTrace(ray,4,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
+				ColorIntern color = rayTrace(ray,5,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
 
 				Color^ outColor = gcnew Color(color); // convert to outgoing color
 				setColor(x, y, outColor);
@@ -161,27 +161,45 @@ namespace RayTracer {
 		{
 			outColor = ColorIntern(0, 0, 0, 255);
 			Vector3d normal = closestObject.hit.normal;
-			vector<LightBase*> lightsThatHit = getLightsThatHitPoint(closestObject.hit.point); // shadows
+			vector<LightBase*> lightsThatHit = getLightsThatHitPointSoftShadows(closestObject.hit.point); // shadows
 
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.hit.point, lightsThatHit);
 			outColor = ColorIntern::blendAddition(shadingColor,outColor);
 			if (count > 0)
 			{
 				Material materialOfObject = closestObject.object->material;
+
+				float amtOfReflectance;
+				if (materialOfObject.transparency > 0.0f ) // 
+				{
+					float nextRefraction;
+					Vector3d newNormal = normal;
+					if (Vector3d::dotProduct(normal, ray.direction) < 0.0f) // entering object
+					{
+						nextRefraction = materialOfObject.materialRefractionIndex;
+					}
+					else // leaving object
+					{
+						nextRefraction = sceneRefractionIndex;
+						newNormal = Vector3d::negate(newNormal);
+					}
+
+					amtOfReflectance = Vector3d::reflectanceContributionOfRefraction(newNormal, ray.direction, currentRefractionIndex, nextRefraction);
+
+					if (amtOfReflectance != 1.0f)
+					{
+						ColorIntern refractionContribution = getRefractionColor(newNormal, ray.direction, count, closestObject.hit.point, currentRefractionIndex, nextRefraction, materialOfObject);
+
+						outColor = ColorIntern::blendByAmount(refractionContribution, outColor, materialOfObject.transparency - (materialOfObject.transparency*amtOfReflectance));
+					}
+				}
+
 				if (materialOfObject.reflectiveness > 0.0f)
 				{
 					// Take reflection into account
 					ColorIntern reflectionContribution = getReflectionColor(normal,ray.direction, count,closestObject.hit.point,currentRefractionIndex);
 
-					outColor = ColorIntern::blendByAmount(reflectionContribution, outColor, materialOfObject.reflectiveness);
-				}
-
-				if (materialOfObject.transparency > 0.0f)
-				{
-					// Take refraction into account
-					ColorIntern refractionContribution = getRefractionColor(normal,ray.direction, count,closestObject.hit.point,currentRefractionIndex,materialOfObject);
-
-					outColor = ColorIntern::blendByAmount(refractionContribution, outColor, materialOfObject.transparency);
+					outColor = ColorIntern::blendByAmount(reflectionContribution, outColor, materialOfObject.reflectiveness + (materialOfObject.transparency*amtOfReflectance));
 				}
 			}
 		}
@@ -200,38 +218,17 @@ namespace RayTracer {
 		return reflectionContribution;
 	}
 
-	ColorIntern Scene::getRefractionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex, Material materialOfObject)
+	ColorIntern Scene::getRefractionColor(Vector3d newNormal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex, float nextRefraction, Material materialOfObject)
 	{
-		float nextRefraction;
-		Vector3d newNormal = normal;
-		if (Vector3d::dotProduct(normal, incomingDirection) < 0.0f) // entering object
-		{
-			nextRefraction = materialOfObject.materialRefractionIndex;
-		}
-		else // leaving object
-		{
-			nextRefraction = sceneRefractionIndex;
-			newNormal = Vector3d::negate(newNormal);
-		}
-
-		float amtOfReflectance = Vector3d::reflectanceContributionOfRefraction(newNormal, incomingDirection, currentRefractionIndex, nextRefraction);
-
 		Vector3d vectorForRefractedRay = Vector3d::refractionVector(incomingDirection, newNormal, currentRefractionIndex, nextRefraction);
 		if (vectorForRefractedRay.length != 0.0f)
 		{
-			ColorIntern reflectanceContribution = getReflectionColor(newNormal, incomingDirection, count, hitPoint, currentRefractionIndex);
 
 			Point3d pointForOutgoingRefractedRay = hitPoint;
 			Line3d refractedRay = Line3d(pointForOutgoingRefractedRay, vectorForRefractedRay).pushStartAlongLine(0.0001f);
 
 			ColorIntern refractionContribution = rayTrace(refractedRay, count - 1, nextRefraction);
-			return ColorIntern::blendByAmount(reflectanceContribution, refractionContribution, amtOfReflectance);
-		}
-		else
-		{
-			// We have total internal reflection; we must use the reflection
-			ColorIntern reflectionContribution = getReflectionColor(normal, incomingDirection, count, hitPoint, currentRefractionIndex);
-			return reflectionContribution;
+			return refractionContribution;
 		}
 	}
 
@@ -335,23 +332,28 @@ namespace RayTracer {
 			else
 			{
 				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
+				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.005f);
+
 				float newIntensity = 1.0f;
 				for each (Object3d* object in sceneObjects)
 				{
-					RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
-					if (hit.success)
+					for each (Line3d shadowRay in rays)
 					{
-						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-						if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+						RayHit hit = object->CalculateCollision(shadowRay.pushStartAlongLine(0.001f));
+						if (hit.success)
 						{
-						}
-						else
-						{
-							newIntensity = newIntensity - ((1.0f / sceneObjects.size())*object->material.transparency);
+							// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+							if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+							{
+							}
+							else
+							{
+								newIntensity -= ((1.0f / sceneObjects.size()));//* object->material.transparency);
+							}
 						}
 					}
 				}
-				if (newIntensity>= 0.001f)
+				if (newIntensity>= 0.00001f)
 				{
 					lightsThatHit.push_back(light->getCopyOfLight(newIntensity));
 				}
@@ -405,7 +407,7 @@ namespace RayTracer {
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.1f, 1.03f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
 		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
 	
 	}

@@ -24,7 +24,7 @@ namespace RayTracer {
 
 
 		ColorIntern getReflectionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex);
-		ColorIntern getRefractionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex, Material materialOfObject);
+		ColorIntern getRefractionColor(Vector3d normal, Vector3d incomingDirection, int count, Point3d hitPoint, float currentRefractionIndex, float nextRefraction, Material materialOfObject);
 
 		Color^ getColor(int x, int y);
 		void setColor(int x, int y, Color^ color);

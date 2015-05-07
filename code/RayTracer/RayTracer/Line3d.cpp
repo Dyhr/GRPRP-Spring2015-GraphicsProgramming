@@ -48,7 +48,7 @@ namespace RayTracer{
 			y = direction.y + (y - halfTwist);
 			z = direction.z + (z - halfTwist);
 
-			lines.push_back(Line3d(position,Vector3d(x,y,z)));
+			lines.push_back(*new Line3d(position,*new Vector3d(x,y,z)));
 		}
 		return lines;
 	}
