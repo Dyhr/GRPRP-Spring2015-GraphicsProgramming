@@ -58,5 +58,7 @@ namespace RayTracer {
 		void TrianglesInCornellBox();
 		void MeshInCornellBox();
 		void WindSetup();
+		void ThreeSpheresReflectingEachOther();
+		void NonReflectingSpheresAndReflectingPlane();
 	};
 }
