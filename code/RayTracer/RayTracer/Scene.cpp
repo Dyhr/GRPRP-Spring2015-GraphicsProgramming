@@ -6,8 +6,10 @@
 #include <cmath>
 #include <vector>
 #include <list>
+#include <concurrent_vector.h>
 
 #include "Sphere3d.h"
+#include "ppl.h"
 #include "CollisionObject.h"
 #include "Scene.h"
 #include "Color.h"
@@ -42,8 +44,8 @@ namespace RayTracer {
 	{
 		this->width = width;						// Pixel-width
 		this->height = height;						// Pixel-height
-		this->viewPortWidth = 33;
-		this->viewPortHeight = 23;
+		this->viewPortWidth = 35;
+		this->viewPortHeight = 25;
 		this->stepSizeX = viewPortWidth / width;
 		this->stepSizeY = viewPortHeight / height;
 
@@ -70,6 +72,7 @@ namespace RayTracer {
 
 	array<Color^>^ Scene::render()
 	{
+		srand(time(NULL));
 		sceneObjects = vector<Object3d*>();
 
 		shadersWhite =			vector<ShaderBase*>();
@@ -160,7 +163,14 @@ namespace RayTracer {
 		{
 			outColor = ColorIntern(0, 0, 0, 255);
 			Vector3d normal = closestObject.hit.normal;
-			vector<LightBase*> lightsThatHit = getLightsThatHitPointSoftShadows(closestObject.hit.point); // shadows
+			vector<LightBase*> lightsThatHit;
+			if (shadowsOn)
+			{
+				lightsThatHit = getLightsThatHitPointSoftShadows(closestObject.hit.point); // shadows
+			}else
+			{
+				lightsThatHit = lightObjects;
+			}
 
 			ColorIntern shadingColor = closestObject.object->shadeThis(ray.direction, normal, closestObject.hit.point, lightsThatHit);
 			outColor = ColorIntern::blendAddition(shadingColor,outColor);
@@ -331,23 +341,27 @@ namespace RayTracer {
 			else
 			{
 				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 1.0f);
+				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.1f);
 
 				float newIntensity = 1.0f;
 				for each (Object3d* object in sceneObjects)
 				{
-					for each (Line3d shadowRay in rays)
+					if (object->objectType() == NONPLANE)
 					{
-						RayHit hit = object->CalculateCollision(shadowRay.pushStartAlongLine(0.001f));
-						if (hit.success)
+						for each (Line3d shadowRay in rays)
 						{
-							// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-							if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+							RayHit hit = object->CalculateCollision(shadowRay.pushStartAlongLine(0.01f));
+							if (hit.success)
 							{
-							}
-							else
-							{
-								newIntensity -= ((1.0f / sceneObjects.size()));//* object->material.transparency);
+								// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+								if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+								{
+								}
+								else
+								{
+									//float cos = Vector3d::cosineToAngle(shadowRay.direction, ray.direction);
+									newIntensity -= (1.0f / (float)sceneObjects.size()) * (1.0f - object->material.transparency);//* object->material.transparency);
+								}
 							}
 						}
 					}
