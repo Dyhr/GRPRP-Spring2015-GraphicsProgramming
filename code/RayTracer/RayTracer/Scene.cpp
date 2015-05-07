@@ -67,7 +67,7 @@ namespace RayTracer {
 	{
 		initLists();
 
-		hardShadowsBlend();
+		softShadowsBlend();
 		//WindSetup();
 		//DirectionalLightOnly();
 		srand(time(NULL));
@@ -577,20 +577,7 @@ namespace RayTracer {
 	{
 		shadowsOn = true;
 		amtOfShadowRays = 30;
-		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
-
-		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
-		sceneObjects.push_back(new Sphere3d(Point3d(-4, 0, 12), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(0, -1, 25), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(7, -3, 37), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
-
-		lightObjects.push_back(new DirectionalLight(0.75f, Vector3d(1, -1, -0.2f)));
-		lightObjects.push_back(new PositionalLight(0.3f, Point3d(0, 0, 0), 15.0f));
-	}
-	void Scene::softShadowsBlend()
-	{
-		shadowsOn = true;
-		amtOfShadowRays = 30;
+		softShadowSpread = 0.4f;
 		shadersWhite.push_back(new AmbientShader(ColorIntern(30, 30, 30, 255)));
 		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 
@@ -604,6 +591,23 @@ namespace RayTracer {
 		sceneObjects.push_back(new Sphere3d(Point3d(7, -3, 37), 2, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
 
 		lightObjects.push_back(new DirectionalLight(0.75f, Vector3d(1, -1, -0.2f)));
+		lightObjects.push_back(new PositionalLight(0.1f, Point3d(0, 0, 0)));
+		lightObjects.push_back(new AmbientLight(0.1f));
+	}
+	void Scene::softShadowsBlend()
+	{
+		shadowsOn = true;
+		amtOfShadowRays = 300;
+		softShadowSpread = 0.4f;
+		shadersWhite.push_back(new AmbientShader(ColorIntern(30, 30, 30, 255)));
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+
+		sceneObjects.push_back(new Plane3d(Point3d(0, -3, 0), Vector3d(0, 1, 0), shadersWhite));
+		sceneObjects.push_back(new Sphere3d(Point3d(-2, 0, 10), 1.7f, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, 0, 10), 1.7f, shadersWhite, Material(0.0f, 0.0f, 1.0f)));
+
+		lightObjects.push_back(new DirectionalLight(0.375f, Vector3d(1, -3, 0.2f)));
+		lightObjects.push_back(new DirectionalLight(0.375f, Vector3d(-1, -3, 0.2f)));
 		lightObjects.push_back(new PositionalLight(0.1f, Point3d(0, 0, 0)));
 		lightObjects.push_back(new AmbientLight(0.1f));
 	}
