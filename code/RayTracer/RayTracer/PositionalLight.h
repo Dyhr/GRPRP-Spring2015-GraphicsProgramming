@@ -13,6 +13,7 @@ namespace RayTracer
 		PositionalLight(float intensity, Point3d position);
 		PositionalLight(float intensity, Point3d position, float fallOff);
 		PositionalLight(float intensity, Point3d position, float fallOff, ColorIntern color);
+		LightBase* getCopyOfLight(float intensityFactor);
 
 		Vector3d GetLightOnPoint(Point3d position);
 		float GetIntensityOnPoint(Point3d position);

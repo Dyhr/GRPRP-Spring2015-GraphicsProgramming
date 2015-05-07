@@ -22,6 +22,11 @@ namespace RayTracer
 
 	}
 
+	LightBase* PositionalLight::getCopyOfLight(float intensityFactor)
+	{
+		return new PositionalLight(intensity*intensityFactor, centerPosition, fallOff, color);
+	}
+
 	LightType PositionalLight::getLightType()
 	{
 		return POSITIONAL;
