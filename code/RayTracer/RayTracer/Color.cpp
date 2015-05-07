@@ -63,17 +63,17 @@ namespace RayTracer
 
 	ColorIntern ColorIntern::blendMultiply(ColorIntern colorA, ColorIntern colorB)
 	{
-		int red =	sanitizeColor(colorA.red * colorB.red / 255);
-		int green = sanitizeColor(colorA.green * colorB.green / 255);
-		int blue =	sanitizeColor(colorA.blue * colorB.blue / 255);
+		float red =		sanitizeColor(colorA.red * colorB.red / 255);
+		float green =	sanitizeColor(colorA.green * colorB.green / 255);
+		float blue =	sanitizeColor(colorA.blue * colorB.blue / 255);
 		return ColorIntern(red, green, blue, 255);
 	}
 
 	ColorIntern ColorIntern::intensifyColor(ColorIntern colorA, float multiplier)
 	{
-		int red =	sanitizeColor(colorA.red * multiplier);
-		int green = sanitizeColor(colorA.green * multiplier);
-		int blue = sanitizeColor(colorA.blue * multiplier);
+		float red =		sanitizeColor(colorA.red * multiplier);
+		float green =	sanitizeColor(colorA.green * multiplier);
+		float blue =	sanitizeColor(colorA.blue * multiplier);
 
 		return ColorIntern(red, green, blue, 255);
 	}
@@ -100,9 +100,9 @@ namespace RayTracer
 			// TODO: Throw relevant exception
 		}
 
-		int newRed = sanitizeColor(colorA.red * ratioAToB + colorB.red *(1.0f - ratioAToB));
-		int newGreen = sanitizeColor(colorA.green * ratioAToB + colorB.green *(1.0f - ratioAToB));
-		int newBlue = sanitizeColor(colorA.blue * ratioAToB + colorB.blue *(1.0f - ratioAToB));
+		float newRed = sanitizeColor(colorA.red * ratioAToB + colorB.red *(1.0f - ratioAToB));
+		float newGreen = sanitizeColor(colorA.green * ratioAToB + colorB.green *(1.0f - ratioAToB));
+		float newBlue = sanitizeColor(colorA.blue * ratioAToB + colorB.blue *(1.0f - ratioAToB));
 
 		return ColorIntern(newRed, newGreen, newBlue, 255);
 	}
