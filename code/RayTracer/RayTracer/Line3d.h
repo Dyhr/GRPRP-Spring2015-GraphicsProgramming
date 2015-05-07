@@ -1,8 +1,9 @@
 #pragma once
 #include "Vector3d.h"
 #include <vector>
-#include <cstdlib>
-#include <ctime>
+#include <stdio.h>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h> 
 
 using namespace std;
 
