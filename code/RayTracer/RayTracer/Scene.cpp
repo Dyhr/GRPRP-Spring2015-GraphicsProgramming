@@ -63,11 +63,17 @@ namespace RayTracer {
 	vector<ShaderBase*> shadersBlack;
 	vector<ShaderBase*> shadersYellow;
 	vector<ShaderBase*> shadersBlue;
+	vector<ShaderBase*> blueSpecular;
+	vector<ShaderBase*> greenSpecular;
+	vector<ShaderBase*> pinkSpecular;
+	vector<ShaderBase*> purpleSpecular;
+	vector<ShaderBase*> tealSpecular;
+	vector<ShaderBase*> yellowSpecular;
 
 	array<Color^>^ Scene::render()
 	{
 		initLists();
-		ReflectionMadnessOfSpheres();
+		grandFinale();
 		//softShadowsBlend();
 		//WindSetup();
 		//DirectionalLightOnly();
@@ -376,6 +382,13 @@ namespace RayTracer {
 		shadersGreen = vector<ShaderBase*>();
 		shadersBlack = vector<ShaderBase*>();
 		shadersYellow = vector<ShaderBase*>();
+		shadersBlue = vector<ShaderBase*>();
+		blueSpecular = vector<ShaderBase*>();
+		greenSpecular = vector<ShaderBase*>();
+		pinkSpecular = vector<ShaderBase*>();
+		purpleSpecular = vector<ShaderBase*>();
+		tealSpecular = vector<ShaderBase*>();
+		yellowSpecular = vector<ShaderBase*>();
 
 		lightObjects = vector<LightBase*>();
 	}
@@ -553,11 +566,11 @@ namespace RayTracer {
 		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 
-		shadersRed.push_back(new AmbientShader(ColorIntern(235, 45, 20, 255)));
-		shadersRed.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
+		shadersRed.push_back(new AmbientShader(ColorIntern(219, 86, 46, 255)));
+		shadersRed.push_back(new DiffuseShader(ColorIntern(219, 86, 46, 255)));
 
-		shadersGreen.push_back(new AmbientShader(ColorIntern(32, 99, 9, 255)));
-		shadersGreen.push_back(new DiffuseShader(ColorIntern(32, 99, 9, 255)));
+		shadersGreen.push_back(new AmbientShader(ColorIntern(42, 200, 19, 255)));
+		shadersGreen.push_back(new DiffuseShader(ColorIntern(42, 200, 19, 255)));
 
 		shadersBlack.push_back(new AmbientShader(ColorIntern(3, 3, 3, 255)));
 		shadersBlack.push_back(new DiffuseShader(ColorIntern(3, 3, 3, 255)));
@@ -567,6 +580,31 @@ namespace RayTracer {
 
 		shadersBlue.push_back(new AmbientShader(ColorIntern(30, 30, 240, 255)));
 		shadersBlue.push_back(new DiffuseShader(ColorIntern(30, 30, 240, 255)));
+
+		blueSpecular.push_back(new AmbientShader(ColorIntern(8,22,212,255)));
+		blueSpecular.push_back(new DiffuseShader(ColorIntern(8,22,212,255)));
+		blueSpecular.push_back(new SpecularShader(ColorIntern(255, 255, 255, 255),15.0f));
+
+		greenSpecular.push_back(new AmbientShader(ColorIntern(54, 217, 13, 255)));
+		greenSpecular.push_back(new DiffuseShader(ColorIntern(54, 217, 13, 255)));
+		greenSpecular.push_back(new SpecularShader(ColorIntern(255, 255, 255, 255), 15.0f));
+
+		purpleSpecular.push_back(new AmbientShader(ColorIntern(187, 14, 235, 255)));
+		purpleSpecular.push_back(new DiffuseShader(ColorIntern(187, 14, 235, 255)));
+		purpleSpecular.push_back(new SpecularShader(ColorIntern(255, 255, 255, 255), 15.0f));
+
+		pinkSpecular.push_back(new AmbientShader(ColorIntern(245, 17, 214, 255)));
+		pinkSpecular.push_back(new DiffuseShader(ColorIntern(245, 17, 214, 255)));
+		pinkSpecular.push_back(new SpecularShader(ColorIntern(255, 255, 255, 255), 15.0f));
+
+		tealSpecular.push_back(new AmbientShader(ColorIntern(14, 235, 194, 255)));
+		tealSpecular.push_back(new DiffuseShader(ColorIntern(14, 235, 194, 255)));
+		tealSpecular.push_back(new SpecularShader(ColorIntern(255, 255, 255, 255), 15.0f));
+
+		yellowSpecular.push_back(new AmbientShader(ColorIntern(235, 231, 14, 255)));
+		yellowSpecular.push_back(new DiffuseShader(ColorIntern(235, 231, 14, 255)));
+		yellowSpecular.push_back(new SpecularShader(ColorIntern(255, 255, 255, 255), 15.0f));
+
 	}
 
 	void Scene::WindSetup()
@@ -779,5 +817,72 @@ namespace RayTracer {
 		lightObjects.push_back(new PositionalLight(0.2f, Point3d(-1, 0, -1), 15.0f, ColorIntern(255, 255, 255, 255)));
 	}
 
+
+	void Scene::grandFinale()
+	{
+		setUpShaders();
+		depth = 2;
+		amtOfShadowRays = 300;
+		shadowsOn = true;
+		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
+
+		sceneObjects.push_back(new Plane3d(Point3d(0, 0, 16.5), Vector3d(0, 0, -1), shadersRed, Material(0.0f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 1, 15.5),		1,		purpleSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(4, 1, 16),			0.5,		shadersWhiteSpecular, Material(0.5f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(3, 3, 16),			0.5,		purpleSpecular, Material(0.45f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 4, 16),			0.5,		shadersWhiteSpecular, Material(0.6f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, 0, 16), 0.5, blueSpecular, Material(0.65f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, 3, 16), 0.5, yellowSpecular, Material(0.45f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-3, 1, 15.5), 1, greenSpecular, Material(0.5f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 4, 16), 0.5, shadersWhiteSpecular, Material(0.55f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-3, 3.5, 16), 0.5, purpleSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 4, 16), 0.5, pinkSpecular, Material(0.61f, 0.0f, 1.0f)));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 16.1), 0.4, purpleSpecular, Material(0.49f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-3, -1, 15.9), 0.6, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-3, -4, 15.4), 1.1, yellowSpecular, Material(0.3f, 0.0f, 1.0f)));
+		
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 16.2), 0.3, greenSpecular, Material(0.5f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(4, -2, 16), 0.5, blueSpecular, Material(0.52f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, -3, 15.6), 0.9, shadersWhiteSpecular, Material(0.69f, 0.0f, 1.0f)));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -4, 15.9), 0.6, tealSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(3, -4, 15.8), 0.7, pinkSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-5, -1, 15.6), 0.9, yellowSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-5, -3, 15.7), 0.8, greenSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-6, 2, 16.2), 0.3, greenSpecular, Material(0.5f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(6, 1, 15.8), 0.7, purpleSpecular, Material(0.35f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(6, 4, 16), 0.5, shadersWhiteSpecular, Material(0.5f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(6, -4, 16), 0.5, yellowSpecular, Material(0.6f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(7, -1, 15.5), 1, pinkSpecular, Material(0.6f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(4, 5, 15.5), 1, blueSpecular, Material(0.6f, 0.0f, 1.0f)));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-6, 5, 15.3), 1.2, tealSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-2, 6, 15.4), 1.1, blueSpecular, Material(0.4f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-4, 5, 15.7), 0.8, greenSpecular, Material(0.45f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-8, 0, 15.7), 0.8, pinkSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-7, -2, 16.1), 0.4, purpleSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-6, -5, 16.2), 0.3, yellowSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(1, 7, 15.7), 0.8, shadersWhiteSpecular, Material(0.7f, 0.0f, 1.0f)));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(1, -6, 16.1), 0.4, purpleSpecular, Material(0.6f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(5, -6, 15.7), 0.8, shadersWhiteSpecular, Material(0.4f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(6, 7, 16), 0.5, tealSpecular, Material(0.35f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(4, 8, 16), 0.5, pinkSpecular, Material(0.6f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-5, 7, 16), 0.5, blueSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-4, -6, 16.2), 0.3, yellowSpecular, Material(0.7f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(3, -7, 16), 0.5, shadersWhiteSpecular, Material(0.5f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-2, -7, 16.3), 0.2, tealSpecular, Material(0.4f, 0.0f, 1.0f)));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-7, -7, 15.5), 1, yellowSpecular, Material(0.75f, 0.0f, 1.0f)));
+
+
+		lightObjects.push_back(new AmbientLight(0.1f));
+		lightObjects.push_back(new PositionalLight(0.9f, Point3d(0, 0, 13), 5, ColorIntern(255, 255, 255, 255)));
+	
+
+	}
 
 }

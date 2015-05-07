@@ -69,5 +69,6 @@ namespace RayTracer {
 		void softShadows();
 		void softShadowsBlend();
 		void ReflectionMadnessOfSpheres();
+		void grandFinale();
 	};
 }
