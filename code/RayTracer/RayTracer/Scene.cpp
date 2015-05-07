@@ -394,13 +394,17 @@ namespace RayTracer {
 
 	void Scene::TwoSpheresInCornellBox()
 	{
+		setUpShaders();
 		setUpCornellBox();
+		amtOfShadowRays = 0;
+		amtOfShadowRays = false;
+
 		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255),10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular,	 Material(1.0f, 0.0f, 1.0f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular,		Material(0.0f, 1.0f, 1.02f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular,	 Material(0.0f, 0.8f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular,		Material(0.0f, 0.9f, 1.03f)));
 	}
 
 	void Scene::falloffOnLight()
@@ -581,8 +585,8 @@ namespace RayTracer {
 	void Scene::softShadows()
 	{
 		shadowsOn = true;
-		amtOfShadowRays = 30;
-		softShadowSpread = 0.4f;
+		amtOfShadowRays = 300;
+		softShadowSpread = 0.3f;
 		shadersWhite.push_back(new AmbientShader(ColorIntern(30, 30, 30, 255)));
 		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 
