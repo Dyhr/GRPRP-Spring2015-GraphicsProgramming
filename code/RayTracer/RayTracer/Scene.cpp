@@ -105,14 +105,14 @@ namespace RayTracer {
 		sceneObjects[5] = new Plane3d(Point3d(0, 0, -5), Vector3d(0, 0, 1), shadersBlack);
 
 		sceneObjects[6] = new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.8f, 0.2f, 1.01f));
-		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 1.02f));
+		sceneObjects[7] = new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 1.0f, 0.90f));
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = new AmbientLight(0.15f);
 		lightObjects[1] = new PositionalLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255));
 
-		softLightObjects = vector<SoftLightbase*>(1);
-		softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 11,1,10);
+		softLightObjects = vector<SoftLightbase*>(0);
+		//softLightObjects[0] = new BoxSoftLight(0.75f, Point3d(0, 4.5f, 10), 10.0f, ColorIntern(255, 255, 255, 255), 1.0f, 0.1f, 1.0f, 11,1,10);
 
 		// This is where the magic happens: main-loop!
 
