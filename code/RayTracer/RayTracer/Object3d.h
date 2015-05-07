@@ -21,6 +21,12 @@ namespace RayTracer{
 		RayHit(Point3d point, Vector3d normal) :success(true), point(point), normal(normal) {}
 	};
 
+	enum ObjectType
+	{
+		PLANE,
+		NONPLANE
+	};
+
 	class Object3d
 	{
 	public:
@@ -32,6 +38,7 @@ namespace RayTracer{
 		virtual Vector3d CalculateNormal(Point3d) = 0; 
 		virtual Point3d CalculateCollisionPosition(Line3d) = 0;
 		virtual RayHit CalculateCollision(Line3d) = 0;
+		virtual ObjectType objectType() = 0;
 
 		ColorIntern shadeThis(Vector3d eyeVector, Vector3d normalToSurface, Point3d pointOnObject, vector<LightBase*> lights) {
 			ColorIntern colorToReturn = ColorIntern();

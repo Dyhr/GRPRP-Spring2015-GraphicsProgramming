@@ -12,6 +12,7 @@ namespace RayTracer
 		const Vector3d normal;
 		const Point3d position;
 	public:
+		ObjectType objectType(){ return PLANE; };
 		Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders);
 		Plane3d(Point3d point, Vector3d normal, vector<ShaderBase*> shaders,Material material);
 

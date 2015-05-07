@@ -34,21 +34,27 @@ namespace RayTracer{
 
 	vector<Line3d> Line3d::getTwistedLines(int amountOfLines, float twistAmount)
 	{
-		srand(time(NULL));
-
 		vector<Line3d> lines = vector<Line3d>();
 		lines.push_back(*this);
 
-		float halfTwist = twistAmount / 2.0f;
+		
 		for (size_t i = 0; i < amountOfLines; i++)
 		{ 
-			float randomX = ((float)rand() / (float)RAND_MAX) * twistAmount;
-			float randomY = ((float)rand() / (float)RAND_MAX) * twistAmount;
-			float randomZ = ((float)rand() / (float)RAND_MAX) * twistAmount;
+			float randomX = (((float)rand() / (float)RAND_MAX) * 2 - 1) * twistAmount;
+			float randomY = (((float)rand() / (float)RAND_MAX) * 2 - 1) * twistAmount;
+			float randomZ = (((float)rand() / (float)RAND_MAX) * 2 - 1) * twistAmount;
 
-			float x = direction.x + (randomX - halfTwist);
-			float y = direction.y + (randomY - halfTwist);
-			float z = direction.z + (randomZ - halfTwist);
+			float dx = direction.x + randomX;
+			float dy = direction.y + randomY;
+			float dz = direction.z + randomZ;
+
+			//randomX = ((float)rand() / (float)RAND_MAX) * twistAmount - halfTwist;
+			//randomY = ((float)rand() / (float)RAND_MAX) * twistAmount - halfTwist;
+			//randomZ = ((float)rand() / (float)RAND_MAX) * twistAmount - halfTwist;
+
+			float px = position.x;// + randomX;
+			float py = position.y;// + randomY;
+			float pz = position.z;// + randomZ;
 
 			//float x = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / twistAmount));
 			//float y = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / twistAmount));
@@ -58,7 +64,7 @@ namespace RayTracer{
 			//y = direction.y + (y - halfTwist);
 			//z = direction.z + (z - halfTwist);
 
-			lines.push_back(Line3d(position,Vector3d(x,y,z)));
+			lines.push_back(Line3d(Point3d(px,py,pz),Vector3d(dx,dy,dz)));
 		}
 		return lines;
 	}
