@@ -72,7 +72,8 @@ namespace RayTracer {
 	{
 		initLists();
 
-		DirectionalLightOnly();
+		WindSetup();
+		//DirectionalLightOnly();
 		srand(time(NULL));
 
 		//lonelyPlane();
@@ -83,7 +84,7 @@ namespace RayTracer {
 		{
 			for(int y = 0; y < height; y++) {
 				Line3d ray = getRayFromScreen(x, y);
-				ColorIntern color = rayTrace(ray,3,sceneRefractionIndex);	// TODO: 10 should be replaced by variable
+				ColorIntern color = rayTrace(ray, depth, sceneRefractionIndex);	// TODO: 10 should be replaced by variable
 
 				Color^ outColor = gcnew Color(color); // convert to outgoing color
 				setColor(x, y, outColor);
@@ -165,7 +166,7 @@ namespace RayTracer {
 				float amtOfReflectance;
 				if (materialOfObject.transparency > 0.0f ) // 
 				{
-					float nextRefraction;
+					float nextRefraction = 0.0f;
 					Vector3d newNormal = normal;
 					if (Vector3d::dotProduct(normal, ray.direction) < 0.0f) // entering object
 					{
@@ -187,7 +188,7 @@ namespace RayTracer {
 					}
 				}
 
-				if (materialOfObject.reflectiveness > 0.0f)
+				if (materialOfObject.reflectiveness > 0.0f || amtOfReflectance > 0.0f)
 				{
 					// Take reflection into account
 					ColorIntern reflectionContribution = getReflectionColor(normal,ray.direction, count,closestObject.hit.point,currentRefractionIndex);
@@ -329,6 +330,7 @@ namespace RayTracer {
 				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, softShadowSpread);
 
 				float newIntensity = 1.0f;
+				float intensityPrLight = (1.0f / (float)rays.size());
 				for each (Object3d* object in sceneObjects)
 				{
 					if (object->objectType() == NONPLANE)
@@ -345,7 +347,7 @@ namespace RayTracer {
 								else
 								{
 									//float cos = Vector3d::cosineToAngle(shadowRay.direction, ray.direction);
-									newIntensity -= (1.0f / (float)sceneObjects.size()) * (1.0f - object->material.transparency);//* object->material.transparency);
+									newIntensity -= intensityPrLight * (1.0f - object->material.transparency);//* object->material.transparency);
 								}
 							}
 						}
@@ -533,8 +535,8 @@ namespace RayTracer {
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1, -1, 9), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -1, 9), 1, shadersWhiteSpecular, Material(0.0f, 0.5f, 1.05f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.8f, 0.96f)));
 
 	}
 	void Scene::TrianglesInCornellBox() 
