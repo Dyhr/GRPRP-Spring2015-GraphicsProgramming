@@ -80,9 +80,9 @@ namespace RayTracer {
 		shadersBlack =			vector<ShaderBase*>();
 		shadersYellow =			vector<ShaderBase*>();
 
+		WindSetup();
 		//TwoSpheresInCornellBox();
-		MeshInCornellBox();
-		amtOfShadowRays = 30; // set this to something higher to add soft shadows
+		//MeshInCornellBox();
 
 		lightObjects = vector<LightBase*>(3);
 		lightObjects[0] = new AmbientLight(0.15f);
@@ -342,7 +342,7 @@ namespace RayTracer {
 			else
 			{
 				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.1f);
+				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, softShadowSpread);
 
 				float newIntensity = 1.0f;
 				for each (Object3d* object in sceneObjects)
@@ -424,6 +424,18 @@ namespace RayTracer {
 		sceneObjects.push_back(new Sphere3d(Point3d(-1, -2, 8), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
 		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
 	
+	}
+
+	void Scene::WindSetup()
+	{
+		setUpCornellBox();
+		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -1, 9), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
+
 	}
 	void Scene::TrianglesInCornellBox() {
 		setUpCornellBox();
