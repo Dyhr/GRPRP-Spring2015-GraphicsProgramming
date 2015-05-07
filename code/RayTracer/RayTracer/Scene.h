@@ -13,7 +13,7 @@ namespace RayTracer {
 	public:
 		Scene(int height, int width, float viewdistance);
 		array<Color^>^ render();
-		ColorIntern backgroundColor();
+		ColorIntern* backgroundColor = new ColorIntern(0, 0, 0, 255);;
 		ColorIntern ambientColorOnObjects();
 		float sceneRefractionIndex = 1.0f;
 		int amtOfShadowRays = 0;   // 0 = no soft - set this to something higher to add soft shadows
@@ -44,6 +44,8 @@ namespace RayTracer {
 		void setUpCornellBox();
 		void TwoSpheresInCornellBox();
 		void falloffOnLight();
+		void falloffOnLightBrightBackground();
+		void coloredLightSetup();
 		void positionalAndAmbientLight();
 		void lonelySphere();
 		void lonelyTriangle();
@@ -60,5 +62,11 @@ namespace RayTracer {
 		void WindSetup();
 		void ThreeSpheresReflectingEachOther();
 		void NonReflectingSpheresAndReflectingPlane();
+
+		//Shadow Slides
+		void hardShadows();
+		void hardShadowsBlend();
+		void softShadows();
+		void softShadowsBlend();
 	};
 }
