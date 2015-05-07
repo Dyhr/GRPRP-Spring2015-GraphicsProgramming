@@ -16,7 +16,7 @@ namespace RayTracer {
 		ColorIntern backgroundColor();
 		ColorIntern ambientColorOnObjects();
 		float sceneRefractionIndex = 1.0f;
-		int amtOfShadowRays = 1;
+		int amtOfShadowRays = 30;   // set this to something higher to add soft shadows
 	private:
 		int width, height;
 		float viewPortWidth, viewPortHeight, stepSizeX, stepSizeY, zLocation;
