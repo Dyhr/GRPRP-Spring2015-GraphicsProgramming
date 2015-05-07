@@ -423,15 +423,53 @@ namespace RayTracer {
 		sceneObjects.push_back(new Mesh3d(Point3d(), triangles, shadersGreen, Material(0.0f, 0.0f, 0.95f)));
 	}
 	void Scene::MeshInCornellBox() {
-		std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
-		std::vector< Point3d > temp_vertices;
-		std::vector< Vector3d > temp_normals;
+		setUpCornellBox();
 
-		FILE * file = fopen("d.obj", "r");
+		vector< unsigned int > vertexIndices, normalIndices;
+		vector< Point3d > temp_vertices;
+		vector< Vector3d > temp_normals;
+		vector< Triangle3d* > triangles;
+
+		FILE* file = fopen("d.obj", "r");
 		if(file == NULL) {
-			printf("Impossible to open the file !\n");
+			printf("Impossible to open the file d.obj !\n");
 			return;
 		}
-		printf("Nothing is impossible!");
+		while(true) {
+			char lineHeader[128];
+			// read the first word of the line
+			int res = fscanf(file, "%s", lineHeader);
+			if(res == EOF)
+				break; // EOF = End Of File. Quit the loop.
+
+			// else : parse lineHeader
+			if(strcmp(lineHeader, "v") == 0) {
+				Point3d vertex = Point3d();
+				fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+				temp_vertices.push_back(vertex);
+			} else if(strcmp(lineHeader, "vn") == 0) {
+				Vector3d normal = Vector3d();
+				fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
+				temp_normals.push_back(normal);
+			} else if(strcmp(lineHeader, "f") == 0) {
+				std::string vertex1, vertex2, vertex3;
+				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+				int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+				if(matches != 9) {
+					printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+					return;
+				}
+				vertexIndices.push_back(vertexIndex[0]);
+				vertexIndices.push_back(vertexIndex[1]);
+				vertexIndices.push_back(vertexIndex[2]);
+				normalIndices.push_back(normalIndex[0]);
+				normalIndices.push_back(normalIndex[1]);
+				normalIndices.push_back(normalIndex[2]);
+
+				triangles.push_back(new Triangle3d(temp_vertices[vertexIndex[0] - 1], temp_vertices[vertexIndex[1] - 1], temp_vertices[vertexIndex[2] - 1], shadersBlack, Material(0.0f, 0.0f, 1.0f)));
+			}
+		}
+
+		sceneObjects.push_back(new Mesh3d(Point3d(0,0,8), triangles, shadersRed, Material(0.0f, 0.0f, 0.95f)));
 	}
 }
