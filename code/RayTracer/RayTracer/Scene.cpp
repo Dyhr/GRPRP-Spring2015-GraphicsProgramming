@@ -482,7 +482,7 @@ namespace RayTracer {
 	void Scene::setUpShaders()
 	{
 		shadersWhite.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
-		//shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhite.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 
 		shadersRed.push_back(new AmbientShader(ColorIntern(235, 45, 20, 255)));
 		shadersRed.push_back(new DiffuseShader(ColorIntern(235, 45, 20, 255)));
@@ -499,6 +499,7 @@ namespace RayTracer {
 
 	void Scene::WindSetup()
 	{
+		setUpShaders();
 		setUpCornellBox();
 		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
