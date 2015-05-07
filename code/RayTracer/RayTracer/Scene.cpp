@@ -44,7 +44,9 @@ namespace RayTracer {
 		this->height = height;						// Pixel-height
 		this->viewPortWidth = 30;
 		this->viewPortHeight = 20;
-		this->stepSize = viewPortWidth / width;
+		this->stepSizeX = viewPortWidth / width;
+		this->stepSizeY = viewPortHeight / height;
+
 		this->zLocation = viewDistance;
 
 		this->arr = gcnew array<Color^>(width*height);
@@ -77,9 +79,7 @@ namespace RayTracer {
 		shadersBlack =			vector<ShaderBase*>();
 		shadersYellow =			vector<ShaderBase*>();
 
-
 		TwoSpheresInCornellBox();
-
 
 		lightObjects = vector<LightBase*>(2);
 		lightObjects[0] = new AmbientLight(0.15f);
@@ -122,8 +122,8 @@ namespace RayTracer {
 	Line3d Scene::getRayFromScreen(int x, int y) // x and y represents indices in pixelgrid
 	{
 		// Center of viewport is located in (0,0,0)
-		float px = -(viewPortWidth) / 2.0f + stepSize * x;
-		float py = (viewPortHeight) / 2.0f - stepSize * y;
+		float px = -(viewPortWidth) / 2.0f + stepSizeX * x;
+		float py = (viewPortHeight) / 2.0f - stepSizeY * y;
 
 		return Line3d(Point3d(), Vector3d::normalize(Vector3d(px, py, zLocation)));
 	}
