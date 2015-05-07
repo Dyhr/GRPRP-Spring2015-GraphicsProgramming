@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h> 
+#include <random>
 
 using namespace std;
 
