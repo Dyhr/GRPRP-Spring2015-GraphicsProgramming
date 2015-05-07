@@ -15,6 +15,7 @@ namespace RayTracer {
 		Sphere3d* boundingSphere;
 	public:
 		Mesh3d(Point3d pos, vector<Triangle3d*> triangles, vector<ShaderBase*> shaders, Material material);
+		ObjectType objectType(){ return NONPLANE; };
 
 		Vector3d CalculateNormal(Point3d point);
 		Point3d CalculateCollisionPosition(Line3d line);

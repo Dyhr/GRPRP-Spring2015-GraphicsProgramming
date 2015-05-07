@@ -6,10 +6,8 @@
 #include <cmath>
 #include <vector>
 #include <list>
-#include <concurrent_vector.h>
 
 #include "Sphere3d.h"
-#include "ppl.h"
 #include "CollisionObject.h"
 #include "Scene.h"
 #include "Color.h"
@@ -241,6 +239,7 @@ namespace RayTracer {
 			ColorIntern refractionContribution = rayTrace(refractedRay, count - 1, nextRefraction);
 			return refractionContribution;
 		}
+		return ColorIntern(0,0,0,255);
 	}
 
 	vector<LightBase*> Scene::getLightsThatHitPoint(Point3d point)
