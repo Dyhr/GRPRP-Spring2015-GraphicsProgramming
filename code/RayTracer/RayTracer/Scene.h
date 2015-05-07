@@ -16,7 +16,8 @@ namespace RayTracer {
 		ColorIntern backgroundColor();
 		ColorIntern ambientColorOnObjects();
 		float sceneRefractionIndex = 1.0f;
-		int amtOfShadowRays = 256;   // 0 = no soft - set this to something higher to add soft shadows
+		int amtOfShadowRays = 100;   // 0 = no soft - set this to something higher to add soft shadows
+		float softShadowSpread = 0.6f;
 		bool shadowsOn = true;
 	private:
 		int width, height;
@@ -55,5 +56,6 @@ namespace RayTracer {
 		void PositionalLightOnly();
 		void TrianglesInCornellBox();
 		void MeshInCornellBox();
+		void WindSetup();
 	};
 }

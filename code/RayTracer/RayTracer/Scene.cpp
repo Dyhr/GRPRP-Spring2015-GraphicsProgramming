@@ -71,10 +71,12 @@ namespace RayTracer {
 	array<Color^>^ Scene::render()
 	{
 		initLists();
-		
+
 		DirectionalLightOnly();
 		srand(time(NULL));
 
+		//lonelyPlane();
+		srand(time(NULL));
 
 		// This is where the magic happens: main-loop!
 		for (int x = 0; x < width; x++)
@@ -324,7 +326,7 @@ namespace RayTracer {
 			else
 			{
 				Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, 0.1f);
+				vector<Line3d> rays = ray.getTwistedLines(amtOfShadowRays, softShadowSpread);
 
 				float newIntensity = 1.0f;
 				for each (Object3d* object in sceneObjects)
@@ -523,6 +525,17 @@ namespace RayTracer {
 		shadersYellow.push_back(new DiffuseShader(ColorIntern(235, 235, 55, 255)));
 	}
 
+	void Scene::WindSetup()
+	{
+		setUpCornellBox();
+		shadersWhiteSpecular.push_back(new AmbientShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
+		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
+
+		sceneObjects.push_back(new Sphere3d(Point3d(-1, -1, 9), 1, shadersWhiteSpecular, Material(0.0f, 0.0f, 1.03f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2, shadersWhiteSpecular, Material(0.0f, 0.0f, 0.95f)));
+
+	}
 	void Scene::TrianglesInCornellBox() 
 	{
 		setUpCornellBox();
