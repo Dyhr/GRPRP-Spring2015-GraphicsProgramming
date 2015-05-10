@@ -1,0 +1,37 @@
+\section{Project Description}
+The project concerns the programming of a raytracer written in the programming language C++. This report details the project. To see sample renderings from the project, see \ref{sec:SlideDeck}. 
+
+\subsection{Raytracing explained}
+Ray tracing is a rendering technique used for producing realistic looking simulations (‘\textit{renderings}’) based on how light rays will act within a scene of objects. Raytracing hence seeks to imitate the nature of light-rays bouncing around between and being refracted through objects. Rays travel from a light source, interacts with objects in the scene, through either reflection, absorption or refraction, and may eventually reach the viewer’s eye (the ‘camera’). In ray-tracing, however, to ignore the rays that won’t reach the camera, only rays that will eventually reach the camera are processed. This is achieved by reversing the process. i.e. rays are shot from the camera into the scene, where they are allowed to be absorbed, bounce or refract a predetermined number of times. This allows for photo-realistic renderings, but at the cost of processing time. \\
+
+The core of the ray tracing algorithm is based around intersections between lines (rays) and objects, that all can be described mathematically, such as spheres, planes and triangles, and then determine which object in the scene the line intersects. When an intersection is found, the shading at that intersection is calculated based on the normal to the surface at that point, and light sources of the scene, and then recursions can be made based on the law of reflection or refraction.
+
+\subsection{Planned features (scope and non-scope)}
+This section will introduce what we planned on implementing during the project span.
+
+\subsubsection{Objects}
+We planned to support three simple types of objects; spheres, triangles and planes. This will enable us to produce simple renderings, with objects that we’re familiar with and have an intuition about how should look. Furthermore optionally we also planned to import .obj files and create a mesh of triangles.
+
+\subsubsection{Shaders}
+We planned to implement a basic phong lighting model, which should include shaders for ambient, diffuse, and specular lighting. 
+
+\subsubsection{Lights}
+We planned to provide directional lights, point lights and ambient lights. Optionally we would support colored lights, as opposed to the more simple model, where lights just emit white light. 
+
+\subsubsection{Shadows}
+To provide a better sense of realism, we planned to include shadows on objects. We will implement these in two stages; first the easier hard shadow, and secondly soft shadows, where gradients are seen across shadows. 
+
+\subsubsection{Reflection}
+Reflections are the next obvious candidate to implement to mimic reflective objects in the real world, such as glass and polished metal. Reflection will require recursion in order to work, as new reflection rays are created.
+
+\subsubsection{Refraction}
+For transparent objects, we wish to support refraction, again to produce more realistic final renderings. 
+
+\subsubsection{GPU utilization}
+Ray tracing can provide really nice looking renderings, but at the cost of a huge processing load. Since the algorithm does a lot of the same calculations which does not affecting one another, it would be easy to parallelize with multithreading. As a better alternative we would look into using the GPU, with OpenGL or similar, which is more specialized at doing a lot of calculations, and will provide much faster results.
+
+\subsubsection{Textures (Optional)}
+Textures allow for more interesting objects and is a core part of any engine, therefore textures could be a possible optional feature.
+
+\subsubsection{Maps(Optional)}
+Maps such as bump maps and normal maps increases the realism of flat objects by altering the normals and shaders of the object. This creates more interesting surfaces and would be a cool additional feature, which could be easy to implement on top of textures.
