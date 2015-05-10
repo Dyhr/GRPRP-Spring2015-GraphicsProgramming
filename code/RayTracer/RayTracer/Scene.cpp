@@ -847,8 +847,8 @@ namespace RayTracer {
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1.1, -2, 8), 1,		shadersWhiteSpecular, Material(0.9f, 0.0f, 1.25f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2,		shadersWhiteSpecular, Material(0.0f, 0.9f, 1.25f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1.1, -2, 8), 1,		shadersWhiteSpecular, Material(0.0f, 0.9f, 1.02f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2,		shadersWhiteSpecular, Material(0.9f, 0.0f, 1.02f)));
 		sceneObjects.push_back(new Sphere3d(Point3d(-3.2f, -1.8f, 13.0f), 1.2f,	shadersWhite, Material(0.01f, 0.0f, 1.0f)));
 
 		lightObjects.push_back(new PositionalLight(0.2f, Point3d(-5, 1, 0),	4, ColorIntern(235, 45, 20, 255)));
