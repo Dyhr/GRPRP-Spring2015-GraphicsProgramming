@@ -73,7 +73,7 @@ namespace RayTracer {
 	array<Color^>^ Scene::render()
 	{
 		initLists();
-		grandFinale();
+		finalRenderingCornell();
 
 		//lonelyPlane();
 		srand(time(NULL));
@@ -265,45 +265,45 @@ namespace RayTracer {
 				}
 			}
 		}
-		//TODO: Refactor inner loop into own method.
-		for each (SoftLightbase* softLight in softLightObjects)
-		{
-			for each (LightBase* light in softLight->getLights())
-			{
-				if (light->getLightType() == AMBIENT)
-				{
-					lightsThatHit.push_back(light);
-				}
-				else
-				{
-					Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
-					bool isIntercepted = false;
-					for each (Object3d* object in sceneObjects)
-					{
-						if (object->material.transparency < 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
-						{
-							RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
-							if (hit.success)
-							{
-								// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
-								if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
-								{
-								}
-								else
-								{
-									isIntercepted = true;
-									break;
-								}
-							}
-						}
-					}
-					if (!isIntercepted)
-					{
-						lightsThatHit.push_back(light);
-					}
-				}
-			}
-		}
+		////TODO: Refactor inner loop into own method.
+		//for each (SoftLightbase* softLight in softLightObjects)
+		//{
+		//	for each (LightBase* light in softLight->getLights())
+		//	{
+		//		if (light->getLightType() == AMBIENT)
+		//		{
+		//			lightsThatHit.push_back(light);
+		//		}
+		//		else
+		//		{
+		//			Line3d ray = Line3d(point, Vector3d::negate(light->GetLightOnPoint(point)));
+		//			bool isIntercepted = false;
+		//			for each (Object3d* object in sceneObjects)
+		//			{
+		//				if (object->material.transparency < 0.5f) // in a better solution - intensity of light is decreased based on transparrency.
+		//				{
+		//					RayHit hit = object->CalculateCollision(ray.pushStartAlongLine(0.001f));
+		//					if (hit.success)
+		//					{
+		//						// this fix only works as long as we dont normalize the getLightOnPoint in positionalLights
+		//						if (light->getLightType() == POSITIONAL && Vector3d(point, hit.point).length > light->GetLightOnPoint(point).length)
+		//						{
+		//						}
+		//						else
+		//						{
+		//							isIntercepted = true;
+		//							break;
+		//						}
+		//					}
+		//				}
+		//			}
+		//			if (!isIntercepted)
+		//			{
+		//				lightsThatHit.push_back(light);
+		//			}
+		//		}
+		//	}
+		//}
 		// copy to vector 
 		vector<LightBase*> lightsToReturn = vector<LightBase*>(lightsThatHit.size());
 		int i = 0;
@@ -839,7 +839,7 @@ namespace RayTracer {
 		setUpShaders();
 		depth = 4;
 		shadowsOn = true;
-		amtOfShadowRays = 300; // change to high number 300
+		amtOfShadowRays = 0; // change to high number 300
 
 		setUpCornellBox();
 
@@ -847,8 +847,8 @@ namespace RayTracer {
 		shadersWhiteSpecular.push_back(new DiffuseShader(ColorIntern(255, 240, 245, 255)));
 		shadersWhiteSpecular.push_back(new SpecularShader(ColorIntern(250, 250, 255, 255), 10.0f));
 
-		sceneObjects.push_back(new Sphere3d(Point3d(-1.1, -2, 8), 1,		shadersWhiteSpecular, Material(0.0f, 0.9f, 1.025f)));
-		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2,		shadersWhiteSpecular, Material(0.9f, 0.0f, 1.0f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(-1.1, -2, 8), 1,		shadersWhiteSpecular, Material(0.9f, 0.0f, 1.25f)));
+		sceneObjects.push_back(new Sphere3d(Point3d(2, -1, 9), 2,		shadersWhiteSpecular, Material(0.0f, 0.9f, 1.25f)));
 		sceneObjects.push_back(new Sphere3d(Point3d(-3.2f, -1.8f, 13.0f), 1.2f,	shadersWhite, Material(0.01f, 0.0f, 1.0f)));
 
 		lightObjects.push_back(new PositionalLight(0.2f, Point3d(-5, 1, 0),	4, ColorIntern(235, 45, 20, 255)));
