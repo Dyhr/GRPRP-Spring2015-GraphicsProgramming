@@ -1,10 +1,10 @@
 \section{Project Description}
-The project concerns the programming of a raytracer written in the programming language C++. This report details the project. To see sample renderings from the project, see \ref{sec:SlideDeck}. 
+The project concerns the programming of a raytracer written in the programming language C++. This report details the project. To see sample renderings from the project, see Appendix \ref{sec:SlideDeck}. 
 
 \subsection{Raytracing explained}
 Ray tracing is a rendering technique used for producing realistic looking simulations (‘\textit{renderings}’) based on how light rays will act within a scene of objects. Raytracing hence seeks to imitate the nature of light-rays bouncing around between and being refracted through objects. Rays travel from a light source, interacts with objects in the scene, through either reflection, absorption or refraction, and may eventually reach the viewer’s eye (the ‘camera’). In ray-tracing, however, to ignore the rays that won’t reach the camera, only rays that will eventually reach the camera are processed. This is achieved by reversing the process. i.e. rays are shot from the camera into the scene, where they are allowed to be absorbed, bounce or refract a predetermined number of times. This allows for photo-realistic renderings, but at the cost of processing time. \\
 
-The core of the ray tracing algorithm is based around intersections between lines (rays) and objects, that all can be described mathematically, such as spheres, planes and triangles, and then determine which object in the scene the line intersects. When an intersection is found, the shading at that intersection is calculated based on the normal to the surface at that point, and light sources of the scene, and then recursions can be made based on the law of reflection or refraction.
+The core of the ray tracing algorithm is based around intersections between lines (rays) and objects, all of which can be described mathematically, for instance spheres, planes and triangles. When an intersection is found, the shading at that intersection is calculated based on the normal to the surface at that point, and light sources of the scene, and then recursions can be made based on the law of reflection or refraction.
 
 \subsection{Planned features (scope and non-scope)}
 This section will introduce what we planned on implementing during the project span.
