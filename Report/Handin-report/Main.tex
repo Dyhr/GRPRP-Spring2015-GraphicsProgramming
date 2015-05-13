@@ -1,0 +1,26 @@
+\input{tex/Preamble}
+
+\begin{document}
+
+% Frontpage
+\input{tex/ITUOfficial}
+\thispagestyle{empty}
+\input{tex/Frontpage}
+
+% Table of contents
+\thispagestyle{empty}
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+% Actual content
+\pagestyle{fancy}
+\setcounter{page}{1}
+
+\input{tex/ProjectDescription}
+\input{tex/ImplementedFeatures}
+\input{tex/Retrospect}
+\input{tex/Conclusion}
+
+\input{tex/Appendix}
+\end{document}

@@ -1,0 +1,18 @@
+\section{Retrospect - what could have been improved}
+This section reflects upon the delivered project. 
+
+\subsection{Features we wanted and planned for}
+We wanted to offload the processing across the CPU and the GPU, but failed to. As we’re novices in C++ (and had our issues just there), through the tutorials and material found online about the GPU utilization in C++, we realised that it would present a very steep learning-curve for us, taking into account we weren’t too familiar with C++ either. Hence, we decided to skip this feature in favor of putting effort into other areas of the program.\\
+
+Furthermore, we did not get the time to implement textures, although we believe that our architecture would easily allow for this. \\
+
+We also had planned to allow the user to render an .obj file, and we have a half-finished solution. Unfortunately, there are some hiccups and we cannot say that it is done and implemented well enough to handin as a feature. We do believe that given one more week this feature could have been completed. \\
+
+\subsection{Features that would be cool to implement in the future}
+As it has proved notoriously difficult to debug the program, we believe we could have benefitted greatly from unit-testing individual methods. We have spent a lot of time tracking down where or whether the logic was wrong. Having known that individual methods worked on their own, we could instead have focused our debugging efforts on the calling of and or the interaction between the methods.\\
+
+Moreover, there’s a lot of space for future improvements. An obvious one would be to store the objects of the scene in a kd-tree, ordered by spatial location within the scene. Currently, when we’re checking for ray-intersection, we iterate over all objects within the scene. A kd-tree would allow for only checking for a relevant subsection of the scene-objects. \\
+
+If we had managed to get textures on objects, then our system would have been greatly improved by other kinds of maps, such as bump maps, specular maps, offset maps. These maps are mostly used for details and perform very well, if you don’t want to render huge and very detailed meshes. Specular maps and other maps that transform colors would be essential for more complex models, that are made of different materials. All would be easy to implement if textures were implemented. \\
+
+In terms of ideal code-practice in C++, there’s a huge void surrounding memory-management, as we do not consequently release memory when we should.\\
