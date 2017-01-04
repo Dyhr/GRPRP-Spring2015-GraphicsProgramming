@@ -1,5 +1,11 @@
 # Graphics-Programming Spring 2015 at IT-University of Copenhagen
 
+Final project for the graphics programming course at the ITU. It is a raytracer, coded in C++, with a C# frontend for showing the resulting image. Every scene is hard coded in the engine and so it is not suitable for use in the real world, but is merely a study of coding a ray tracer in C++.
+
+## Disclaimer
+
+This project had a one month deadline and didn't have any requirements for performance or memory management, so it has neither.
+
 ## Members:
 - Rasmus Dyhr Larsen  (rady@itu.dk)
 - Anders Wind Steffen (awis@itu.dk)
